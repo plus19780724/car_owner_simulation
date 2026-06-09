@@ -237,6 +237,7 @@
     
     let pendingEvent = null;
     let currentEvent = null;
+    let alertReport = "";
     let month = 1;
     let funds = 15000000;         
     let loanBalance = 15000000;   
@@ -789,7 +790,7 @@ if (mechanics === 0 || currentLiftsCount === 0) {
 
    function nextMonth() {
     // 1. 変数の初期化（重複を削除）
-    let alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n`;
+    alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n`;
 
     // 2. 【1. 適用フェーズ】前月に予告されたイベントを実行
     if (pendingEvent !== null) {
@@ -826,6 +827,12 @@ if (mechanics === 0 || currentLiftsCount === 0) {
     month++;
     updateDisplay();
 }
+
+function selectRandomEvent() {
+    // 抽選ロジックをここに記述（null を返さないようにしてください）
+    return 0; // 仮の戻り値
+}
+    
       // --- 【重要】イベント実行の集中管理関数 ---
 function applyEvent(eventRoll) {
     if (eventRoll === 0) {
@@ -885,10 +892,6 @@ function applyEvent(eventRoll) {
     else if (eventRoll === 11) {
         addLog(`✨ 【イベント】スタッフ連携強化！各ピットの車検限界数が＋10台！`);
     }
-}
- function selectRandomEvent() {
-    // 抽選ロジックをここに記述（null を返さないようにしてください）
-    return 0; // 仮の戻り値
 }
 
 function getEventDescription(eventRoll) {
