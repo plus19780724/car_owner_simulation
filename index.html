@@ -793,158 +793,168 @@ function nextMonth() {
         pendingEvent = null;
     }
 
-    // 2. 既存の月次計算や報告などの処理（ここに元々のコードが並びます）
-    // ... (既存の売上計算や各クールダウン減少処理などをそのまま書いてください) ...
+    // 2. 既存の月次計算処理（ご提示のコードの続き）
+    lastMonthRevenueDisplay = 0;
+    lastMonthExpenseDisplay = 0;
+    let m_revenue = 0;
+    let m_expense = 0;
 
+    let alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n`;
+    addLog(`<br><span style='color:#2ecc71;'>━━━━━━━━━ 【第 ${month} ヶ月目 営業結果】 ━━━━━━━━━</span>`);
+
+    // ... (以降、あなたの既存の売上計算ロジックが続きます) ...
+    // [注意] この中の「ランダムイベント抽選ロジック」は削除してOKです
+    
     // 3. 【イベント予約部】来月の抽選と予約
     if (Math.random() < 0.4) {
-        let availableEvents = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]; 
-        // ※必要に応じてpushロジックを使ってavailableEventsを調整してください
-        
+        let availableEvents = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
         let eventRoll = availableEvents[Math.floor(Math.random() * availableEvents.length)];
+        pendingEvent = eventRoll; // 予約！
         
-        // 即時実行せず、予約変数に入れる
-        pendingEvent = eventRoll;
-        
-        // 予告表示
         eventBoard.style.display = "block";
         eventTitle.innerText = "📅 来月のイベント予告";
         eventDesc.innerText = "来月、新しいイベントが実行されます。準備しておいてください。";
         addLog(`📢 【予告】来月、イベントが発生予定です！`);
     }
 
-    // 4. FreeCar判定（既存の処理がある場合はそのままここへ）
-    if (pendingFreeCar) {
-        // ...
-    }
-}
-}
-// 【2】イベント実行専用の関数（nextMonthの外に配置！）
+    // ... (既存の売上計算ロジックをここに書く) ...
+
+    // [最後に必ず month++; と updateDisplay(); を置く]
+    month++;
+    updateDisplay();
+} // ★ここで nextMonth をきれいに閉じる
+
+// ★ここからは「別の関数」として独立させる
 function applyEvent(eventRoll) {
     let eventBoard = document.getElementById("eventBoard");
     let eventTitle = document.getElementById("eventTitle");
     let eventDesc = document.getElementById("eventDesc");
 
-    // あなたが貼り付けてくれたif文の塊
     if (eventRoll === 0) {
-        currentEvent = "sick_mechanic";
-        eventBoard.style.display = "block";
-        eventTitle.innerText = "⚠️ 突発トラブル：メカニックの戦線離脱";
-        eventDesc.innerText = "「ベテラン整備士がギックリ腰で長期療養に…！」\n（今月のみ、稼働する整備士の人数が一時的にマイナス1名されます）";
-        addLog(`🚨 【イベント】メカニック1名がギックリ腰で一時離脱！`);
-    } 
-    else if (eventRoll === 1) {
-        currentEvent = "parts_delay";
-        cooldown_parts = 12; 
-        eventBoard.style.display = "block";
-        eventTitle.innerText = "⚠️ 突発トラブル：パーツ供給の遅延";
-        eventDesc.innerText = "「世界的な物流遅延で、車検用の交換部品の届きが大幅に遅れています…」\n（今月のみ、各リフトの車検完了上限台数が一律20%ダウンします ※年1回限定）";
-        addLog(`🚨 【イベント】部品供給遅延により工場の生産性が20%ダウン！`);
-    } 
-    else if (eventRoll === 2) {
-        currentEvent = "accident_fee";
-        eventBoard.style.display = "block";
-        eventTitle.innerText = "⚠️ 突発トラブル：代車・設備の突発故障";
-        eventDesc.innerText = "「無料代車の車検切れと、ピットリフトのセンサー不調が同時発生！」\n（突発的な設備修繕費用として、今月の支出に30万円が強制追加されます）";
-        funds -= 300000;
-        m_expense += 300000;
-        addLog(`🚨 【イベント】機材・代車トラブルにより突発修繕費30万円が発生。`);
-    } 
-    else if (eventRoll === 3) {
-        currentEvent = "rival_open";
-        cooldown_rival = 36; 
-        eventBoard.style.display = "block";
-        eventTitle.innerText = "⚠️ 突発トラブル：格安ライバル店の電撃オープン";
-        eventDesc.innerText = "「近隣に、安さを売りにした大型スピード車検専門店が出店！」\n（自社の存在を忘れてしまう顧客が発生し、既存の顧客ストックが10%減少します ※3年1回限定）";
-        let lostLoyals = Math.floor(loyalCustomers * 0.10);
-        loyalCustomers -= lostLoyals;
-        addLog(`🚨 【イベント】競合店開店！既存の顧客ストック(バケツ)が10%(${lostLoyals}名)流出。悪評により販売デマンドも更に低下します。`);
-    } 
-    else if (eventRoll === 4) {
-        currentEvent = "bad_weather";
-        count_weather_this_year++; 
-        eventBoard.style.display = "block";
-        eventTitle.innerText = "⚠️ 突発トラブル：台風・悪天候の直撃";
-        eventDesc.innerText = "「週末の大悪天候が重なり、店頭への商談来店客数が激減…」\n（今月のみ、車両販売部門の来店客数が通常・ペナルティ後の数値ともに『半減』します）";
-        addLog(`🚨 【イベント】悪天候直撃！今月の車両販売の来店数が半減します。`);
-    } 
-    else if (eventRoll === 5) {
-        currentEvent = "audit_clerk";
-        cooldown_audit = 12; 
-        eventBoard.style.display = "block";
-        
-        if (assistants > 0) {
-            eventBoard.style.background = "#eefbf2";
-            eventBoard.style.borderColor = "#27ae60";
-            eventTitle.style.color = "#27ae60";
-            eventTitle.innerText = "🛡️ 監査クリア：コンプライアンス監査対応";
-            eventDesc.innerText = "「陸運局による突発的な工場監査が入りましたが、補助事務員が日頃から書類を完璧に整理していたため、無傷でクリアしました！」";
-            addLog(`🛡️ 【イベント】工場監査が入りましたが、補助事務員の活躍によりペナルティを回避！`);
-        } else {
-            eventTitle.innerText = "⚠️ 突発トラブル：コンプライアンス監査対応";
-            eventDesc.innerText = "「陸運局による突発的な工場監査が実施！書類の再整理で大忙しです」\n（今月のみ、事務員の稼働人数が一時的にマイナス1名されます ※年1回限定）";
-            addLog(`🚨 【イベント】工場監査対応のため、事務員1名が通常業務から離脱。`);
+                currentEvent = "sick_mechanic";
+                eventBoard.style.display = "block";
+                eventTitle.innerText = "⚠️ 突発トラブル：メカニックの戦線離脱";
+                eventDesc.innerText = "「ベテラン整備士がギックリ腰で長期療養に…！」\n（今月のみ、稼働する整備士の人数が一時的にマイナス1名されます）";
+                addLog(`🚨 【イベント】メカニック1名がギックリ腰で一時離脱！`);
+            } 
+            else if (eventRoll === 1) {
+                currentEvent = "parts_delay";
+                cooldown_parts = 12; 
+                eventBoard.style.display = "block";
+                eventTitle.innerText = "⚠️ 突発トラブル：パーツ供給の遅延";
+                eventDesc.innerText = "「世界的な物流遅延で、車検用の交換部品の届きが大幅に遅れています…」\n（今月のみ、各リフトの車検完了上限台数が一律20%ダウンします ※年1回限定）";
+                addLog(`🚨 【イベント】部品供給遅延により工場の生産性が20%ダウン！`);
+            } 
+            else if (eventRoll === 2) {
+                currentEvent = "accident_fee";
+                eventBoard.style.display = "block";
+                eventTitle.innerText = "⚠️ 突発トラブル：代車・設備の突発故障";
+                eventDesc.innerText = "「無料代車の車検切れと、ピットリフトのセンサー不調が同時発生！」\n（突発的な設備修繕費用として、今月の支出に30万円が強制追加されます）";
+                funds -= 300000;
+                m_expense += 300000;
+                addLog(`🚨 【イベント】機材・代車トラブルにより突発修繕費30万円が発生。`);
+            } 
+            else if (eventRoll === 3) {
+                currentEvent = "rival_open";
+                cooldown_rival = 36; 
+                eventBoard.style.display = "block";
+                eventTitle.innerText = "⚠️ 突発トラブル：格安ライバル店の電撃オープン";
+                eventDesc.innerText = "「近隣に、安さを売りにした大型スピード車検専門店が出店！」\n（自社の存在を忘れてしまう顧客が発生し、既存の顧客ストックが10%減少します ※3年1回限定）";
+                let lostLoyals = Math.floor(loyalCustomers * 0.10);
+                loyalCustomers -= lostLoyals;
+                addLog(`🚨 【イベント】競合店開店！既存の顧客ストック(バケツ)が10%(${lostLoyals}名)流出。悪評により販売デマンドも更に低下します。`);
+            } 
+            else if (eventRoll === 4) {
+                currentEvent = "bad_weather";
+                count_weather_this_year++; 
+                eventBoard.style.display = "block";
+                eventTitle.innerText = "⚠️ 突発トラブル：台風・悪天候の直撃";
+                eventDesc.innerText = "「週末の大悪天候が重なり、店頭への商談来店客数が激減…」\n（今月のみ、車両販売部門の来店客数が通常・ペナルティ後の数値ともに『半減』します）";
+                addLog(`🚨 【イベント】悪天候直撃！今月の車両販売の来店数が半減します。`);
+            } 
+            else if (eventRoll === 5) {
+                currentEvent = "audit_clerk";
+                cooldown_audit = 12; 
+                eventBoard.style.display = "block";
+                
+                if (assistants > 0) {
+                    eventBoard.style.background = "#eefbf2";
+                    eventBoard.style.borderColor = "#27ae60";
+                    eventTitle.style.color = "#27ae60";
+                    eventTitle.innerText = "🛡️ 監査クリア：コンプライアンス監査対応";
+                    eventDesc.innerText = "「陸運局による突発的な工場監査が入りましたが、補助事務員が日頃から書類を完璧に整理していたため、無傷でクリアしました！」";
+                    addLog(`🛡️ 【イベント】工場監査が入りましたが、補助事務員の活躍によりペナルティを回避！`);
+                } else {
+                    eventTitle.innerText = "⚠️ 突発トラブル：コンプライアンス監査対応";
+                    eventDesc.innerText = "「陸運局による突発的な工場監査が実施！書類の再整理で大忙しです」\n（今月のみ、事務員の稼働人数が一時的にマイナス1名されます ※年1回限定）";
+                    addLog(`🚨 【イベント】工場監査対応のため、事務員1名が通常業務から離脱。`);
+                }
+            }
+            else if (eventRoll === 6) {
+                currentEvent = "sales_order_error";
+                eventBoard.style.display = "block";
+                eventTitle.innerText = "🚨 重大トラブル：営業マンの発注・書類ミス";
+                eventDesc.innerText = "「商談成約車のオプション発注、または書類手続きに重大なミスが発覚しキャンセルに…」\n（今月成約した車両のうち、強制的に【マイナス1台】失注となります。仕入在庫は手元に戻ります）";
+                addLog(`🚨 【不祥事イベント】営業マンの発注ミスにより、今月の成約が1台強制キャンセル！(在庫は戻ります)`);
+            }
+            else if (eventRoll === 7) {
+                currentEvent = "repair_complaint";
+                eventBoard.style.display = "block";
+                eventTitle.innerText = "🚨 重大トラブル：車検整備の作業内容に大クレーム発生";
+                eventDesc.innerText = "「引き渡した車検車両の組み付け不良により大クレームに発展。地域の信頼が低下…」\n（既存の信頼が失墜し、顧客ストック（ロイヤルカスタマー）が【7%〜10%】一気に流出します）";
+                let percent = 0.07 + (Math.random() * 0.03); 
+                let lostLoyals = Math.floor(loyalCustomers * percent);
+                loyalCustomers -= lostLoyals;
+                addLog(`🚨 【不祥事イベント】整備作業への重大クレーム！顧客ストックが ${Math.floor(percent*100)}% (${lostLoyals}名) 流出！`);
+            }
+            else if (eventRoll === 8) {
+                currentEvent = "big_fleet";
+                cooldown_fleet = 36; 
+                eventBoard.style.display = "block";
+                eventBoard.style.background = "#eefbf2";
+                eventBoard.style.borderColor = "#27ae60";
+                eventTitle.style.color = "#27ae60";
+                eventTitle.innerText = "🚀 チャンス到来：大口の法人フリート契約獲得";
+                eventDesc.innerText = "「地元の運送会社から、一括での車検入庫オーダーを勝ち取りました！」\n（今月のみ、車検の入庫要求台数が【＋20台】一気にブーストされます ※3年1回限定）";
+                addLog(`✨ 【イベント】大口法人から車検特需！入庫デマンド＋20台！`);
+            } 
+            else if (eventRoll === 9) {
+                eventBoard.style.display = "block";
+                eventBoard.style.background = "#eefbf2";
+                eventBoard.style.borderColor = "#27ae60";
+                eventTitle.style.color = "#27ae60";
+                currentEvent = "sns_buzz";
+                eventTitle.innerText = "🚀 チャンス到来：奇跡の口コミ・SNSバズ";
+                eventDesc.innerText = "「SNSで『親切すぎる街の整備工場』として紹介され、一躍話題に！」\n（広告費ゼロで、今月の車両販売への来店客数が【＋8組】追加されます）";
+                addLog(`✨ 【イベント】SNSで好意的な口コミがバズ！来店客数＋8組！`);
+            } 
+            else if (eventRoll === 10) {
+                eventBoard.style.display = "block";
+                eventBoard.style.background = "#eefbf2";
+                eventBoard.style.borderColor = "#27ae60";
+                eventTitle.style.color = "#27ae60";
+                currentEvent = "free_car";
+                eventTitle.innerText = "🚀 チャンス到来：極上中古車のダイレクト買取成功";
+                eventDesc.innerText = "「既存ユーザーの乗り換えに伴い、状態抜群の人気車種を格安で下取り・直接買取！」\n（仕入れ費用0円で、展示車在庫が【＋1台】増えます。上限オーバー時は無効）";
+                pendingFreeCar = true; 
+            } 
+            else if (eventRoll === 11) {
+                eventBoard.style.display = "block";
+                eventBoard.style.background = "#eefbf2";
+                eventBoard.style.borderColor = "#27ae60";
+                eventTitle.style.color = "#27ae60";
+                currentEvent = "staff_awakening";
+                eventTitle.innerText = "🚀 チャンス到来：スタッフたちの電撃覚醒";
+                eventDesc.innerText = "「営業とピットの連携が神がかり、工場内の無駄な動きがゼロに！」\n（今月のみ、稼働している各リフトの車検処理キャパシティが【一律＋10台】上昇します）";
+                addLog(`✨ 【イベント】スタッフ連携強化！各ピットの車検限界数が＋10台！`);
+            }
         }
-    }
-    else if (eventRoll === 6) {
-        currentEvent = "sales_order_error";
-        eventBoard.style.display = "block";
-        eventTitle.innerText = "🚨 重大トラブル：営業マンの発注・書類ミス";
-        eventDesc.innerText = "「商談成約車のオプション発注、または書類手続きに重大なミスが発覚しキャンセルに…」\n（今月成約した車両のうち、強制的に【マイナス1台】失注となります。仕入在庫は手元に戻ります）";
-        addLog(`🚨 【不祥事イベント】営業マンの発注ミスにより、今月の成約が1台強制キャンセル！(在庫は戻ります)`);
-    }
-    else if (eventRoll === 7) {
-        currentEvent = "repair_complaint";
-        eventBoard.style.display = "block";
-        eventTitle.innerText = "🚨 重大トラブル：車検整備の作業内容に大クレーム発生";
-        eventDesc.innerText = "「引き渡した車検車両の組み付け不良により大クレームに発展。地域の信頼が低下…」\n（既存の信頼が失墜し、顧客ストック（ロイヤルカスタマー）が【7%〜10%】一気に流出します）";
-        let percent = 0.07 + (Math.random() * 0.03); 
-        let lostLoyals = Math.floor(loyalCustomers * percent);
-        loyalCustomers -= lostLoyals;
-        addLog(`🚨 【不祥事イベント】整備作業への重大クレーム！顧客ストックが ${Math.floor(percent*100)}% (${lostLoyals}名) 流出！`);
-    }
-    else if (eventRoll === 8) {
-        currentEvent = "big_fleet";
-        cooldown_fleet = 36; 
-        eventBoard.style.display = "block";
-        eventBoard.style.background = "#eefbf2";
-        eventBoard.style.borderColor = "#27ae60";
-        eventTitle.style.color = "#27ae60";
-        eventTitle.innerText = "🚀 チャンス到来：大口の法人フリート契約獲得";
-        eventDesc.innerText = "「地元の運送会社から、一括での車検入庫オーダーを勝ち取りました！」\n（今月のみ、車検の入庫要求台数が【＋20台】一気にブーストされます ※3年1回限定）";
-        addLog(`✨ 【イベント】大口法人から車検特需！入庫デマンド＋20台！`);
-    } 
-    else if (eventRoll === 9) {
-        eventBoard.style.display = "block";
-        eventBoard.style.background = "#eefbf2";
-        eventBoard.style.borderColor = "#27ae60";
-        eventTitle.style.color = "#27ae60";
-        currentEvent = "sns_buzz";
-        eventTitle.innerText = "🚀 チャンス到来：奇跡の口コミ・SNSバズ";
-        eventDesc.innerText = "「SNSで『親切すぎる街の整備工場』として紹介され、一躍話題に！」\n（広告費ゼロで、今月の車両販売への来店客数が【＋8組】追加されます）";
-        addLog(`✨ 【イベント】SNSで好意的な口コミがバズ！来店客数＋8組！`);
-    } 
-    else if (eventRoll === 10) {
-        eventBoard.style.display = "block";
-        eventBoard.style.background = "#eefbf2";
-        eventBoard.style.borderColor = "#27ae60";
-        eventTitle.style.color = "#27ae60";
-        currentEvent = "free_car";
-        eventTitle.innerText = "🚀 チャンス到来：極上中古車のダイレクト買取成功";
-        eventDesc.innerText = "「既存ユーザーの乗り換えに伴い、状態抜群の人気車種を格安で下取り・直接買取！」\n（仕入れ費用0円で、展示車在庫が【＋1台】増えます。上限オーバー時は無効）";
-        pendingFreeCar = true; 
-    } 
+
+    // ... (以下、11までの else if を全て記述) ...
     else if (eventRoll === 11) {
-        eventBoard.style.display = "block";
-        eventBoard.style.background = "#eefbf2";
-        eventBoard.style.borderColor = "#27ae60";
-        eventTitle.style.color = "#27ae60";
-        currentEvent = "staff_awakening";
-        eventTitle.innerText = "🚀 チャンス到来：スタッフたちの電撃覚醒";
-        eventDesc.innerText = "「営業とピットの連携が神がかり、工場内の無駄な動きがゼロに！」\n（今月のみ、稼働している各リフトの車検処理キャパシティが【一律＋10台】上昇します）";
-        addLog(`✨ 【イベント】スタッフ連携強化！各ピットの車検限界数が＋10台！`);
+        // ... (11の処理) ...
     }
-}
+} // ★ここで applyEvent をきれいに閉じる
     // ...以降、今までの月次処理（売上計算など）を続ける...
         lastMonthRevenueDisplay = 0;
         lastMonthExpenseDisplay = 0;
