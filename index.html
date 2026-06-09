@@ -8,319 +8,645 @@
         .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         h1 { text-align: center; color: #2c3e50; margin-bottom: 5px; }
         .subtitle { text-align: center; color: #7f8c8d; margin-bottom: 15px; font-weight: bold; }
-        /* その他必要なCSSがあればここに記述 */
+        
+        .control-panel { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; }
+        .btn-ctrl { padding: 10px 25px; font-size: 14px; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; color: white; transition: background 0.2s; }
+        .btn-start { background: #3498db; }
+        .btn-start:hover { background: #2980b9; }
+        .btn-reset { background: #7f8c8d; }
+        .btn-reset:hover { background: #636e72; }
+
+        .status-board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; background: #2c3e50; color: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .status-item { text-align: center; border-right: 1px solid #4f5d73; }
+        .status-item:last-child { border-right: none; }
+        .status-value { font-size: 20px; font-weight: bold; color: #f1c40f; margin-top: 5px; }
+        
+        .finance-board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; background: #34495e; color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 11px; }
+        .finance-item { text-align: center; border-right: 1px dashed #7f8c8d; }
+        .finance-item:last-child { border-right: none; }
+        .finance-val-plus { font-size: 15px; font-weight: bold; color: #2ecc71; margin-top: 3px; }
+        .finance-val-minus { font-size: 15px; font-weight: bold; color: #ff7675; margin-top: 3px; }
+        .finance-val-stock { font-size: 15px; font-weight: bold; color: #3498db; margin-top: 3px; }
+
+        .result-board { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #fff; border: 2px solid #27ae60; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+        .result-panel { text-align: center; padding: 10px; border-radius: 6px; }
+        .result-panel.car { background: #e8f4fd; border-left: 5px solid #3498db; }
+        .result-panel.repair { background: #eafaf1; border-left: 5px solid #27ae60; }
+        .result-title { font-size: 13px; font-weight: bold; color: #7f8c8d; margin-bottom: 5px; }
+        .result-main { font-size: 22px; font-weight: bold; color: #2c3e50; }
+        .result-main span { font-size: 13px; color: #555; font-weight: normal; }
+        .result-sub { font-size: 12px; color: #e74c3c; margin-top: 4px; font-weight: bold; }
+        
+        .total-badge { display: block; margin-top: 8px; padding: 4px; background: #fff; border: 1px dashed #7f8c8d; border-radius: 4px; font-size: 13px; font-weight: bold; color: #2c3e50; }
+        .total-badge font { color: #e67e22; font-size: 15px; }
+
+        .adv-sector-box { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #fff3e0; border: 2px dashed #ff9800; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .adv-btn-car { background: #e67e22; padding: 12px; font-size: 14px; width:100%; margin-top:8px; border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer;}
+        .adv-btn-repair { background: #27ae60; padding: 12px; font-size: 14px; width:100%; margin-top:8px; border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer;}
+        .adv-counter { margin-top: 6px; background: #fff; padding: 5px; border-radius: 4px; font-size: 12px; font-weight: bold; color: #d35400; border: 1px dashed #ff9800; }
+        .adv-active-badge { display: none; background: #e74c3c; color: white; padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: bold; margin-left: 10px; }
+
+        .event-board { display: none; background: #fff3f3; border: 2px solid #cc0000; padding: 15px; border-radius: 8px; margin-bottom: 15px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+        .event-title { font-size: 16px; font-weight: bold; color: #cc0000; margin-bottom: 5px; }
+        .event-desc { font-size: 13px; color: #333; font-weight: bold; line-height: 1.4; }
+
+        .btn-next { background: #27ae60; width: 100%; font-size: 18px; padding: 15px; margin-bottom: 25px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; transition: all 0.2s; }
+        .btn-next:hover { opacity: 0.9; background: #219a52; }
+
+        .game-zone { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
+        .zone-box { background: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; }
+        .zone-title { font-weight: bold; margin-bottom: 10px; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        button:not(.btn-next):not(.adv-btn-car):not(.adv-btn-repair):not(.btn-ctrl) { padding: 10px; font-size: 13px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; transition: all 0.2s; }
+        button:not(.btn-next):not(.adv-btn-car):not(.adv-btn-repair):not(.btn-ctrl):hover { opacity: 0.9; }
+        .btn-buy { background: #2980b9; }
+        .btn-sell { background: #d35400; }
+        .btn-hire { background: #8e44ad; }
+        .btn-upgrade { background: #2c3e50; }
+        .btn-assistant { background: #10ac84; } 
+
+        .showroom-staff-office { display: flex; flex-wrap: wrap; gap: 6px; background: #dfe4ea; padding: 10px; border-radius: 6px; margin-bottom: 10px; min-height: 40px; border-left: 5px solid #8e44ad; }
+        .staff-icon { background: #8e44ad; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-align: center; }
+        .staff-icon.assistant { background: #10ac84; } 
+        .staff-empty { font-size: 11px; color: #7f8c8d; font-weight: bold; font-style: italic; padding: 5px; }
+        
+        .garage-floor { display: flex; flex-wrap: wrap; gap: 8px; background: #dfe4ea; padding: 10px; border-radius: 6px; min-height: 50px; }
+        .car-icon { background: #3498db; color: white; padding: 6px 10px; border-radius: 4px; font-size: 11px; text-align: center; font-weight: bold; }
+        .car-icon.old { background: #e67e22; }
+        .car-icon.danger { background: #e74c3c; }
+        .empty-slot { border: 1px dashed #a4b0be; padding: 6px 10px; border-radius: 4px; color: #a4b0be; font-size: 11px; text-align: center; }
+
+        .factory-floor { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; background: #cad3c8; padding: 10px; border-radius: 6px; min-height: 50px; }
+        .lift-box { background: #2f3542; color: white; padding: 8px; border-radius: 6px; font-size: 11px; line-height: 1.4; border-left: 5px solid #747d8c; }
+        .lift-box.active { border-left: 5px solid #2ed573; background: #1e222b; }
+        .lift-box.partial { border-left: 5px solid #f1c40f; background: #1e222b; }
+        .lift-box.stop { border-left: 5px solid #ff4757; }
+        .lift-box .staff-badge { display: inline-block; background: #747d8c; color: white; padding: 1px 4px; border-radius: 3px; font-size: 10px; margin-right: 3px; margin-top: 3px; }
+        .lift-box .staff-badge.active { background: #2ed573; color: #1e222b; font-weight: bold; }
+        .lift-box .staff-badge.warn { background: #f1c40f; color: #1e222b; font-weight: bold; }
+        .lift-box .status-text { font-size: 11px; font-weight: bold; margin-bottom: 3px; }
+        .lift-empty-slot { border: 1px dashed #747d8c; padding: 15px 10px; border-radius: 6px; color: #747d8c; font-size: 11px; text-align: center; font-weight: bold; background: rgba(255,255,255,0.2); }
+
+        .archive-container { background: #222f3e; padding: 15px; border-radius: 8px; color: #ffffff; margin-bottom: 15px; border-left: 5px solid #10ac84; }
+        .archive-window { height: 280px; overflow-y: auto; font-size: 12px; line-height: 1.5; font-family: monospace; }
+        .archive-row { padding: 8px 0; border-bottom: 1px dashed #57606f; display: flex; justify-content: space-between; flex-direction: column; }
+        .archive-line { display: flex; justify-content: space-between; width: 100%; margin-bottom: 3px; }
+
+        .log-container { background: #1e272e; padding: 15px; border-radius: 8px; color: #ffffff; margin-bottom: 25px; }
+        .log-window { height: 130px; overflow-y: auto; font-size: 13px; line-height: 1.6; font-family: monospace; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>自動車販売・修理工場経営</h1>
-    <div id="c-loyal-customers"></div>
-    <div id="c-car-forecast"></div>
-    <div id="c-incoming-forecast"></div>
+    <h1>自動車販売・修理工場 経営シミュレーション</h1>
+    <div class="subtitle">〜 Ver 6.4 版 〜</div>
+
+    <div class="control-panel">
+        <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
+        <button class="btn-ctrl btn-reset" onclick="resetGame()">🔄 経営リセット</button>
     </div>
 
+    <div class="status-board">
+        <div class="status-item">経過月数<br><div class="status-value" id="m-month">1ヶ月目</div></div>
+        <div class="status-item">手元資金(現金)<br><div class="status-value" id="m-funds">15,000,000円</div></div>
+        <div class="status-item">来月の予定固定費<br><div class="status-value" id="m-expenses">0円</div></div>
+        <div class="status-item">展示車在庫<br><div class="status-value" id="m-stock">0 / 10 台</div></div>
+        <div class="status-item">借入金残高<br><div class="status-value" id="m-loan" style="color:#ff7675;">15,000,000円</div></div>
+    </div>
+
+    <div class="finance-board">
+        <div class="finance-item">💰 直近の月間売上高<br><div class="finance-val-plus" id="f-month-revenue">0円</div></div>
+        <div class="finance-item">💸 直近の月間総支出<br><div class="finance-val-minus" id="f-month-expense">0円</div></div>
+        <div class="finance-item">📦 現在の在庫時価棚卸高<br><div class="finance-val-stock" id="f-stock-asset">0円</div></div>
+        <div class="finance-item">📈 累計売上高<br><div class="finance-val-plus" id="f-total-revenue">0円</div></div>
+        <div class="finance-item">📉 累計支出額<br><div class="finance-val-minus" id="f-total-expense">0円</div></div>
+    </div>
+
+    <div class="result-board">
+        <div class="result-panel car">
+            <div class="result-title">🚗 直近の車両販売実績</div>
+            <div class="result-main" id="r-car-sales">0 <span style="font-size:13px;">台成約</span> <span style="color:#7f8c8d;">/ 来店:</span> <span id="r-car-demands">0</span> <span style="font-size:13px;">組</span></div>
+            <div class="result-sub" id="r-car-loss">-</div>
+            <div class="total-badge">📊 今期（当期）販売台数: <font id="t-car-current">0</font> 台</div>
+        </div>
+        <div class="result-panel repair">
+            <div class="result-title">🔧 直近の車検整備実績</div>
+            <div class="result-main" id="r-repair-done">0 <span style="font-size:13px;">台完了</span> <span style="color:#7f8c8d;">/ 実際の入庫:</span> <span id="r-repair-demands">0</span> <span style="font-size:13px;">台</span></div>
+            <div class="result-sub" id="r-repair-loss">-</div>
+            <div class="total-badge">📊 今期（当期）車検台数: <font id="t-repair-current">0</font> 台</div>
+        </div>
+    </div>
+
+    <div class="adv-sector-box">
+        <div style="text-align: center; border-right: 1px dashed #ff9800; padding-right: 10px;">
+            <span style="font-weight: bold; color: #2c3e50; font-size: 14px;">🚗 車両販売広告</span><br>
+            <span style="font-size: 11px; color: #666;">コスト: 1回 30万円 / 効果: 来店客数＋4〜8組</span>
+            <button class="adv-btn-car" onclick="triggerAdvertising('car')">🚀 広告を追加発注する (-30万)</button>
+            <div class="adv-counter" id="v-adv-car-status">今月の発注数: 0回 (効果: +0組)</div>
+        </div>
+        <div style="text-align: center; padding-left: 10px;">
+            <span style="font-weight: bold; color: #27ae60; font-size: 14px;">🔧 車検整備広告</span><br>
+            <span style="font-size: 11px; color: #c0392b; font-weight:bold;">コスト: 1回 30万円 / 実入庫率は案内数の約50%</span>
+            <button class="adv-btn-repair" onclick="triggerAdvertising('repair')">🚀 DMを追加発送する (-30万)</button>
+            <div class="adv-counter" id="v-adv-repair-status" style="color:#27ae60; border-color:#27ae60;">今月の発注数: 0回 (反響予測: +0台)</div>
+        </div>
+    </div>
+
+    <div class="event-board" id="eventBoard">
+        <div class="event-title" id="eventTitle">⚠️ 今月の突発イベント</div>
+        <div class="event-desc" id="eventDesc">イベント内容がここに表示されます。</div>
+    </div>
+
+    <button class="btn-next" onclick="nextMonth()">🎲 今月の営業を実行して次の月へ進む ➔</button>
+
+    <div class="game-zone">
+        <div class="zone-box">
+            <div class="zone-title">🚗 車両販売部門 (営業マン: <span id="c-salesmen">0</span>名) <span id="badge-adv-car" class="adv-active-badge">🚀 広告発注済</span></div>
+            
+            <div class="btn-grid">
+                <button class="btn-buy" onclick="buyCar()">🛠 車を仕入れる<br>(-100万円)</button>
+                <button class="btn-sell" onclick="fireSale()">🚨 最古の在庫を損切<br>(いつでも可)</button>
+                <button class="btn-hire" onclick="hireStaff('salesman')">👨‍💼 営業マンを採用<br>(人件費:月30万)</button>
+                <button class="btn-upgrade" id="btn-showroom-upgrade" onclick="upgradeShowroom()">🏢 展示場を拡張<br>費用300万/上限50台</button>
+            </div>
+
+            <div style="font-size: 13px; font-weight: bold; margin-bottom: 5px;">事務所の営業・事務スタッフ：</div>
+            <div class="showroom-staff-office" id="staff-office-floor"></div>
+
+            <p style="font-size: 12px; margin: 5px 0; color:#555;" id="c-car-forecast">通常来店: 0〜3組/月</p>
+            <div style="font-size: 13px; font-weight: bold; margin-bottom: 5px;">展示場の様子：</div>
+            <div class="garage-floor" id="garage-floor"></div>
+        </div>
+
+        <div class="zone-box">
+            <div class="zone-title">🔧 車検整備部門 (整備士: <span id="c-mechanics">0</span>/ 事務: <span id="c-clerks">0</span> / 補助事務: <span id="c-assistants">0</span>) <span id="badge-adv-repair" class="adv-active-badge">🚀 広告発注済</span></div>
+            
+            <div class="btn-grid">
+                <button class="btn-hire" style="background:#2980b9;" onclick="hireStaff('mechanic')">🔧 メカニック採用<br>(人件費:月30万)</button>
+                <button class="btn-hire" style="background:#27ae60;" onclick="hireStaff('clerk')">👩‍💻 事務員を採用<br>(人件費:月30万)</button>
+                <button class="btn-assistant" id="btn-hire-assistant" onclick="hireStaff('assistant')">🛡️ 補助事務員採用<br>(人件費:月30万)</button>
+                <button class="btn-upgrade" style="background:#d35400;" id="btn-lift-upgrade" onclick="upgradeLift()">🏋️‍♂️ リフト増設（+1基）<br>投資200万 / 月10万</button>
+            </div>
+
+            <div class="rule-info" style="background:#e8f5e9; border-left:4px solid #4caf50; color:#1b5e20; padding:10px; border-radius:5px; margin-bottom:10px;">
+                👥 現在の自社管理顧客数: <span id="c-loyal-customers" style="font-size:16px;color:#d35400;font-weight:bold;">0</span> 名
+            </div>
+
+            <p style="font-size: 12px; margin: 5px 0; color:#34495e; font-weight: bold;" id="c-incoming-forecast">通常入庫: 0台</p>
+            
+            <div style="background: #f1f2f6; padding: 10px; border-radius: 5px; font-size: 13px; line-height: 1.5; margin-bottom: 5px;">
+                現在の工場車検限界: <span id="c-factory-cap" style="font-weight:bold; color:#e74c3c;">0</span> 台 / 月
+            </div>
+
+            <div style="font-size: 13px; font-weight: bold; margin-bottom: 5px;">ピット工場の様子（最大5基）：</div>
+            <div class="factory-floor" id="factory-floor"></div>
+            <div id="factory-backyard" style="font-size:11px; margin-top:5px; color:#7f8c8d; font-weight:bold;"></div>
+        </div>
+    </div>
+
+    <div class="archive-container">
+        <div style="font-weight: bold; margin-bottom: 5px; color: #10ac84;">⚖️ 期別決算アーカイブ履歴 (企業会計：棚卸発生主義 ＆ 営業実績)</div>
+        <div class="archive-window" id="archiveWindow">
+            <div style="color:#7f8c8d; font-style:italic;">まだ決算を迎えていません</div>
+        </div>
+    </div>
+
+    <div class="log-container">
+        <div style="font-weight: bold; margin-bottom: 5px; color: #f1c40f;">📋 経営・営業報告ログ</div>
+        <div class="log-window" id="logWindow">【経営スタート】初期キャッシュ1,500万円。毎年150万円の元金返済＋金利支払い義務があります。<br></div>
+    </div>
+</div>
+
 <script>
-    // --- 変数初期化 ---
     let month = 1;
-    let funds = 10000000;
-    let v_stock_list = [];
-    let maxStock = 10;
-    let loyalCustomers = 0;
+    let funds = 15000000;         
+    let loanBalance = 15000000;
+    let pendingEvent = null; 
+    const interestRate = 0.02;    
+    
+    let maxStock = 10;           
+    let rent = 200000;           
+    
+    let v_lift_ages = []; 
+    let liftMaintenance = 0;     
+    const maxLiftsLimit = 5;     
+
     let salesmen = 0;
     let mechanics = 0;
     let clerks = 0;
-    let assistants = 0;
-    let currentLiftsCount = 0;
-    let maxLiftsLimit = 5;
-    let maxAssistantsLimit = 3;
-    let v_lift_ages = [];
-    let rent = 1000000;
-    let liftMaintenance = 0;
-    let salaryPerStaff = 300000;
+    let assistants = 0; 
+    const salaryPerStaff = 300000; 
+    const maxAssistantsLimit = 3;      
+
+    let loyalCustomers = 0; 
+    let v_stock_list = []; 
+
+    let openingStockAsset = 0;
+
     let advCarCount = 0;
     let advRepairCount = 0;
-    let pendingEvent = null;
-    let buyPrice = 1000000;
-    let retailPrice = 2500000;
-    let maxClearancePerSalesman = 5;
-    let yearlyRevenue = 0;
-    let yearlyExpense = 0;
-    let totalRevenue = 0;
-    let totalExpense = 0;
-    let openingStockAsset = 0;
-    let loanBalance = 10000000;
-    let interestRate = 0.02;
-    let currentYearCarSales = 0;
-    let currentYearRepairDone = 0;
-    let count_weather_this_year = 0;
-    let cooldown_rival = 0;
-    let cooldown_parts = 0;
-    let cooldown_audit = 0;
-    let cooldown_fleet = 0;
+
     let lastMonthCarSales = 0;
     let lastMonthCarDemands = 0;
-    let lastMonthCarLossMsg = "";
+    let lastMonthCarLossMsg = "-";
     let lastMonthRepairDone = 0;
     let lastMonthRepairDemands = 0;
-    let lastMonthRepairLossMsg = "";
+    let lastMonthRepairLossMsg = "-";
+
     let lastMonthRevenueDisplay = 0;
     let lastMonthExpenseDisplay = 0;
 
-    // --- 各種関数 ---
-    function getCarSalesBonus() { return 0; }
+    let totalCarSales = 0;      
+    let currentYearCarSales = 0; 
+    let currentYearRepairDone = 0; 
+
+    let totalRevenue = 0;
+    let totalExpense = 0;
+    let yearlyRevenue = 0;
+    let yearlyExpense = 0;
+
+    const buyPrice = 1000000;      
+    const retailPrice = 1200000;   
+    const maxClearancePerSalesman = 22; 
+
+    let cooldown_rival = 0;         
+    let cooldown_parts = 0;         
+    let cooldown_audit = 0;         
+    let cooldown_fleet = 0;         
+    let count_weather_this_year = 0;
+    let currentEvent = null;
+
+   function showGameInstructions() {
+        alert("📊 【自動車工場 経営シミュレーション】\n" +
+              "━━━━━━━━━━━━━━━━━━━━━━━━━━\n" +
+              "⚠️ 【会社全体】\n" +
+              " ・ランダムでイベントが発生します。\n" +
+              " ・維持費として毎月20万円の固定費が発生します。\n" +
+              " ・決算ごとに借入返済150万円と利息の支払いが発生します。\n" +
+              " ・決算ごとに収支が計算され黒字の分は法人税20％徴収されます。\n" +
+              " ・手元資金【現金】がなくなれば資金ショートして倒産します。\n\n" +
+              "⚠️ 【車両販売】\n" +
+              " ・営業マンを採用しないと車を展示していても販売することは、できません。\n" +
+              " ・長期在庫になればなるほど販売成約率は、落ちていきます。\n" +
+              " ・通常来店者数は車両の展示率によって変動します。販売実績が増えれば増えるほど通常来店者数も増えます。\n" +
+              " ・展示場は最大50台まで拡張することが可能です。\n" +
+              " ・1回の広告費用は30万円です。来客数が+4～8組増えます。\n" +
+              " ・販売成約率はランダムで約40％です。\n\n" +
+              "⚠️ 【車検整備】\n" +
+              " ・リフト1基に対して整備士2名、事務員1名が最大人数になります。\n" +
+              " ・リフトは3年ごとにメンテナンス費用が50万円かかります。\n" +
+              " ・車検整備はリフト1基に対して整備士、事務員それぞれが最低1名いないと作業できません。\n" +
+              " ・1回のDM発送費用は30万円です。反響は15～30台で実入庫はランダムで約50％です。");
+    }
+
+    function resetGame() {
+        if(confirm("経営状態を完全にリセットして、1ヶ月目の初期状態から再スタートしますか？")) {
+            location.reload();
+        }
+    }
+
+    function calculateStockMarketValue() {
+        let totalVal = 0;
+        v_stock_list.forEach((age) => {
+            totalVal += Math.floor(buyPrice * Math.pow(0.97, age));
+        });
+        return totalVal;
+    }
+
+    function calculateStockBonus() {
+        let tempLoyal = loyalCustomers;
+        let bonus = 0;
+        let zone1 = Math.min(tempLoyal, 100);
+        bonus += Math.floor(zone1 / 15);
+        tempLoyal -= zone1;
+        if (tempLoyal > 0) {
+            let zone2 = Math.min(tempLoyal, 200);
+            bonus += Math.floor(zone2 / 20);
+            tempLoyal -= zone2;
+        }
+        if (tempLoyal > 0) {
+            let zone3 = Math.min(tempLoyal, 300);
+            bonus += Math.floor(zone3 / 25);
+            tempLoyal -= zone3;
+        }
+        if (tempLoyal > 0) {
+            bonus += Math.floor(tempLoyal / 35);
+        }
+        return bonus;
+    }
+
     function getCarSalesLoyalPenalty() { return 0; }
-    function calculateStockBonus() { return 0; }
-    function calculateFactoryStatus(e) { return { totalCapacity: 50, details: [] }; }
-    function calculateStockMarketValue() { return 0; }
-    function updateDisplay() { /* UI更新ロジック */ }
-    function addLog(msg) { console.log(msg); }
-    function addArchive(...) { /* 決算記録 */ }
-    
-    // --- nextMonth以降のメインロジック ---
-    function nextMonth() {
-        if (pendingEvent !== null) {
-            applyEvent(pendingEvent);
-            pendingEvent = null;
+
+    function getCarSalesBonus() {
+        if (totalCarSales === 0) return 0;
+        let rawBonus = Math.floor(totalCarSales / 15);
+        let factor = 1.0;
+        if (maxStock === 10) factor = 0.55;
+        else if (maxStock === 20) factor = 0.80;
+        else if (maxStock === 30) factor = 1.05;
+        else if (maxStock === 40) factor = 1.20;
+        else factor = 1.35;
+
+        let calculated = Math.floor(rawBonus * factor);
+        if (calculated > 6) {
+            let overhead = calculated - 6;
+            calculated = 6 + Math.floor(Math.sqrt(overhead * (maxStock / 10)));
         }
-        // [ここにPART②・③で記載された営業処理・決算処理を統合]
-        // --- 1. 車両販売部門の営業処理 ---
-    let salesBonus = getCarSalesBonus(); 
-    let loyalPenalty = getCarSalesLoyalPenalty(); 
-    
-    let carDemands = Math.floor(Math.random() * (3 - 0 + 1)) + 0 + salesBonus; 
-    if (maxStock === 20) carDemands = Math.floor(Math.random() * (6 - 1 + 1)) + 1 + salesBonus;
-    else if (maxStock === 30) carDemands = Math.floor(Math.random() * (10 - 2 + 1)) + 2 + salesBonus;
-    else if (maxStock === 40) carDemands = Math.floor(Math.random() * (13 - 3 + 1)) + 3 + salesBonus;
-    else if (maxStock === 50) carDemands = Math.floor(Math.random() * (16 - 4 + 1)) + 4 + salesBonus;
-
-    carDemands = Math.max(0, carDemands + loyalPenalty);
-    if (loyalPenalty < 0) addLog(`📦 <font color="#ff7675">【顧客不足ペナルティ】車両通常来店 ${loyalPenalty} 組減少</font>`);
-
-    if (advCarCount > 0) {
-        let totalBoost = 0;
-        for(let a=0; a<advCarCount; a++) totalBoost += Math.floor(Math.random() * (8 - 4 + 1)) + 4;
-        carDemands += totalBoost;
-        addLog(`🚀 【広告効果】販売来店 +${totalBoost} 組`);
+        return calculated;
     }
 
-    if (currentEvent === "sns_buzz") carDemands += 8;
-    if (currentEvent === "bad_weather") carDemands = Math.floor(carDemands / 2);
-    
-    lastMonthCarDemands = carDemands; 
-    let salesCap = salesmen * maxClearancePerSalesman;
-    let actualSales = 0;
-    let carLossMsg = "機会損失なし";
+    function calculateFactoryStatus(eventModifier = null) {
+        let tempMechanics = mechanics;
+        let tempClerks = clerks;
 
-    if (salesmen === 0) { if (carDemands > 0) carLossMsg = `👤 営業不在 ${carDemands}組離注`; carDemands = 0; }
-    else if (carDemands > salesCap) { let missed = carDemands - salesCap; carDemands = salesCap; carLossMsg = `👤 上限超過 ${missed}組離脱`; }
-
-    // 成約判定ロジック
-    let stockShortageCount = 0;
-    let ageRefusedCount = 0;
-    for (let i = 0; i < carDemands; i++) {
-        if (Math.random() < 0.40) {
-            if (v_stock_list.length === 0) { stockShortageCount++; continue; }
-            let idx = Math.floor(Math.random() * v_stock_list.length);
-            let age = v_stock_list[idx];
-            let rate = (age <= 2) ? 1.0 : (age <= 5) ? 0.4 : (age <= 11) ? 0.15 : 0.05;
-            if (Math.random() < rate) {
-                v_stock_list.splice(idx, 1);
-                funds += retailPrice; m_revenue += retailPrice;
-                actualSales++; loyalCustomers++;
-            } else { ageRefusedCount++; }
-        }
-    }
-
-    if (currentEvent === "sales_order_error" && actualSales > 0) {
-        actualSales--; funds -= retailPrice; m_revenue -= retailPrice;
-        loyalCustomers = Math.max(0, loyalCustomers - 1);
-        v_stock_list.push(0); carLossMsg = "⚠️ 発注ミスで1台キャンセル";
-    }
-    if (actualSales > 0) { addLog(`🚗 成約 ${actualSales} 台`); totalCarSales += actualSales; currentYearCarSales += actualSales; }
-    if (stockShortageCount > 0) carLossMsg = `📦 在庫不足 ${stockShortageCount}組`;
-    
-    lastMonthCarSales = actualSales; lastMonthCarLossMsg = carLossMsg;
-    for (let i = 0; i < v_stock_list.length; i++) v_stock_list[i]++; 
-
-    // --- 2. 車検部門 ---
-    let baseRepairDemands = (mechanics > 0 && v_lift_ages.length > 0) ? (Math.floor(Math.random() * (25 - 15 + 1)) + 15 + (mechanics - 1) * 10 + calculateStockBonus() + (assistants * 4)) : 0;
-    let advRepairDemands = 0;
-    if (advRepairCount > 0) {
-        let raw = 0; for(let r=0; r<advRepairCount; r++) raw += Math.floor(Math.random() * (30 - 15 + 1)) + 15;
-        advRepairDemands = Math.floor(raw * 0.5);
-    }
-    let repairDemands = baseRepairDemands + advRepairDemands + (currentEvent === "big_fleet" ? 20 : 0);
-    lastMonthRepairDemands = repairDemands;
-
-    let factory = calculateFactoryStatus(currentEvent);
-    if (repairDemands > factory.totalCapacity) {
-        repairLossMessage = `容量オーバー -${repairDemands - factory.totalCapacity}台`;
-        repairDemands = factory.totalCapacity;
-    }
-    
-    let repairProfit = repairDemands * 30000;
-    funds += repairProfit; m_revenue += repairProfit;
-    if (repairDemands > 0) { addLog(`🔧 車検 ${repairDemands} 台完了`); currentYearRepairDone += repairDemands; loyalCustomers += Math.floor(repairDemands * 0.3); }
-    lastMonthRepairDone = repairDemands; lastMonthRepairLossMsg = repairLossMessage;
-
-    // --- 3. 経費と決算 ---
-    let fixed = rent + liftMaintenance + ((salesmen + mechanics + clerks + assistants) * salaryPerStaff);
-    funds -= fixed; m_expense += fixed;
-    
-    let naturalLost = Math.ceil(loyalCustomers * (0.025 + (Math.random() * 0.03)));
-    loyalCustomers = Math.max(0, loyalCustomers - naturalLost);
-    
-    yearlyRevenue += m_revenue; yearlyExpense += m_expense;
-    
-    // 年次決算（月が12の倍数）
-    if (month % 12 === 0) {
-        let profit = (yearlyRevenue + calculateStockMarketValue()) - (yearlyExpense + openingStockAsset);
-        let tax = profit > 0 ? Math.floor(profit * 0.20) : 0;
-        funds -= tax;
-        // 銀行返済処理など...
-        addArchive(...); // 各引数を渡してアーカイブ追加
-        // リセット処理
-        openingStockAsset = calculateStockMarketValue();
-        yearlyRevenue = 0; yearlyExpense = 0;
-    }
+        if (eventModifier === "sick_mechanic") tempMechanics = Math.max(0, tempMechanics - 1);
         
+        if (eventModifier === "audit_clerk") {
+            if (assistants > 0) {
+            } else {
+                tempClerks = Math.max(0, tempClerks - 1);
+            }
+        }
+
+        let totalCapacity = 0;
+        let liftDetails = [];
+        let currentLiftsCount = v_lift_ages.length;
+
+        for (let i = 1; i <= maxLiftsLimit; i++) {
+            if (i <= currentLiftsCount) {
+                let assignedClerk = 0;
+                let assignedMech = 0;
+                let cap = 0;
+                let statusStr = "❌ 人手不足で停止中 (0台)";
+                let statusClass = "lift-box stop";
+
+                if (tempClerks > 0 || tempMechanics > 0) {
+                    if (tempClerks >= 1 && tempMechanics >= 1) {
+                        assignedClerk = 1;
+                        assignedMech = 1;
+                        tempClerks -= 1;
+                        tempMechanics -= 1;
+                        cap = 29;
+                        statusStr = "🟡 省力稼働中 (+29台)";
+                        statusClass = "lift-box partial";
+
+                        if (tempMechanics >= 1) {
+                            assignedMech = 2;
+                            tempMechanics -= 1;
+                            cap = 58;
+                            statusStr = "🟢 フル稼働中 (+58台)";
+                            statusClass = "lift-box active";
+                        }
+                    } else {
+                        if (tempClerks >= 1) { assignedClerk = 1; tempClerks -= 1; }
+                        let fillMech = Math.min(tempMechanics, 2);
+                        assignedMech = fillMech;
+                        tempMechanics -= fillMech;
+                        statusStr = "❌ 相方が足りず停止 (0台)";
+                        statusClass = "lift-box stop";
+                    }
+                }
+
+                if (eventModifier === "parts_delay" && cap > 0) {
+                    cap = Math.floor(cap * 0.8);
+                    statusStr = statusStr.replace("+58", "+" + cap).replace("+29", "+" + cap) + " [部品遅延20%減]";
+                }
+                if (eventModifier === "staff_awakening" && cap > 0) {
+                    cap += 10;
+                    statusStr = statusStr.replace("+58", "+" + cap).replace("+29", "+" + cap) + " [業務効率UP+10]";
+                }
+
+                totalCapacity += cap;
+                let currentAge = v_lift_ages[i - 1];
+
+                liftDetails.push({
+                    id: i,
+                    exists: true,
+                    statusText: statusStr,
+                    cssClass: statusClass,
+                    mechCount: assignedMech,
+                    clerkCount: assignedClerk,
+                    age: currentAge
+                });
+            } else {
+                liftDetails.push({ id: i, exists: false });
+            }
+        }
+        return { totalCapacity: totalCapacity, details: liftDetails, leftoverMech: tempMechanics, leftoverClerk: tempClerks };
+    }
+
+    function updateDisplay() {
+        let totalStaff = salesmen + mechanics + clerks + assistants; 
+        let currentLiftsCount = v_lift_ages.length;
+        let futureExpenses = rent + liftMaintenance + (totalStaff * salaryPerStaff);
+        let factoryStatus = calculateFactoryStatus();
+        let factoryCapacity = factoryStatus.totalCapacity;
+        let baseMin = 0;
+        let baseMax = 0;
+        let stockBonus = calculateStockBonus(); 
+
+        if (mechanics > 0 && currentLiftsCount > 0) {
+            baseMin = 15 + (mechanics - 1) * 10 + stockBonus + (assistants * 4);
+            baseMax = 25 + (mechanics - 1) * 10 + stockBonus + (assistants * 4);
+        }
+
+        document.getElementById("m-month").innerText = `${month}ヶ月目`;
+        document.getElementById("m-funds").innerText = `${funds.toLocaleString()}円`;
+        document.getElementById("m-expenses").innerText = `${futureExpenses.toLocaleString()}円`;
+        document.getElementById("m-stock").innerText = `${v_stock_list.length} / ${maxStock} 台`;
+        document.getElementById("m-loan").innerText = `${loanBalance.toLocaleString()}円`;
+        document.getElementById("f-month-revenue").innerText = `${lastMonthRevenueDisplay.toLocaleString()}円`;
+        document.getElementById("f-month-expense").innerText = `${lastMonthExpenseDisplay.toLocaleString()}円`;
+        document.getElementById("f-stock-asset").innerText = `${calculateStockMarketValue().toLocaleString()}円`;
+        document.getElementById("f-total-revenue").innerText = `${totalRevenue.toLocaleString()}円`;
+        document.getElementById("f-total-expense").innerText = `${totalExpense.toLocaleString()}円`;
+
+        document.getElementById("c-salesmen").innerText = salesmen;
+        document.getElementById("c-mechanics").innerText = mechanics;
+        document.getElementById("c-clerks").innerText = clerks;
+        document.getElementById("c-assistants").innerText = assistants; 
+        document.getElementById("c-factory-cap").innerText = factoryCapacity;
+        document.getElementById("c-loyal-customers").innerText = loyalCustomers;
+        
+        let stockRatio = maxStock > 0 ? (v_stock_list.length / maxStock) : 1;
+        let salesBaseMin = 0; let salesBaseMax = 3;
+        if(maxStock === 20) { salesBaseMin = 1; salesBaseMax = 6; }
+        else if(maxStock === 30) { salesBaseMin = 2; salesBaseMax = 10; }
+        else if(maxStock === 40) { salesBaseMin = 3; salesBaseMax = 13; }
+        else if(maxStock === 50) { salesBaseMin = 4; salesBaseMax = 16; }
+        let bonus = getCarSalesBonus();
+        let f_car_min = Math.max(0, Math.floor((salesBaseMin + bonus) * stockRatio));
+        let f_car_max = Math.max(0, Math.floor((salesBaseMax + bonus) * stockRatio));
+        let forecastText = `通常来店: ${f_car_min}〜${f_car_max}組/月`;
+        if (stockRatio < 1.0) forecastText += ` <font color="#e67e22">(展示率:${Math.round(stockRatio * 100)}%)</font>`;
+        document.getElementById("c-car-forecast").innerHTML = forecastText;
+
+        if (mechanics === 0 || currentLiftsCount === 0) {
+            document.getElementById("c-incoming-forecast").innerText = `通常入庫: 0台`;
+        } else {
+            document.getElementById("c-incoming-forecast").innerText = `通常入庫: ${baseMin}〜${baseMax}台/月`;
+        }
+
+        document.getElementById("r-car-sales").innerHTML = `${lastMonthCarSales} <span style="font-size:13px;">台成約</span> <span style="color:#7f8c8d;">/ 来店:</span> <span>${lastMonthCarDemands}</span> <span style="font-size:13px;">組</span>`;
+        document.getElementById("r-car-loss").innerText = lastMonthCarLossMsg;
+        document.getElementById("t-car-current").innerText = currentYearCarSales;
+        document.getElementById("r-repair-done").innerHTML = `${lastMonthRepairDone} <span style="font-size:13px;">台完了</span> <span style="color:#7f8c8d;">/ 実際の入庫:</span> <span>${lastMonthRepairDemands}</span> <span style="font-size:13px;">台</span>`;
+        document.getElementById("r-repair-loss").innerText = lastMonthRepairLossMsg;
+        document.getElementById("t-repair-current").innerText = currentYearRepairDone;
+
+        const staffOffice = document.getElementById("staff-office-floor");
+        staffOffice.innerHTML = "";
+        if (salesmen === 0 && assistants === 0) staffOffice.innerHTML = `<div class="staff-empty">現在、営業・補助スタッフがゼロです</div>`;
+        else {
+            for (let s = 1; s <= salesmen; s++) staffOffice.innerHTML += `<div class="staff-icon">👨‍💼 営業マン ${s}</div>`;
+            for (let a = 1; a <= assistants; a++) staffOffice.innerHTML += `<div class="staff-icon assistant">🛡️ 補助事務 ${a}</div>`;
+        }
+
+        let upgradeBtn = document.getElementById("btn-showroom-upgrade");
+        if (maxStock < 50) { upgradeBtn.disabled = false; } else { upgradeBtn.disabled = true; }
+        let liftBtn = document.getElementById("btn-lift-upgrade");
+        if (currentLiftsCount < maxLiftsLimit) { liftBtn.disabled = false; } else { liftBtn.disabled = true; }
+
+        if (advCarCount > 0) {
+            document.getElementById("badge-adv-car").style.display = "inline-block";
+            document.getElementById("v-adv-car-status").innerHTML = `今月の発注数: <font color="#e74c3c">${advCarCount}回</font>`;
+        } else { document.getElementById("badge-adv-car").style.display = "none"; }
+
+        if (advRepairCount > 0) {
+            document.getElementById("badge-adv-repair").style.display = "inline-block";
+            document.getElementById("v-adv-repair-status").innerHTML = `今月の発注数: <font color="#e67e22">${advRepairCount}回</font>`;
+        } else { document.getElementById("badge-adv-repair").style.display = "none"; }
+
+        v_stock_list.sort((a, b) => b - a);
+        const floor = document.getElementById("garage-floor");
+        floor.innerHTML = "";
+        v_stock_list.forEach((age) => {
+            let carClass = age >= 12 ? "car-icon danger" : (age >= 3 ? "car-icon old" : "car-icon");
+            floor.innerHTML += `<div class="${carClass}">🚗 ${age}ヶ月目</div>`;
+        });
+        for (let i = 0; i < (maxStock - v_stock_list.length); i++) floor.innerHTML += `<div class="empty-slot">空き</div>`;
+
+        const fFloor = document.getElementById("factory-floor");
+        fFloor.innerHTML = "";
+        factoryStatus.details.forEach((lift) => {
+            if (lift.exists) {
+                fFloor.innerHTML += `<div class="${lift.cssClass}"><div>🏋️‍♂️ 第 ${lift.id} リフト</div><div>${lift.statusText}</div></div>`;
+            } else {
+                fFloor.innerHTML += `<div class="lift-empty-slot">🛠 未増設スロット</div>`;
+            }
+        });
+    }
+
+    function addLog(msg) {
+        const win = document.getElementById("logWindow");
+        win.innerHTML = msg + "<br>" + win.innerHTML;
+    }
+
+    function addArchive(year, revenue, expense, openStock, closeStock, profit, tax, currentFunds, repaidPrincipal, paidInterest, yearCars, yearRepairs) {
+        const arch = document.getElementById("archiveWindow");
+        if (arch.innerHTML.includes("まだ決算を迎えていません")) arch.innerHTML = "";
+        arch.innerHTML = `<div class="archive-row"><b>第 ${year} 期</b><br>利益:${profit.toLocaleString()}円 (税:${tax.toLocaleString()}円)</div>` + arch.innerHTML;
+    }
+
+    function triggerAdvertising(type) {
+        if (funds >= 300000) {
+            if (type === 'car') { advCarCount++; funds -= 300000; }
+            else { advRepairCount++; funds -= 300000; }
+            updateDisplay();
+        } else { alert("資金不足"); }
+    }
+
+    function buyCar() {
+        if (v_stock_list.length < maxStock && funds >= buyPrice) { funds -= buyPrice; v_stock_list.push(0); updateDisplay(); }
+    }
+
+    function fireSale() {
+        if (v_stock_list.length > 0) { funds += Math.floor(buyPrice * 0.5); v_stock_list.pop(); updateDisplay(); }
+    }
+
+    function hireStaff(type) {
+        if (funds >= salaryPerStaff) {
+            if (type === 'salesman') salesmen++;
+            else if (type === 'mechanic') mechanics++;
+            else if (type === 'clerk') clerks++;
+            else if (type === 'assistant') assistants++;
+            updateDisplay();
+        }
+    }
+
+    function upgradeShowroom() { if (maxStock < 50 && funds >= 3000000) { funds -= 3000000; maxStock += 10; updateDisplay(); } }
+    function upgradeLift() { if (v_lift_ages.length < maxLiftsLimit && funds >= 2000000) { funds -= 2000000; v_lift_ages.push(0); updateDisplay(); } }
+
+    function applyEvent(eventRoll) {
+        let eventBoard = document.getElementById("eventBoard");
+        let eventTitle = document.getElementById("eventTitle");
+        let eventDesc = document.getElementById("eventDesc");
+        eventBoard.style.display = "block";
+        
+        switch(eventRoll) {
+            case 0: currentEvent = "sick_mechanic"; eventTitle.innerText = "⚠️ メカニック離脱"; eventDesc.innerText = "メカニックがギックリ腰で一時離脱！"; break;
+            case 1: currentEvent = "parts_delay"; eventTitle.innerText = "⚠️ 部品供給遅延"; eventDesc.innerText = "部品供給が遅れています。"; break;
+            case 2: currentEvent = "accident_fee"; funds -= 300000; eventTitle.innerText = "⚠️ 設備トラブル"; eventDesc.innerText = "30万円の修理費が発生しました。"; break;
+            case 3: currentEvent = "rival_open"; loyalCustomers *= 0.9; eventTitle.innerText = "⚠️ 競合店オープン"; eventDesc.innerText = "顧客が10%流出しました。"; break;
+            case 4: currentEvent = "bad_weather"; eventTitle.innerText = "⚠️ 悪天候"; eventDesc.innerText = "来客が激減しています。"; break;
+            case 5: currentEvent = "audit_clerk"; eventTitle.innerText = "⚠️ 監査対応"; eventDesc.innerText = "工場監査対応中です。"; break;
+            case 6: currentEvent = "sales_order_error"; eventTitle.innerText = "🚨 発注ミス"; eventDesc.innerText = "1台の成約がキャンセルされました。"; break;
+            case 7: currentEvent = "repair_complaint"; loyalCustomers *= 0.9; eventTitle.innerText = "🚨 整備クレーム"; eventDesc.innerText = "信頼が低下しました。"; break;
+            case 8: currentEvent = "big_fleet"; eventTitle.innerText = "🚀 大口契約獲得"; eventDesc.innerText = "車検特需が発生！"; break;
+            case 9: currentEvent = "sns_buzz"; eventTitle.innerText = "🚀 SNSバズ"; eventDesc.innerText = "口コミで来客増！"; break;
+            case 10: currentEvent = "free_car"; if(v_stock_list.length < maxStock) v_stock_list.push(0); eventTitle.innerText = "🚀 下取り成功"; eventDesc.innerText = "極上中古車を獲得！"; break;
+            case 11: currentEvent = "staff_awakening"; eventTitle.innerText = "🚀 スタッフ覚醒"; eventDesc.innerText = "連携強化でキャパUP！"; break;
+        }
+    }
+
+    function nextMonth() {
+        if (pendingEvent !== null) { applyEvent(pendingEvent); pendingEvent = null; }
+
+        lastMonthRevenueDisplay = 0;
+        lastMonthExpenseDisplay = 0;
+        let m_revenue = 0;
+        let m_expense = 0;
+
+        let carDemands = Math.floor(Math.random() * 5) + getCarSalesBonus();
+        if (currentEvent === "bad_weather") carDemands = Math.floor(carDemands / 2);
+        
+        let actualSales = 0;
+        for(let i=0; i<Math.min(carDemands, salesmen * maxClearancePerSalesman); i++) {
+            if(v_stock_list.length > 0 && Math.random() < 0.4) {
+                v_stock_list.pop();
+                funds += retailPrice;
+                m_revenue += retailPrice;
+                actualSales++;
+            }
+        }
+        lastMonthCarSales = actualSales;
+        lastMonthCarDemands = carDemands;
+
+        let factory = calculateFactoryStatus();
+        let repairDone = Math.min(factory.totalCapacity, Math.floor(Math.random() * 20) + 10);
+        let repairProfit = repairDone * 30000;
+        funds += repairProfit;
+        m_revenue += repairProfit;
+        lastMonthRepairDone = repairDone;
+        lastMonthRepairDemands = repairDone;
+
+        funds -= (rent + (salesmen + mechanics + clerks + assistants) * salaryPerStaff);
+        m_expense += (rent + (salesmen + mechanics + clerks + assistants) * salaryPerStaff);
+
+        if (funds < 0) { alert("倒産しました。"); location.reload(); }
+
+        if (Math.random() < 0.4) pendingEvent = Math.floor(Math.random() * 12);
+        
+        lastMonthRevenueDisplay = m_revenue;
+        lastMonthExpenseDisplay = m_expense;
+        yearlyRevenue += m_revenue;
+        yearlyExpense += m_expense;
+
         month++;
         updateDisplay();
     }
-
-    function applyEvent(eventRoll) {
-        // [ここにPART②・③で記載されたイベントロジックを統合]
-        // --- 1. イベント抽選関数（nextMonthの最後などで使用） ---
-function selectRandomEvent() {
-    let availableEvents = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-    // クールダウン中のイベントを除外
-    let filtered = availableEvents.filter(e => {
-        if (e === 1 && cooldown_parts > 0) return false;
-        if (e === 3 && cooldown_rival > 0) return false;
-        if (e === 4 && count_weather_this_year >= 2) return false;
-        if (e === 5 && cooldown_audit > 0) return false;
-        if (e === 8 && cooldown_fleet > 0) return false;
-        return true;
-    });
-    return filtered.length > 0 ? filtered[Math.floor(Math.random() * filtered.length)] : null;
-}
-
-// --- 2. イベント実行関数（nextMonthの冒頭で呼び出し） ---
-function applyEvent(eventRoll) {
-    let eventBoard = document.getElementById("eventBoard");
-    let eventTitle = document.getElementById("eventTitle");
-    let eventDesc = document.getElementById("eventDesc");
-    eventBoard.style.display = "block";
-    
-    // イベント共通のリセット
-    eventBoard.style.background = "#fff3f3";
-    eventBoard.style.borderColor = "#cc0000";
-    eventTitle.style.color = "#cc0000";
-
-    switch(eventRoll) {
-        case 0:
-            currentEvent = "sick_mechanic";
-            eventTitle.innerText = "⚠️ 突発トラブル：メカニックの戦線離脱";
-            eventDesc.innerText = "「ベテラン整備士がギックリ腰で長期療養に…！」\n（今月のみ、稼働整備士数がマイナス1名）";
-            addLog("🚨 【イベント】メカニックがギックリ腰で一時離脱！");
-            break;
-        case 1:
-            currentEvent = "parts_delay";
-            cooldown_parts = 12;
-            eventTitle.innerText = "⚠️ 突発トラブル：パーツ供給の遅延";
-            eventDesc.innerText = "「物流遅延で部品が届かず…」\n（今月のみ、各リフトの車検上限が20%ダウン）";
-            addLog("🚨 【イベント】部品供給遅延により工場生産性が20%ダウン！");
-            break;
-        case 2:
-            currentEvent = "accident_fee";
-            eventTitle.innerText = "⚠️ 突発トラブル：代車・設備の突発故障";
-            eventDesc.innerText = "「無料代車の車検切れとセンサー不調が同時発生！」\n（突発修繕費30万円が発生）";
-            funds -= 300000;
-            addLog("🚨 【イベント】突発修繕費30万円が発生。");
-            break;
-        case 3:
-            currentEvent = "rival_open";
-            cooldown_rival = 36;
-            let lostLoyals = Math.floor(loyalCustomers * 0.10);
-            loyalCustomers -= lostLoyals;
-            eventTitle.innerText = "⚠️ 突発トラブル：格安ライバル店の電撃オープン";
-            eventDesc.innerText = `「近隣に大型専門店が出店！」\n（既存客が10%流出しました）`;
-            addLog(`🚨 【イベント】競合店開店！固定客が10%(${lostLoyals}名)流出。`);
-            break;
-        case 4:
-            currentEvent = "bad_weather";
-            count_weather_this_year++;
-            eventTitle.innerText = "⚠️ 突発トラブル：台風・悪天候の直撃";
-            eventDesc.innerText = "「週末の悪天候で来店客が激減…」\n（販売部門の来店数が半減）";
-            addLog("🚨 【イベント】悪天候直撃！車両販売の来店数が半減します。");
-            break;
-        case 5:
-            currentEvent = "audit_clerk";
-            cooldown_audit = 12;
-            if (assistants > 0) {
-                eventBoard.style.background = "#eefbf2";
-                eventBoard.style.borderColor = "#27ae60";
-                eventTitle.style.color = "#27ae60";
-                eventTitle.innerText = "🛡️ 監査クリア：補助事務員の活躍";
-                eventDesc.innerText = "「補助事務員の完璧な書類整理により、無傷で監査をクリア！」";
-                addLog("🛡️ 【イベント】監査クリア！補助事務員の活躍！");
-            } else {
-                eventTitle.innerText = "⚠️ 突発トラブル：コンプライアンス監査対応";
-                eventDesc.innerText = "「事務員が書類整理に追われ、通常業務から離脱（1名減）」";
-                addLog("🚨 【イベント】工場監査対応のため事務員が一時離脱。");
-            }
-            break;
-        case 6:
-            currentEvent = "sales_order_error";
-            eventTitle.innerText = "🚨 重大トラブル：営業マンの発注・書類ミス";
-            eventDesc.innerText = "「手続きミスにより、今月成約した車が1台強制キャンセルに」";
-            addLog("🚨 【イベント】発注ミスにより成約が1台強制キャンセル！");
-            break;
-        case 7:
-            currentEvent = "repair_complaint";
-            let p = 0.07 + (Math.random() * 0.03);
-            let lostL = Math.floor(loyalCustomers * p);
-            loyalCustomers -= lostL;
-            eventTitle.innerText = "🚨 重大トラブル：整備内容へのクレーム";
-            eventDesc.innerText = `「組み付け不良で大クレーム！」\n（固定客が${Math.floor(p*100)}%流出）`;
-            addLog(`🚨 【イベント】整備への重大クレーム！固定客 ${lostL} 名流出！`);
-            break;
-        case 8:
-            currentEvent = "big_fleet";
-            cooldown_fleet = 36;
-            eventBoard.style.background = "#eefbf2";
-            eventBoard.style.borderColor = "#27ae60";
-            eventTitle.style.color = "#27ae60";
-            eventTitle.innerText = "🚀 チャンス到来：大口法人フリート契約獲得";
-            eventDesc.innerText = "「運送会社からの特需！入庫要求台数＋20台！」";
-            addLog("✨ 【イベント】大口法人から車検特需！入庫デマンド＋20台！");
-            break;
-        case 9:
-            currentEvent = "sns_buzz";
-            eventTitle.innerText = "🚀 チャンス到来：SNSでの口コミ拡散";
-            eventDesc.innerText = "「『親切すぎる工場』としてSNSで話題に！来店数＋8組！」";
-            addLog("✨ 【イベント】SNSでバズり来店数＋8組！");
-            break;
-        case 10:
-            currentEvent = "free_car";
-            eventTitle.innerText = "🚀 チャンス到来：極上中古車の直接買取成功";
-            eventDesc.innerText = "「状態抜群の車を0円で直接仕入れ！」";
-            // ※展示場空きチェックは別途行われるためpendingFreeCar等はここで制御
-            break;
-        case 11:
-            currentEvent = "staff_awakening";
-            eventTitle.innerText = "🚀 チャンス到来：スタッフの電撃覚醒";
-            eventDesc.innerText = "「工場内の連携が神がかり、各リフトの車検キャパ＋10台！」";
-            addLog("✨ 【イベント】連携強化！車検限界数が＋10台！");
-            break;
-    }
-}
-    }
-
-    // 初回表示
-    updateDisplay();
-
 </script>
 </body>
 </html>
