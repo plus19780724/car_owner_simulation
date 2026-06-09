@@ -789,52 +789,45 @@ if (mechanics === 0 || currentLiftsCount === 0) {
 function nextMonth() {
     // 1. 【冒頭】先月の予約イベントがあればここで実行する
     if (pendingEvent !== null) {
-        applyEvent(pendingEvent);
-        pendingEvent = null;
+      applyEvent(pendingEvent);
+      pendingEvent = null;
     }
 
-    // 2. 既存の月次計算処理（ご提示のコードの続き）
+    // 各種初期化
     lastMonthRevenueDisplay = 0;
     lastMonthExpenseDisplay = 0;
     let m_revenue = 0;
     let m_expense = 0;
-
     let alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n`;
+    
     addLog(`<br><span style='color:#2ecc71;'>━━━━━━━━━ 【第 ${month} ヶ月目 営業結果】 ━━━━━━━━━</span>`);
 
-    // ... (以降、あなたの既存の売上計算ロジックが続きます) ...
-    // ...以降、今までの月次処理（売上計算など）を続ける...
-        lastMonthRevenueDisplay = 0;
-        lastMonthExpenseDisplay = 0;
+    if (cooldown_rival > 0) cooldown_rival--;
+    if (cooldown_parts > 0) cooldown_parts--;
+    if (cooldown_audit > 0) cooldown_audit--;
+    if (cooldown_fleet > 0) cooldown_fleet--;
+    if ((month - 1) % 12 === 0) count_weather_this_year = 0;
 
-        let m_revenue = 0;
-        let m_expense = 0;
+    // --- 既存の売上計算ロジック（車両販売） ---
+    // (※ご提示のロジックをここに記載)
+    // ... (車両販売の計算) ...
+    // ... (車検整備の計算) ...
 
-        let alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n`;
-        addLog(`<br><span style='color:#2ecc71;'>━━━━━━━━━ 【第 ${month} ヶ月目 営業結果】 ━━━━━━━━━</span>`);
-
-        if (cooldown_rival > 0) cooldown_rival--;
-        if (cooldown_parts > 0) cooldown_parts--;
-        if (cooldown_audit > 0) cooldown_audit--;
-        if (cooldown_fleet > 0) cooldown_fleet--;
-
-        if ((month - 1) % 12 === 0) {
-            count_weather_this_year = 0;
-        }
-    // [注意] この中の「ランダムイベント抽選ロジック」は削除してOKです
-    
-    // 3. 【イベント予約部】来月の抽選と予約
+    // 2. 【イベント予約部】来月の抽選と予約
     if (Math.random() < 0.4) {
-        let availableEvents = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-        let eventRoll = availableEvents[Math.floor(Math.random() * availableEvents.length)];
-        pendingEvent = eventRoll; // 予約！
+      let availableEvents = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+      pendingEvent = availableEvents[Math.floor(Math.random() * availableEvents.length)];
     }
 
-    // ... (既存の売上計算ロジックをここに書く) ...
-    // [最後に必ず month++; と updateDisplay(); を置く]
+    // 3. 締め処理
+    advCarCount = 0;
+    advRepairCount = 0;
+    
+    // (※決算ロジックなどはそのまま維持)
+    
     month++;
     updateDisplay();
-} // ★ここで nextMonth をきれいに閉じる
+  }
 
 // ★ここからは「別の関数」として独立させる
 function applyEvent(eventRoll) {
