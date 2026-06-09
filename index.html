@@ -787,8 +787,13 @@ if (mechanics === 0 || currentLiftsCount === 0) {
             updateDisplay();
         } else { alert("❌ リフト増設費用200万円が足りません。"); }
     }
-
-   function nextMonth() {
+ 
+    function calculateMonthlyExpenses() {
+    let totalStaff = salesmen + mechanics + clerks + assistants;
+    return rent + (v_lift_ages.length * 50000) + (totalStaff * salaryPerStaff);
+}
+   
+    function nextMonth() {
     // 1. 変数の初期化（重複を削除）
     alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n`;
 
@@ -1185,6 +1190,10 @@ function getEventDescription(eventRoll) {
 
     updateDisplay();
        }
+        // --- ゲーム起動時の初期処理 ---
+        // ここで一度計算して画面に反映させる
+        let initialExpenses = calculateMonthlyExpenses();
+    updateDisplay(); // 最後に画面更新
 </script>
 
 </body>
