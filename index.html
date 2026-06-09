@@ -785,6 +785,11 @@ if (mechanics === 0 || currentLiftsCount === 0) {
     }
 
     function nextMonth() {
+        // 1. 今月の営業開始前に、前回の案内で決まった「今月のイベント」を適用する
+    if (pendingEvent !== null) {
+        applyEvent(pendingEvent); // イベント効果を反映
+        pendingEvent = null;      // 適用完了
+        }
         //1.前処理
         lastMonthRevenueDisplay = 0;
         lastMonthExpenseDisplay = 0;
@@ -803,14 +808,13 @@ if (mechanics === 0 || currentLiftsCount === 0) {
         if ((month - 1) % 12 === 0) {
             count_weather_this_year = 0;
         //初期化処理
-        // 2. ★ここでイベント案内を出し、プレイヤーが確認する
-    if (pendingEvent !== null) {
-        // 関数内で alert を出し、ユーザーのクリックを待つ
-        showEventAnnouncement(pendingEvent); 
-        
-        // 3. ★案内確認後に効果を実行
-        applyEvent(pendingEvent); 
-        pendingEvent = null;
+        // 3. 営業がすべて終わった後、翌月のイベントを「抽選・案内」する
+        let nextMonthEvent = selectRandomEvent();
+    
+        // 案内を表示（OKを押すと処理が進む）
+        if (nextMonthEvent !== null) {
+            alert("【来月の予告】\n" + getEventDescription(nextMonthEvent));
+            pendingEvent = nextMonthEvent; // 翌月のnextMonthで適用されるように保持
         }
 
         // ==========================================
