@@ -787,43 +787,45 @@ if (mechanics === 0 || currentLiftsCount === 0) {
         } else { alert("❌ リフト増設費用200万円が足りません。"); }
     }
 
-    function nextMonth() {
-      // 【1. 適用フェーズ】前月に予告されたイベントを実行
-        if (pendingEvent !== null) {
+   function nextMonth() {
+    // 1. 変数の初期化（重複を削除）
+    let alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n`;
+
+    // 2. 【1. 適用フェーズ】前月に予告されたイベントを実行
+    if (pendingEvent !== null) {
         applyEvent(pendingEvent);
         pendingEvent = null;
-        }
-        //1.営業フェーズ
-        lastMonthRevenueDisplay = 0;
-        lastMonthExpenseDisplay = 0;
-
-        let m_revenue = 0;
-        let m_expense = 0;
-
-        let alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n`;
-        addLog(`<br><span style='color:#2ecc71;'>━━━━━━━━━ 【第 ${month} ヶ月目 営業結果】 ━━━━━━━━━</span>`);
-
-        if (cooldown_rival > 0) cooldown_rival--;
-        if (cooldown_parts > 0) cooldown_parts--;
-        if (cooldown_audit > 0) cooldown_audit--;
-        if (cooldown_fleet > 0) cooldown_fleet--;
-
-        if ((month - 1) % 12 === 0) {
-            count_weather_this_year = 0;
-             }
-        //営業処理
-        // 【3. 予告フェーズ】来月のイベントを抽選し、案内だけ出す
-        let nextMonthEvent = selectRandomEvent();
-        if (nextMonthEvent !== null) {
-            alert("【来月の予告】\n" + getEventDescription(nextMonthEvent));
-            pendingEvent = nextMonthEvent; // 次の nextMonth() で適用されるよう保持
-        }
-
-        // 月を進める
-        month++;
-        updateDisplay();
     }
 
+    // 3. 営業フェーズの前処理
+    lastMonthRevenueDisplay = 0;
+    lastMonthExpenseDisplay = 0;
+    let m_revenue = 0;
+    let m_expense = 0;
+
+    addLog(`<br><span style='color:#2ecc71;'>━━━━━━━━━ 【第 ${month} ヶ月目 営業結果】 ━━━━━━━━━</span>`);
+
+    if (cooldown_rival > 0) cooldown_rival--;
+    if (cooldown_parts > 0) cooldown_parts--;
+    if (cooldown_audit > 0) cooldown_audit--;
+    if (cooldown_fleet > 0) cooldown_fleet--;
+
+    if ((month - 1) % 12 === 0) {
+        count_weather_this_year = 0;
+    }
+
+    // 4. 【3. 予告フェーズ】来月のイベントを抽選
+    // ※ selectRandomEvent 関数はこの下（関数の外）で定義されている必要があります
+    let nextMonthEvent = selectRandomEvent();
+    if (nextMonthEvent !== null) {
+        alert("【来月の予告】\n" + getEventDescription(nextMonthEvent));
+        pendingEvent = nextMonthEvent;
+    }
+
+    // 5. 月を進める
+    month++;
+    updateDisplay();
+}
       // --- 【重要】イベント実行の集中管理関数 ---
 function applyEvent(eventRoll) {
     if (eventRoll === 0) {
@@ -884,7 +886,15 @@ function applyEvent(eventRoll) {
         addLog(`✨ 【イベント】スタッフ連携強化！各ピットの車検限界数が＋10台！`);
     }
 }
-        
+ function selectRandomEvent() {
+    // 抽選ロジックをここに記述（null を返さないようにしてください）
+    return 0; // 仮の戻り値
+}
+
+function getEventDescription(eventRoll) {
+    // イベントの説明文を返すロジック
+    return "イベントが発生しました"; 
+}       
 
         // --- 1. 車両販売部門の営業処理 ---
         let salesBonus = getCarSalesBonus(); 
