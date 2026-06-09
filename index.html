@@ -785,46 +785,47 @@ if (mechanics === 0 || currentLiftsCount === 0) {
         } else { alert("❌ リフト増設費用200万円が足りません。"); }
     }
 
-    function nextMonth() {
-    // 1. 【冒頭】先月の予約イベントをここで実行する
+  // 【1】次月進むボタンから呼ばれるメイン処理
+function nextMonth() {
+    // 1. 【冒頭】先月の予約イベントがあればここで実行する
     if (pendingEvent !== null) {
         applyEvent(pendingEvent);
         pendingEvent = null;
     }
 
-    // 2. 既存の営業結果報告や各クールダウン処理
-    // ... (ここには元々あったロジックをそのまま残します) ...
+    // 2. 既存の月次計算や報告などの処理（ここに元々のコードが並びます）
+    // ... (既存の売上計算や各クールダウン減少処理などをそのまま書いてください) ...
 
-    // 3. 【イベント予約部】抽選して来月の予定にする
+    // 3. 【イベント予約部】来月の抽選と予約
     if (Math.random() < 0.4) {
-        let availableEvents = [];
-        // ... (availableEvents.pushする処理) ...
+        let availableEvents = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]; 
+        // ※必要に応じてpushロジックを使ってavailableEventsを調整してください
         
-        let eventIndex = Math.floor(Math.random() * availableEvents.length);
-        let eventRoll = availableEvents[eventIndex];
-
-        // 予約！
+        let eventRoll = availableEvents[Math.floor(Math.random() * availableEvents.length)];
+        
+        // 即時実行せず、予約変数に入れる
         pendingEvent = eventRoll;
-
+        
         // 予告表示
         eventBoard.style.display = "block";
         eventTitle.innerText = "📅 来月のイベント予告";
-        eventDesc.innerText = "来月、新しいイベントが実行されます。";
+        eventDesc.innerText = "来月、新しいイベントが実行されます。準備しておいてください。";
         addLog(`📢 【予告】来月、イベントが発生予定です！`);
     }
 
-    // 4. 既存のFreeCar判定（そのままでOK）
+    // 4. FreeCar判定（既存の処理がある場合はそのままここへ）
     if (pendingFreeCar) {
-        // ... (v_stock_list.pushなどの処理) ...
+        // ...
     }
 }
-    function applyEvent(eventRoll) {
-    // 画面表示用の要素を取得
+
+// 【2】イベント実行専用の関数（nextMonthの外に配置！）
+function applyEvent(eventRoll) {
     let eventBoard = document.getElementById("eventBoard");
     let eventTitle = document.getElementById("eventTitle");
     let eventDesc = document.getElementById("eventDesc");
 
-    // ここにカットしたif文を配置
+    // あなたが貼り付けてくれたif文の塊
     if (eventRoll === 0) {
         currentEvent = "sick_mechanic";
         eventBoard.style.display = "block";
