@@ -1069,7 +1069,9 @@ function getEventDescription(eventRoll) {
 
         // --- 3. 固定費引き落とし ---
         let totalStaff = salesmen + mechanics + clerks + assistants; 
-        let fixedExpenses = rent + liftMaintenance + (totalStaff * salaryPerStaff);
+        // 家賃(rent) + リフト維持費 + 人件費
+        // リフト維持費はリフトの数 × メンテ費用のロジックがあるはずです
+        let fixedExpenses = rent + (v_lift_ages.length * 50000) + (totalStaff * salaryPerStaff);
         funds -= fixedExpenses;
         m_expense += fixedExpenses;
 
