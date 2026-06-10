@@ -824,13 +824,25 @@ if (mechanics === 0 || currentLiftsCount === 0) {
     // ※ selectRandomEvent 関数はこの下（関数の外）で定義されている必要があります
     let nextMonthEvent = selectRandomEvent();
     if (nextMonthEvent !== null) {
+        // イベントがある時だけアラートを表示
         alert("【来月の予告】\n" + getEventDescription(nextMonthEvent));
         pendingEvent = nextMonthEvent;
+        } else {
+    // イベントがない時は pendingEvent を空にしておく
+    pendingEvent = null;
+    // 必要ならログに「来月は平和です」と出すと分かりやすいです
+    addLog("✨ 来月は特にイベントの兆候はありません。");
     }
 
 function selectRandomEvent() {
-    // 抽選ロジックをここに記述（null を返さないようにしてください）
-    return 0; // 仮の戻り値
+    // 40%の確率で「イベントなし(null)」を返す
+    // ※この確率はゲームバランスに合わせて調整してください
+    if (Math.random() < 0.4) {
+        return null; 
+    }
+    
+    // イベントがある場合は 0 〜 11 の番号をランダムで返す
+    return Math.floor(Math.random() * 12); 
 }
     
       // --- 【重要】イベント実行の集中管理関数 ---
@@ -894,10 +906,23 @@ function applyEvent(eventRoll) {
     }
 }
 
-function getEventDescription(eventRoll) {
-    // イベントの説明文を返すロジック
-    return "イベントが発生しました"; 
-}       
+      function getEventDescription(eventRoll) {
+    const descriptions = [
+        "メカニック1名がギックリ腰で一時離脱します。",
+        "部品供給遅延が発生します。",
+        "機材・代車トラブルが発生します。",
+        "競合店が開店します。",
+        "悪天候が予想されます。",
+        "工場監査が入ります。",
+        "発注ミスが起きるかもしれません。",
+        "整備作業へのクレーム対応が必要です。",
+        "大口法人からの特需が期待できます。",
+        "SNSで口コミが拡散しそうです。",
+        "下取り買取のチャンスです。",
+        "スタッフ連携が強化されます。"
+    ];
+    return descriptions[eventRoll] || "未知のイベントが発生します。";
+}
 
         // --- 1. 車両販売部門の営業処理 ---
         let salesBonus = getCarSalesBonus(); 
