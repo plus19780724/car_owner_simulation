@@ -936,7 +936,7 @@ function getEventDescription(eventRoll) {
         let ageRefusedCount = 0;
 
         if (salesmen === 0) {
-            if (carDemands > 0) carLossMessage = `👤 営業スタッフ不在で ${carDemands}組 離注`;
+            if (carDemands > 0) carLossMessage = `👤 営業スタッフ不在で ${carDemands}組 離脱`;
             carDemands = 0;
         } else if (carDemands > salesCap) {
             let missed = carDemands - salesCap;
