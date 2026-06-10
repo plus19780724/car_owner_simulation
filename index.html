@@ -889,7 +889,7 @@ function executeEvent(eventRoll) {
         currentEvent = "sns_buzz"; 
         addLog(`✨ 【実施】SNS拡散により来店数がアップ！`);
     } else if (eventRoll === 10) {
-        if (v_stock_list.length < MAX_STOCK) {
+        if (v_stock_list.length < maxStock) {
         // 在庫に空きがある場合のみ仕入れ
         v_stock_list.push(0);
         addLog(`✨ 【実施】極上中古車を仕入れました！在庫: ${v_stock_list.length} 台`);
