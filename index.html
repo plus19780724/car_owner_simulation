@@ -832,6 +832,7 @@ function executeEvent(eventRoll) {
     } else if (eventRoll === 2) {
         funds -= 300000;
         m_expense += 300000;
+        console.log("💰 資金残高:", funds);
         addLog(`🚨 【実施】突発修繕費30万円が発生しました。`);
     } else if (eventRoll === 3) {
         let lostLoyals = Math.floor(loyalCustomers * 0.10);
@@ -845,6 +846,7 @@ function executeEvent(eventRoll) {
             addLog(`🛡️ 【実施】補助事務員の活躍で監査を回避！`);
         } else {
             assistants -= 1;
+            console.log("👤 事務員数:", assistants);
             console.log("監査イベント実行！現在の事務員数:", assistants); // ここでコンソールを確認
             if (assistants < 0) assistants = 0;
             addLog(`🚨 【実施】監査対応により事務員が1名離脱しました。`);
@@ -868,6 +870,7 @@ function executeEvent(eventRoll) {
         addLog(`✨ 【実施】SNS拡散により来店数がアップ！`);
     } else if (eventRoll === 10) {
         stock += 1; // これで在庫が増えるはず！
+        console.log("🚗 在庫数:", stock);
         addLog(`✨ 【実施】極上中古車を仕入れました！在庫: ${stock} 台`);
     } else if (eventRoll === 11) {
         // ★車検限界数アップの処理（例：capacity += 10;）
