@@ -295,6 +295,10 @@
     let cooldown_fleet = 0;         
     let count_weather_this_year = 0; 
 
+    // 【重要】ここで window に参照を渡してあげる
+    window.funds = funds; 
+    window.m_expense = m_expense;    
+
    function showGameInstructions() {
         alert(
             `📊 【自動車工場 経営シミュレーション】\n` +
@@ -816,7 +820,10 @@ function applyEvent(eventRoll) {
     else if (eventRoll === 2) {
         funds -= 300000;
         m_expense += 300000;
+        window.funds = funds;
+        window.m_expense = m_expense;
         addLog(`🚨 【イベント】機材・代車トラブルにより突発修繕費30万円が発生。`);
+        updateDisplay(); // 最後に必ず画面更新！
     } 
     else if (eventRoll === 3) {
         cooldown_rival = 36; 
