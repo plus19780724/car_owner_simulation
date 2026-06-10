@@ -389,21 +389,22 @@
    function calculateFactoryStatus(eventModifier = null) {
     // 【修正】メカニックと事務員、両方のフラグを考慮した「今月稼働可能な人数」を算出
     // 【重要修正】0以下にならないように保護する
-    let effectiveMechanics = Math.max(0, mechanics - (mechanics_missing ? 1 : 0));
-    let effectiveAssistants = Math.max(0, assistants - (assistants_missing ? 1 : 0));
-
-    let tempMechanics = effectiveMechanics;
-    let tempClerks = clerks; 
-    let tempAssistants = effectiveAssistants; // 事務員も変数化
+        let effectiveMechanics = Math.max(0, mechanics - (mechanics_missing ? 1 : 0));
+        let effectiveAssistants = Math.max(0, assistants - (assistants_missing ? 1 : 0));
+    
+    // 【修正】事務員(clerks)もフラグを考慮して初期化する
+        let tempMechanics = effectiveMechanics;
+        let tempClerks = Math.max(0, clerks - (assistants_missing ? 1 : 0)); 
+        let tempAssistants = effectiveAssistants; // 事務員も変数化
     
     // 事務員数が足りているかの判断も effectiveAssistants を基準にする
-    if (eventModifier === "sick_mechanic") tempMechanics = Math.max(0, tempMechanics - 1);
+        if (eventModifier === "sick_mechanic") tempMechanics = Math.max(0, tempMechanics - 1);
     
-    if (eventModifier === "audit_clerk") {
+        if (eventModifier === "audit_clerk") {
         // ここで補助事務員(effectiveAssistants)がいるか判定
-        if (effectiveAssistants > 0) {
+            if (effectiveAssistants > 0) {
             // 🛡️ 補助事務員が監査ペナルティをブロック
-        } else {
+            } else {
             tempClerks = Math.max(0, tempClerks - 1);
         }
     }
