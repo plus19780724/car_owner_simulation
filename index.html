@@ -393,6 +393,7 @@
 
     let tempMechanics = effectiveMechanics;
     let tempClerks = clerks; 
+    let tempAssistants = effectiveAssistants; // 事務員も変数化
     
     // 事務員数が足りているかの判断も effectiveAssistants を基準にする
     if (eventModifier === "sick_mechanic") tempMechanics = Math.max(0, tempMechanics - 1);
