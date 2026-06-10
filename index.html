@@ -1009,12 +1009,7 @@ function applyEvent(eventRoll) {
 }
 
     function nextMonth() {
-        // 1. ボード処理（これは一番上でOK）
-        const eventBoard = document.getElementById("eventBoard");
-        if (eventBoard) {eventBoard.style.display = "none";
-        }
-    
-        // 2. 【1. 適用フェーズ】前月に予告されたイベントを実行
+       // 1. 【一番上】前月のイベントを「今月の最初」に実行する
     if (pendingEvent !== null) {
         try { // ここに try を追加します！
         console.log("🔥 イベント実行開始！番号:", pendingEvent);
@@ -1025,13 +1020,14 @@ function applyEvent(eventRoll) {
         }
         pendingEvent = null;
     }   
-        
-    // 3. 【★ここへ移動】リセット処理をイベント実行の後に行う
+
+      // 2. 【2番目】今月のリセット（ここをイベントより後にする！）
+    m_revenue = 0;
+    m_expense = 0;
     lastMonthRevenueDisplay = 0;
     lastMonthRevenueDisplay = 0;
     lastMonthExpenseDisplay = 0;
-    m_revenue = 0;
-    m_expense = 0;
+    
 
     addLog(`<br><span style='color:#2ecc71;'>━━━━━━━━━ 【第 ${month} ヶ月目 営業結果】 ━━━━━━━━━</span>`);
 
@@ -1043,7 +1039,11 @@ function applyEvent(eventRoll) {
     if ((month - 1) % 12 === 0) {
         count_weather_this_year = 0;
     }
-
+        // 1. ボード処理（これは一番上でOK）
+        const eventBoard = document.getElementById("eventBoard");
+        if (eventBoard) {eventBoard.style.display = "none";
+        }
+    
     // 4. 【3. 予告フェーズ】来月のイベントを抽選
     // ※ selectRandomEvent 関数はこの下（関数の外）で定義されている必要があります
     let nextMonthEvent = selectRandomEvent();
