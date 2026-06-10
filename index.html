@@ -1007,7 +1007,8 @@ function applyEvent(eventRoll) {
     ];
     return descriptions[eventRoll] || "未知のイベントが発生します。";
 }
-function nextMonth() {
+
+   function nextMonth() {
     // 1. ボード処理
     const eventBoard = document.getElementById("eventBoard");
     if (eventBoard) {
@@ -1031,7 +1032,7 @@ function nextMonth() {
         count_weather_this_year = 0;
     }
 
-    // 4. イベント実行（必ず営業計算より先に行う）
+    // 4. イベント実行
     if (pendingEvent !== null) {
         try {
             console.log("🔥 イベント実行開始！番号:", pendingEvent);
@@ -1221,7 +1222,7 @@ function nextMonth() {
     lastMonthRevenueDisplay = m_revenue;
     lastMonthExpenseDisplay = m_expense;
 
-    // 8. レポート作成（計算をすべて終えてから最後に実行）
+    // 8. レポート作成
     let monthlyNet = m_revenue - m_expense;
     let alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n` +
         `【車両販売】\n・来店数: ${lastMonthCarDemands} 組 ➔ 成約: ${actualSales} 台\n・状況: ${carLossMessage}\n\n` +
@@ -1261,7 +1262,27 @@ function nextMonth() {
             addLog(`🏦 【銀行返済】元金返済: -${repaidPrincipal.toLocaleString()}円 / 利息: -${paidInterest.toLocaleString()}円`);
         }
         addArchive(yearNum, yearlyRevenue, yearlyExpense, openingStockAsset, currentStockAsset, currentYearProfit, corporationTax, funds, repaidPrincipal, paidInterest, currentYearCarSales, currentYearRepairDone);
-        alert(`📊 【第 ${yearNum} 期 年次決算報告】...省略...`);
+        
+        alert(`📊 【第 ${yearNum} 期 年次決算報告】\n━━━━━━━━━━━━━━━━━━━━\n` +
+              `📊 【当期営業実績】\n` +
+              `・年間車両販売台数: ${currentYearCarSales} 台\n` +
+              `・年間車検整備台数: ${currentYearRepairDone} 台\n` +
+              `━━━━━━━━━━━━━━━━━━━━\n` +
+              `・年間総売上高: +${yearlyRevenue.toLocaleString()} 円\n` +
+              `・年間総支出額: -${yearlyExpense.toLocaleString()} 円\n` +
+              `📦 期首在庫高: -${openingStockAsset.toLocaleString()} 円\n` +
+              `📦 期末在庫高: +${currentStockAsset.toLocaleString()} 円\n` +
+              `━━━━━━━━━━━━━━━━━━━━\n` +
+              `・当期確定純利益: ${currentYearProfit >= 0 ? "＋" : ""}${currentYearProfit.toLocaleString()} 円\n` +
+              `・確定法人税 (20%): -${corporationTax.toLocaleString()} 円\n` +
+              `━━━━━━━━━━━━━━━━━━━━\n` +
+              `🏦 【銀行への返済実行】\n` +
+              `・元金定期償還: -${repaidPrincipal.toLocaleString()} 円\n` +
+              `・融資利息(2%): -${paidInterest.toLocaleString()} 円\n` +
+              `・銀行借入金残高: ${loanBalance.toLocaleString()} 円\n` +
+              `━━━━━━━━━━━━━━━━━━━━\n` +
+              `・次回への持越手元現金: **${funds.toLocaleString()} 円**`);
+
         if (funds < 0) {
             alert(`🚨 決算時の返済・税金により資金ショート、【倒産】しました。`);
             location.reload();
