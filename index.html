@@ -1053,8 +1053,8 @@ function applyEvent(eventRoll) {
     // ※ selectRandomEvent 関数はこの下（関数の外）で定義されている必要があります
     let nextMonthEvent = selectRandomEvent();
     if (nextMonthEvent !== null) {
-        // イベントがある時だけアラートを表示
-        alert("【来月の予告】\n" + getEventDescription(nextMonthEvent));
+        // --- 修正後: ボードを表示する関数を呼ぶ ---
+        applyEvent(nextMonthEvent);
         pendingEvent = nextMonthEvent;
         console.log("📝 予約完了！セットした値:", pendingEvent);
         } else {
