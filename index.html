@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -1220,11 +1220,14 @@ function applyEvent(eventRoll) {
 
         // 🏋️‍♂️ リフト経年メンテ
         let totalLiftRepairCost = 0;
-        for (let l = 0; l < v_lift_ages.length; l++) {
+        // リフトが1基以上ある場合のみ計算する
+        if (Array.isArray(v_lift_ages) && v_lift_ages.length > 0) {
+            for (let l = 0; l < v_lift_ages.length; l++) {
             v_lift_ages[l] += 1; 
-            if (v_lift_ages[l] === 36) {
+                if (v_lift_ages[l] === 36) {
                 totalLiftRepairCost += 200000;
-                addLog(`⚙️ 【設備修繕】第 ${l + 1} リフトが3年経過。経年メンテ費用発生: -20万`);
+                addLog(`⚙️ 【設備修繕】第 ${l + 1} リフトが3年経過。費用発生: -20万`);
+                }
             }
         }
         if (totalLiftRepairCost > 0) {
@@ -1232,11 +1235,12 @@ function applyEvent(eventRoll) {
             m_expense += totalLiftRepairCost;
         }
 
-        // --- 3. 固定費引き落とし ---
-        let totalStaff = salesmen + mechanics + clerks + assistants; 
-        // 家賃(rent) + リフト維持費 + 人件費
-        // リフト維持費はリフトの数 × メンテ費用のロジックがあるはずです
-        let fixedExpenses = rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff);
+        // --- 3. 固定費引き落とし（ここを修正） ---
+        let totalStaff = salesmen + mechanics + clerks + assistants;
+        // v_lift_ages.length が 0 でもエラーにならないように計算
+        let liftMaintenance = (Array.isArray(v_lift_ages) ? v_lift_ages.length : 0) * 100000;
+        let fixedExpenses = rent + liftMaintenance + (totalStaff * salaryPerStaff);
+
         funds -= fixedExpenses;
         m_expense += fixedExpenses;
 
