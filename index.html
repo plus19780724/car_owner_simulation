@@ -485,6 +485,7 @@
 }
     
     function updateDisplay() {
+        console.log("現在のmaxStock:", maxStock); // これを足してコンソールを確認！
         let totalStaff = salesmen + mechanics + clerks + assistants; 
         let currentLiftsCount = v_lift_ages.length;
         let futureExpenses = rent + liftMaintenance + (totalStaff * salaryPerStaff);
