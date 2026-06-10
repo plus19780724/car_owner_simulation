@@ -889,8 +889,6 @@ function executeEvent(eventRoll) {
         currentEvent = "sns_buzz"; 
         addLog(`✨ 【実施】SNS拡散により来店数がアップ！`);
     } else if (eventRoll === 10) {
-        const MAX_STOCK = 50; // 展示場の最大収容台数（ご自身のゲームに合わせて変えてください）
-
         if (v_stock_list.length < MAX_STOCK) {
         // 在庫に空きがある場合のみ仕入れ
         v_stock_list.push(0);
