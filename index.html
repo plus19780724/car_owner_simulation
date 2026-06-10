@@ -889,9 +889,16 @@ function executeEvent(eventRoll) {
         currentEvent = "sns_buzz"; 
         addLog(`✨ 【実施】SNS拡散により来店数がアップ！`);
     } else if (eventRoll === 10) {
-        // 在庫リストに新車(0歳)を追加
+        const MAX_STOCK = 50; // 展示場の最大収容台数（ご自身のゲームに合わせて変えてください）
+
+        if (v_stock_list.length < MAX_STOCK) {
+        // 在庫に空きがある場合のみ仕入れ
         v_stock_list.push(0);
         addLog(`✨ 【実施】極上中古車を仕入れました！在庫: ${v_stock_list.length} 台`);
+        } else {
+        // 満車の場合の処理
+        addLog(`⚠️ 【残念】展示場が満車のため、極上中古車の仕入れを見送りました。`);
+        }
     } else if (eventRoll === 11) {
         // 1. イベント名を記録
         currentEvent = "lift_bonus";
