@@ -1023,7 +1023,7 @@ function applyEvent(eventRoll) {
     if (pendingEvent !== null) {
         try { // ここに try を追加します！
         console.log("🔥 イベント実行開始！番号:", pendingEvent);
-        applyEvent(pendingEvent);//ここで止まっている？
+        executeEvent(pendingEvent);//ここで止まっている？
         console.log("🔥 イベント実行完了！"); 
         } catch (e) {
         console.error("🚨 イベント実行中にエラー発生！詳細:", e);
