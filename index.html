@@ -794,6 +794,11 @@ if (mechanics === 0 || currentLiftsCount === 0) {
 }
    
     function nextMonth() {
+        
+        // 【ステップ1】ここを追加して、ボタンを押した時にログが出るか確認する
+    console.log("🔥 nextMonth が実行されました！"); 
+    console.log("🔥 現在の pendingEvent:", pendingEvent);
+        
     // 1. 変数の初期化（重複を削除）
     alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n`;
 
