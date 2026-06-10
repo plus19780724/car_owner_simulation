@@ -1188,7 +1188,14 @@ function applyEvent(eventRoll) {
         funds -= totalLiftRepairCost;
         m_expense += totalLiftRepairCost;
     }
-   
+
+    // 【デバッグ用】固定費計算の直前に挿入してください
+console.log("--- 固定費計算デバッグ ---");
+console.log("Salesmen:", salesmen, "Mechanics:", mechanics, "Clerks:", clerks, "Assistants:", assistants);
+console.log("Rent:", rent, "LiftCount:", v_lift_ages.length, "SalaryPerStaff:", salaryPerStaff);
+let totalStaff = salesmen + mechanics + clerks + assistants;
+console.log("TotalStaff:", totalStaff);
+       
     // --- 固定費引き落とし ---
     let totalStaff = salesmen + mechanics + clerks + assistants;
     let fixedExpenses = rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff);
