@@ -793,61 +793,7 @@ if (mechanics === 0 || currentLiftsCount === 0) {
     let totalStaff = salesmen + mechanics + clerks + assistants;
     return rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff);
 }
-   
-    function nextMonth() {
-        
-        // 【ステップ1】ここを追加して、ボタンを押した時にログが出るか確認する
-    console.log("🔥 nextMonth が実行されました！"); 
-    console.log("🔥 現在の pendingEvent:", pendingEvent);
-        
-    // 1. 変数の初期化（重複を削除）
-    alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n`;
-
-    // 2. 【1. 適用フェーズ】前月に予告されたイベントを実行
-    if (pendingEvent !== null) {
-        try { // ここに try を追加します！
-        console.log("🔥 イベント実行開始！番号:", pendingEvent);
-        applyEvent(pendingEvent);//ここで止まっている？
-        console.log("🔥 イベント実行完了！"); 
-        } catch (e) {
-        console.error("🚨 イベント実行中にエラー発生！詳細:", e);
-        }
-        pendingEvent = null;
-    }
-
-    // 3. 営業フェーズの前処理
-    lastMonthRevenueDisplay = 0;
-    lastMonthExpenseDisplay = 0;
-    m_revenue = 0;
-    m_expense = 0;
-
-    addLog(`<br><span style='color:#2ecc71;'>━━━━━━━━━ 【第 ${month} ヶ月目 営業結果】 ━━━━━━━━━</span>`);
-
-    if (cooldown_rival > 0) cooldown_rival--;
-    if (cooldown_parts > 0) cooldown_parts--;
-    if (cooldown_audit > 0) cooldown_audit--;
-    if (cooldown_fleet > 0) cooldown_fleet--;
-
-    if ((month - 1) % 12 === 0) {
-        count_weather_this_year = 0;
-    }
-
-    // 4. 【3. 予告フェーズ】来月のイベントを抽選
-    // ※ selectRandomEvent 関数はこの下（関数の外）で定義されている必要があります
-    let nextMonthEvent = selectRandomEvent();
-    if (nextMonthEvent !== null) {
-        // イベントがある時だけアラートを表示
-        alert("【来月の予告】\n" + getEventDescription(nextMonthEvent));
-        pendingEvent = nextMonthEvent;
-        console.log("📝 予約完了！セットした値:", pendingEvent);
-        } else {
-    // イベントがない時は pendingEvent を空にしておく
-    pendingEvent = null;
-    // 必要ならログに「来月は平和です」と出すと分かりやすいです
-    addLog("✨ 来月は特にイベントの兆候はありません。");
-    }
-
-function selectRandomEvent() {
+   function selectRandomEvent() {
     // 40%の確率で「イベントなし(null)」を返す
     // ※この確率はゲームバランスに合わせて調整してください
     if (Math.random() < 0.4) {
@@ -936,6 +882,59 @@ function applyEvent(eventRoll) {
     ];
     return descriptions[eventRoll] || "未知のイベントが発生します。";
 }
+
+    function nextMonth() {
+        
+        // 【ステップ1】ここを追加して、ボタンを押した時にログが出るか確認する
+    console.log("🔥 nextMonth が実行されました！"); 
+    console.log("🔥 現在の pendingEvent:", pendingEvent);
+        
+    // 1. 変数の初期化（重複を削除）
+    alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n`;
+
+    // 2. 【1. 適用フェーズ】前月に予告されたイベントを実行
+    if (pendingEvent !== null) {
+        try { // ここに try を追加します！
+        console.log("🔥 イベント実行開始！番号:", pendingEvent);
+        applyEvent(pendingEvent);//ここで止まっている？
+        console.log("🔥 イベント実行完了！"); 
+        } catch (e) {
+        console.error("🚨 イベント実行中にエラー発生！詳細:", e);
+        }
+        pendingEvent = null;
+    }
+
+    // 3. 営業フェーズの前処理
+    lastMonthRevenueDisplay = 0;
+    lastMonthExpenseDisplay = 0;
+    m_revenue = 0;
+    m_expense = 0;
+
+    addLog(`<br><span style='color:#2ecc71;'>━━━━━━━━━ 【第 ${month} ヶ月目 営業結果】 ━━━━━━━━━</span>`);
+
+    if (cooldown_rival > 0) cooldown_rival--;
+    if (cooldown_parts > 0) cooldown_parts--;
+    if (cooldown_audit > 0) cooldown_audit--;
+    if (cooldown_fleet > 0) cooldown_fleet--;
+
+    if ((month - 1) % 12 === 0) {
+        count_weather_this_year = 0;
+    }
+
+    // 4. 【3. 予告フェーズ】来月のイベントを抽選
+    // ※ selectRandomEvent 関数はこの下（関数の外）で定義されている必要があります
+    let nextMonthEvent = selectRandomEvent();
+    if (nextMonthEvent !== null) {
+        // イベントがある時だけアラートを表示
+        alert("【来月の予告】\n" + getEventDescription(nextMonthEvent));
+        pendingEvent = nextMonthEvent;
+        console.log("📝 予約完了！セットした値:", pendingEvent);
+        } else {
+    // イベントがない時は pendingEvent を空にしておく
+    pendingEvent = null;
+    // 必要ならログに「来月は平和です」と出すと分かりやすいです
+    addLog("✨ 来月は特にイベントの兆候はありません。");
+    }
 
         // --- 1. 車両販売部門の営業処理 ---
         let salesBonus = getCarSalesBonus(); 
@@ -1233,10 +1232,8 @@ function applyEvent(eventRoll) {
 
         month++;
         updateDisplay();
-    
-
-    updateDisplay();
        }
+    
         // --- ゲーム起動時の初期処理 ---
         // ここで一度計算して画面に反映させる
         let initialExpenses = calculateMonthlyExpenses();
