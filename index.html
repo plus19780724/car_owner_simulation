@@ -824,7 +824,7 @@ function selectRandomEvent() {
 // --- 追加：イベント実行専用の関数 ---
 function executeEvent(eventRoll) {
     if (eventRoll === 0) {
-        mechanics -= 1;
+        mechanics = Math.max(0, mechanics - 1);
         addLog(`🚨 【実施】メカニックが1名離脱しました。`);
     } else if (eventRoll === 1) {
         cooldown_parts = 12;
@@ -832,7 +832,6 @@ function executeEvent(eventRoll) {
     } else if (eventRoll === 2) {
         funds -= 300000;
         m_expense += 300000;
-        console.log("💰 資金残高:", funds,m_expense);
         addLog(`🚨 【実施】突発修繕費30万円が発生しました。`);
     } else if (eventRoll === 3) {
         let lostLoyals = Math.floor(loyalCustomers * 0.10);
@@ -845,16 +844,15 @@ function executeEvent(eventRoll) {
         if (assistants > 0) {
             addLog(`🛡️ 【実施】補助事務員の活躍で監査を回避！`);
         } else {
-            assistants -= 1;
-            console.log("👤 事務員数:", assistants);
-            console.log("監査イベント実行！現在の事務員数:", assistants); // ここでコンソールを確認
-            if (assistants < 0) assistants = 0;
+            assistants = Math.max(0, assistants - 1);
             addLog(`🚨 【実施】監査対応により事務員が1名離脱しました。`);
         }
     } else if (eventRoll === 6) {
-        // ★ここを stock -= 1; にしないと在庫が減りません
-        stock -= 1; 
-        addLog(`🚨 【実施】発注ミスにより成約が1台キャンセルされました。`);
+        // 在庫リストからランダムに1台削除
+        if (v_stock_list.length > 0) {
+            v_stock_list.pop();
+            addLog(`🚨 【実施】発注ミスにより在庫が1台キャンセルされました。`);
+        }
     } else if (eventRoll === 7) {
         let percent = 0.07 + (Math.random() * 0.03);
         let lostLoyals = Math.floor(loyalCustomers * percent);
@@ -862,23 +860,20 @@ function executeEvent(eventRoll) {
         addLog(`🚨 【実施】クレームにより顧客が ${lostLoyals} 名流出しました。`);
     } else if (eventRoll === 8) {
         cooldown_fleet = 36;
-        // ★特需の効果を発動させるフラグや変数をここに加える必要があります
         addLog(`✨ 【実施】大口特需により入庫デマンドが増加！`);
     } else if (eventRoll === 9) {
-        // ★来店数アップの処理（例：customers += 8;）
-        customers += 8;
+        // sns_buzz というイベントフラグを立てる（既存のロジックに合わせる）
+        currentEvent = "sns_buzz"; 
         addLog(`✨ 【実施】SNS拡散により来店数がアップ！`);
     } else if (eventRoll === 10) {
-        stock += 1; // これで在庫が増えるはず！
-        console.log("🚗 在庫数:", stock);
-        addLog(`✨ 【実施】極上中古車を仕入れました！在庫: ${stock} 台`);
+        // 在庫リストに新車(0歳)を追加
+        v_stock_list.push(0);
+        addLog(`✨ 【実施】極上中古車を仕入れました！在庫: ${v_stock_list.length} 台`);
     } else if (eventRoll === 11) {
-        // ★車検限界数アップの処理（例：capacity += 10;）
-        capacity += 10;
-        addLog(`✨ 【実施】スタッフ連携が強化されました！`);
+        // 整備能力を一時的に上げる（factoryCapacityに影響するロジックがあるはずです）
+        currentEvent = "big_fleet"; 
+        addLog(`✨ 【実施】スタッフ連携が強化され、整備能力が向上！`);
     }
-    
-    // 最後に一度だけ呼び出せばOK！
     updateDisplay();
 }
     
@@ -1287,12 +1282,19 @@ function applyEvent(eventRoll) {
         yearlyExpense = 0;
     }
 
-    // 10. 来月のイベント予約
+    // --- 10. 来月のイベント予約（整理版） ---
+    // ここでは「次回のイベントを抽選して予約する」ことだけに集中します
     let nextMonthEvent = selectRandomEvent();
+    
     if (nextMonthEvent !== null) {
-        applyEvent(nextMonthEvent);
-        pendingEvent = nextMonthEvent;
+        pendingEvent = nextMonthEvent; // 番号を保持するだけにする
+        applyEvent(nextMonthEvent);    // ボードを表示するだけにする（ここでは実行しない）
+        console.log("📝 次月の予約が完了しました:", pendingEvent);
+    } else {
+        pendingEvent = null;
+        console.log("📝 来月はイベントなし");
     }
+       
     advCarCount = 0;
     advRepairCount = 0;
     month++;
