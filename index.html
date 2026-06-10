@@ -810,74 +810,53 @@ if (mechanics === 0 || currentLiftsCount === 0) {
 
 // --- 追加：イベント実行専用の関数 ---
 function executeEvent(eventRoll) {
-   if (eventRoll === 0) {
-            currentEvent = "sick_mechanic";
-               addLog(`🚨 【イベント】メカニック1名がギックリ腰で一時離脱！`);
-    } 
-    else if (eventRoll === 1) {
-                currentEvent = "parts_delay";
-                cooldown_parts = 12; 
-                addLog(`🚨 【イベント】部品供給遅延により工場の生産性が20%ダウン！`);
-            } 
-            else if (eventRoll === 2) {
-                currentEvent = "accident_fee";
-                funds -= 300000;
-                m_expense += 300000;
-                addLog(`🚨 【イベント】機材・代車トラブルにより突発修繕費30万円が発生。`);
-            } 
-            else if (eventRoll === 3) {
-                currentEvent = "rival_open";
-                cooldown_rival = 36; 
-                let lostLoyals = Math.floor(loyalCustomers * 0.10);
-                loyalCustomers -= lostLoyals;
-                addLog(`🚨 【イベント】競合店開店！既存の顧客ストック(バケツ)が10%(${lostLoyals}名)流出。悪評により販売デマンドも更に低下します。`);
-            } 
-            else if (eventRoll === 4) {
-                currentEvent = "bad_weather";
-                count_weather_this_year++; 
-                addLog(`🚨 【イベント】悪天候直撃！今月の車両販売の来店数が半減します。`);
-            } 
-            else if (eventRoll === 5) {
-                currentEvent = "audit_clerk";
-                cooldown_audit = 12; 
-                eventBoard.style.display = "block";
-                
-                if (assistants > 0) {
-                    addLog(`🛡️ 【イベント】工場監査が入りましたが、補助事務員の活躍によりペナルティを回避！`);
-                } else {
-                    addLog(`🚨 【イベント】工場監査対応のため、事務員1名が通常業務から離脱。`);
-                }
-            }
-            else if (eventRoll === 6) {
-                currentEvent = "sales_order_error";
-                addLog(`🚨 【不祥事イベント】営業マンの発注ミスにより、今月の成約が1台強制キャンセル！(在庫は戻ります)`);
-            }
-            else if (eventRoll === 7) {
-                currentEvent = "repair_complaint";
-                let percent = 0.07 + (Math.random() * 0.03); 
-                let lostLoyals = Math.floor(loyalCustomers * percent);
-                loyalCustomers -= lostLoyals;
-                addLog(`🚨 【不祥事イベント】整備作業への重大クレーム！顧客ストックが ${Math.floor(percent*100)}% (${lostLoyals}名) 流出！`);
-            }
-            else if (eventRoll === 8) {
-                currentEvent = "big_fleet";
-                cooldown_fleet = 36; 
-                addLog(`✨ 【イベント】大口法人から車検特需！入庫デマンド＋20台！`);
-            } 
-            else if (eventRoll === 9) {
-                currentEvent = "sns_buzz";
-                addLog(`✨ 【イベント】SNSで好意的な口コミがバズ！来店客数＋8組！`);
-            } 
-            else if (eventRoll === 10) {
-                currentEvent = "free_car";
-                pendingFreeCar = true; 
-            } 
-            else if (eventRoll === 11) {
-                currentEvent = "staff_awakening";
-                addLog(`✨ 【イベント】スタッフ連携強化！各ピットの車検限界数が＋10台！`);
-            }
-        updateDisplay(); // 数字を画面に反映
+    if (eventRoll === 0) {
+        mechanics -= 1;
+        addLog(`🚨 【実施】メカニックが1名離脱しました。`);
+    } else if (eventRoll === 1) {
+        cooldown_parts = 12;
+        addLog(`🚨 【実施】部品供給遅延：生産性が低下します。`);
+    } else if (eventRoll === 2) {
+        funds -= 300000;
+        m_expense += 300000;
+        addLog(`🚨 【実施】突発修繕費30万円が発生しました。`);
+    } else if (eventRoll === 3) {
+        let lostLoyals = Math.floor(loyalCustomers * 0.10);
+        loyalCustomers -= lostLoyals;
+        addLog(`🚨 【実施】競合店開店！顧客が ${lostLoyals} 名流出しました。`);
+    } else if (eventRoll === 4) {
+        count_weather_this_year++;
+        addLog(`🚨 【実施】悪天候のため来店数が減少しました。`);
+    } else if (eventRoll === 5) {
+        if (assistants > 0) {
+            addLog(`🛡️ 【実施】補助事務員の活躍で監査を回避！`);
+        } else {
+            assistants -= 1;
+            addLog(`🚨 【実施】監査対応により事務員が1名離脱しました。`);
+        }
+    } else if (eventRoll === 6) {
+        // 例: 在庫を1減らす場合
+        // stock -= 1; 
+        addLog(`🚨 【実施】発注ミスにより成約が1台キャンセルされました。`);
+    } else if (eventRoll === 7) {
+        let percent = 0.07 + (Math.random() * 0.03);
+        let lostLoyals = Math.floor(loyalCustomers * percent);
+        loyalCustomers -= lostLoyals;
+        addLog(`🚨 【実施】クレームにより顧客が ${lostLoyals} 名流出しました。`);
+    } else if (eventRoll === 8) {
+        cooldown_fleet = 36;
+        addLog(`✨ 【実施】大口特需により入庫デマンドが増加！`);
+    } else if (eventRoll === 9) {
+        addLog(`✨ 【実施】SNS拡散により来店数がアップ！`);
+    } else if (eventRoll === 10) {
+        // 在庫を増やす処理
+        // carStock += 1;
+        addLog(`✨ 【実施】極上中古車を仕入れました！`);
+    } else if (eventRoll === 11) {
+        addLog(`✨ 【実施】スタッフ連携が強化されました！`);
     }
+    updateDisplay();
+}
     
       // --- 【重要】イベント実行の集中管理関数 ---
 function applyEvent(eventRoll) {
