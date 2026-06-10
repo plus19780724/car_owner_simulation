@@ -244,7 +244,7 @@
     let loanBalance = 15000000;   
     const interestRate = 0.02;    
     
-    let maxStock = 10;           
+    let maxStock = 0;           
     let rent = 200000;           
     
     let v_lift_ages = []; 
@@ -1185,18 +1185,22 @@ function applyEvent(eventRoll) {
     for (let l = 0; l < v_lift_ages.length; l++) {
         v_lift_ages[l] += 1;
         if (v_lift_ages[l] === 36) {
-            totalLiftRepairCost += 200000;
-            addLog(`⚙️ 【設備修繕】第 ${l + 1} リフトが3年経過。経年メンテ費用発生: -20万`);
+            totalLiftRepairCost += 500000;
+            addLog(`⚙️ 【設備修繕】第 ${l + 1} リフトが3年経過。経年メンテ費用発生: -50万`);
         }
     }
     if (totalLiftRepairCost > 0) {
         funds -= totalLiftRepairCost;
         m_expense += totalLiftRepairCost;
     }
+   
+    // --- 固定費引き落とし ---
     let totalStaff = salesmen + mechanics + clerks + assistants;
     let fixedExpenses = rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff);
     funds -= fixedExpenses;
     m_expense += fixedExpenses;
+    
+    // --- 年次展示場維持コスト（12ヶ月目） ---
     if (month % 12 === 0) {
         let annualRepairCost = 0;
         if (maxStock <= 10) annualRepairCost = 500000;
