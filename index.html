@@ -797,15 +797,28 @@ if (mechanics === 0 || currentLiftsCount === 0) {
     let totalStaff = salesmen + mechanics + clerks + assistants;
     return rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff);
 }
-   function selectRandomEvent() {
-    // 40%の確率で「イベントなし(null)」を返す
-    // ※この確率はゲームバランスに合わせて調整してください
-    if (Math.random() < 0.4) {
-        return null; 
+ 
+function selectRandomEvent() {
+    // 40%の確率で「イベントなし」
+    if (Math.random() < 0.4) return null;
+
+    let eventRoll;
+    let isAvailable = false;
+
+    // クールダウンが明けるまで最大10回抽選を繰り返す（無限ループ防止）
+    for (let i = 0; i < 10; i++) {
+        eventRoll = Math.floor(Math.random() * 12);
+
+        // イベントごとのクールダウン判定
+        if (eventRoll === 8 && cooldown_fleet > 0) continue; // 8番はクールダウン中ならダメ
+        if (eventRoll === 1 && cooldown_parts > 1) continue; // 1番はクールダウン中ならダメ
+        // 他のイベントも同様に追加
+
+        isAvailable = true;
+        break;
     }
-    
-    // イベントがある場合は 0 〜 11 の番号をランダムで返す
-    return Math.floor(Math.random() * 12); 
+
+    return isAvailable ? eventRoll : null;
 }
 
 // --- 追加：イベント実行専用の関数 ---
@@ -850,8 +863,10 @@ function executeEvent(eventRoll) {
         addLog(`✨ 【実施】SNS拡散により来店数がアップ！`);
     } else if (eventRoll === 10) {
         // 在庫を増やす処理
-        // carStock += 1;
-        addLog(`✨ 【実施】極上中古車を仕入れました！`);
+        currentEvent = "free_car";
+        carStock += 1;
+        addLog(`✨ 【実施】極上中古車を仕入れました！在庫: ${stock} 台`);
+        updateDisplay(); // ← これが一番重要！
     } else if (eventRoll === 11) {
         addLog(`✨ 【実施】スタッフ連携が強化されました！`);
     }
