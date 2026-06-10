@@ -1076,7 +1076,7 @@ function getEventDescription(eventRoll) {
         let totalStaff = salesmen + mechanics + clerks + assistants; 
         // 家賃(rent) + リフト維持費 + 人件費
         // リフト維持費はリフトの数 × メンテ費用のロジックがあるはずです
-        let fixedExpenses = rent + (v_lift_ages.length * 50000) + (totalStaff * salaryPerStaff);
+        let fixedExpenses = rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff);
         funds -= fixedExpenses;
         m_expense += fixedExpenses;
 
