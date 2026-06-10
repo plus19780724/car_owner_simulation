@@ -1115,12 +1115,14 @@ function getEventDescription(eventRoll) {
         // --- 月間収支のレポート作成部分 ---
         let monthlyNet = m_revenue - m_expense;
         alertReport += 
-            `【顧客ストック】\n・今月の自然流出: -${naturalLostLoyals} 名（変動流出率: ${(currentLostRate*100).toFixed(1)}%）\n\n
-            【月間収支】
-            ・売上合計: ＋${m_revenue.toLocaleString()} 円
-            ・支出合計: －${m_expense.toLocaleString()} 円
-            ・今月の純損益: ${monthlyNet >= 0 ? "＋" : ""}${monthlyNet.toLocaleString()} 円
-            ・現在の手元現金: ${funds.toLocaleString()} 円\n━━━━━━━━━━━━━━━━━━━━`;
+            `【顧客ストック】\n` +
+            `・今月の自然流出: -${naturalLostLoyals} 名（流出率: ${(currentLostRate*100).toFixed(1)}%）\n\n` +
+            `【月間収支】\n` +
+            `・売上合計: ＋${m_revenue.toLocaleString()} 円\n` +
+            `・支出合計: －${m_expense.toLocaleString()} 円\n` +
+            `・今月の純損益: ${monthlyNet >= 0 ? "＋" : ""}${monthlyNet.toLocaleString()} 円\n` +
+            `・現在の手元現金: ${funds.toLocaleString()} 円\n` +
+            `━━━━━━━━━━━━━━━━━━━━`;
 
         if (funds < 0) {
             alert(`🚨 資金ショートにより【倒産】しました（第 ${month} ヶ月目）。`);
