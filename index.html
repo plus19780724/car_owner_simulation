@@ -413,6 +413,7 @@
     let totalCapacity = 0;
     let liftDetails = [];
     let currentLiftsCount = v_lift_ages.length;
+    let bonusApplied = false; // 【追加】ボーナス適用済みか管理するフラグ
 
     for (let i = 1; i <= maxLiftsLimit; i++) {
         if (i <= currentLiftsCount) {
@@ -449,6 +450,13 @@
                 }
             }
 
+            // 【追加】リフトボーナス処理
+            if (eventModifier === "lift_bonus" && cap > 0 && !bonusApplied) {
+                cap += 58;
+                statusStr = statusStr.replace("+58", "+" + cap).replace("+29", "+" + cap) + " [機材増強+58]";
+                bonusApplied = true; // 1台に適用したら終了
+            }
+            
             if (eventModifier === "parts_delay" && cap > 0) {
                 cap = Math.floor(cap * 0.8);
                 statusStr = statusStr.replace("+58", "+" + cap).replace("+29", "+" + cap) + " [部品遅延20%減]";
