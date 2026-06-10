@@ -832,7 +832,7 @@ function executeEvent(eventRoll) {
     } else if (eventRoll === 2) {
         funds -= 300000;
         m_expense += 300000;
-        console.log("💰 資金残高:", funds);
+        console.log("💰 資金残高:", funds,m_expense);
         addLog(`🚨 【実施】突発修繕費30万円が発生しました。`);
     } else if (eventRoll === 3) {
         let lostLoyals = Math.floor(loyalCustomers * 0.10);
@@ -1009,13 +1009,25 @@ function applyEvent(eventRoll) {
 }
 
     function nextMonth() {
-        // 【追加】ここを入れるだけで、ボタンを押した瞬間にボードが消えます
+        // 1. ボード処理（これは一番上でOK）
         const eventBoard = document.getElementById("eventBoard");
-        if (eventBoard) {
-            eventBoard.style.display = "none";
+        if (eventBoard) {eventBoard.style.display = "none";
         }
+    
+        // 2. 【1. 適用フェーズ】前月に予告されたイベントを実行
+    if (pendingEvent !== null) {
+        try { // ここに try を追加します！
+        console.log("🔥 イベント実行開始！番号:", pendingEvent);
+        executeEvent(pendingEvent);//ここで止まっている？
+        console.log("🔥 イベント実行完了！"); 
+        } catch (e) {
+        console.error("🚨 イベント実行中にエラー発生！詳細:", e);
+        }
+        pendingEvent = null;
+    }   
         
-    // 3. 営業フェーズの前処理
+    // 3. 【★ここへ移動】リセット処理をイベント実行の後に行う
+    lastMonthRevenueDisplay = 0;
     lastMonthRevenueDisplay = 0;
     lastMonthExpenseDisplay = 0;
     m_revenue = 0;
@@ -1031,20 +1043,6 @@ function applyEvent(eventRoll) {
     if ((month - 1) % 12 === 0) {
         count_weather_this_year = 0;
     }
-
-    // 2. 【1. 適用フェーズ】前月に予告されたイベントを実行
-    if (pendingEvent !== null) {
-        try { // ここに try を追加します！
-        console.log("🔥 イベント実行開始！番号:", pendingEvent);
-        executeEvent(pendingEvent);//ここで止まっている？
-        console.log("🔥 イベント実行完了！"); 
-        } catch (e) {
-        console.error("🚨 イベント実行中にエラー発生！詳細:", e);
-        }
-        pendingEvent = null;
-    }
-
-   
 
     // 4. 【3. 予告フェーズ】来月のイベントを抽選
     // ※ selectRandomEvent 関数はこの下（関数の外）で定義されている必要があります
