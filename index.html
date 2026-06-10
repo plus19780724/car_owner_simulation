@@ -1007,368 +1007,81 @@ function applyEvent(eventRoll) {
     ];
     return descriptions[eventRoll] || "未知のイベントが発生します。";
 }
+function nextMonth() {
+    // 1. ボード非表示
+    const eventBoard = document.getElementById("eventBoard");
+    if (eventBoard) eventBoard.style.display = "none";
 
-    function nextMonth() {
-       // 1. 【一番上】前月のイベントを「今月の最初」に実行する
-    if (pendingEvent !== null) {
-        try { // ここに try を追加します！
-        console.log("🔥 イベント実行開始！番号:", pendingEvent);
-        executeEvent(pendingEvent);//ここで止まっている？
-        console.log("🔥 イベント実行完了！"); 
-        } catch (e) {
-        console.error("🚨 イベント実行中にエラー発生！詳細:", e);
-        }
-        pendingEvent = null;
-    }   
-
-      // 2. 【2番目】今月のリセット（ここをイベントより後にする！）
+    // 2. 変数の初期化（ここを一番最初に行い、過去の数値をリセット）
     m_revenue = 0;
     m_expense = 0;
     lastMonthRevenueDisplay = 0;
-    lastMonthRevenueDisplay = 0;
     lastMonthExpenseDisplay = 0;
-    
 
     addLog(`<br><span style='color:#2ecc71;'>━━━━━━━━━ 【第 ${month} ヶ月目 営業結果】 ━━━━━━━━━</span>`);
 
+    // --- 各種クールダウン処理 ---
     if (cooldown_rival > 0) cooldown_rival--;
     if (cooldown_parts > 0) cooldown_parts--;
     if (cooldown_audit > 0) cooldown_audit--;
     if (cooldown_fleet > 0) cooldown_fleet--;
+    if ((month - 1) % 12 === 0) count_weather_this_year = 0;
 
-    if ((month - 1) % 12 === 0) {
-        count_weather_this_year = 0;
-    }
-        // 1. ボード処理（これは一番上でOK）
-        const eventBoard = document.getElementById("eventBoard");
-        if (eventBoard) {eventBoard.style.display = "none";
+    // 3. 【計算】イベント実行（m_expense += 300000 などを executeEvent 内で行うこと！）
+    if (pendingEvent !== null) {
+        try {
+            console.log("🔥 イベント実行開始！番号:", pendingEvent);
+            executeEvent(pendingEvent);
+        } catch (e) {
+            console.error("🚨 イベント実行エラー:", e);
         }
-    
-    // 4. 【3. 予告フェーズ】来月のイベントを抽選
-    // ※ selectRandomEvent 関数はこの下（関数の外）で定義されている必要があります
+        pendingEvent = null;
+    }
+
+    // 4. 【営業処理】車両販売・車検整備・固定費の計算
+    // ※すべて m_revenue/m_expense に「+=」で足し込んでください
+    runSalesLogic(); // ※各ロジックを関数化している前提
+    runRepairLogic();
+    runFixedCostLogic();
+
+    // 5. 【レポート作成】すべての計算が終わった直後に組み立てる
+    let monthlyNet = m_revenue - m_expense;
+    let alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n` +
+        `【月間収支】\n` +
+        `・売上合計: ＋${m_revenue.toLocaleString()} 円\n` +
+        `・支出合計: －${m_expense.toLocaleString()} 円\n` +
+        `・今月の純損益: ${monthlyNet >= 0 ? "＋" : ""}${monthlyNet.toLocaleString()} 円\n` +
+        `・現在の手元現金: ${funds.toLocaleString()} 円\n` +
+        `━━━━━━━━━━━━━━━━━━━━`;
+
+    // 6. 資金ショートチェック
+    if (funds < 0) {
+        alert(`🚨 資金ショートにより【倒産】しました（第 ${month} ヶ月目）。`);
+        location.reload();
+        return;
+    }
+
+    // 7. レポート表示
+    alert(alertReport);
+
+    // 8. 【年次決算】
+    if (month % 12 === 0) {
+        processYearlySettlement(); // 決算処理を関数化して呼び出す
+    }
+
+    // 9. 来月のイベント予約
     let nextMonthEvent = selectRandomEvent();
     if (nextMonthEvent !== null) {
-        // --- 修正後: ボードを表示する関数を呼ぶ ---
         applyEvent(nextMonthEvent);
         pendingEvent = nextMonthEvent;
-        console.log("📝 予約完了！セットした値:", pendingEvent);
-        } else {
-    // イベントがない時は pendingEvent を空にしておく
-    pendingEvent = null;
-    // 必要ならログに「来月は平和です」と出すと分かりやすいです
-    addLog("✨ 来月は特にイベントの兆候はありません。");
     }
 
-        // --- 1. 車両販売部門の営業処理 ---
-        let salesBonus = getCarSalesBonus(); 
-        let loyalPenalty = getCarSalesLoyalPenalty(); 
-        
-        let carDemands = Math.floor(Math.random() * (3 - 0 + 1)) + 0 + salesBonus; 
-        if (maxStock === 20) carDemands = Math.floor(Math.random() * (6 - 1 + 1)) + 1 + salesBonus;
-        if (maxStock === 30) carDemands = Math.floor(Math.random() * (10 - 2 + 1)) + 2 + salesBonus;
-        if (maxStock === 40) carDemands = Math.floor(Math.random() * (13 - 3 + 1)) + 3 + salesBonus;
-        if (maxStock === 50) carDemands = Math.floor(Math.random() * (16 - 4 + 1)) + 4 + salesBonus;
-
-        carDemands = Math.max(0, carDemands + loyalPenalty);
-
-        if (loyalPenalty < 0) {
-            addLog(`📦 <font color="#ff7675">【顧客不足ペナルティ】既存客不足による悪評クチコミで車両通常来店が **${loyalPenalty} 組** 減少！</font>`);
-        }
-
-        if (advCarCount > 0) {
-            let totalBoost = 0;
-            for(let a=0; a<advCarCount; a++) {
-                totalBoost += Math.floor(Math.random() * (8 - 4 + 1)) + 4;
-            }
-            carDemands += totalBoost;
-            addLog(`🚀 【広告効果】販売広告により、来店客が計 **＋${totalBoost} 組** ブースト！`);
-        }
-
-        if (currentEvent === "sns_buzz") carDemands += 8;
-        if (currentEvent === "bad_weather") carDemands = Math.floor(carDemands / 2);
-        
-        lastMonthCarDemands = carDemands; 
-
-        let salesCap = salesmen * maxClearancePerSalesman;
-        let carLossMessage = "機会損失なし";
-        let actualSales = 0;
-        let stockShortageCount = 0;
-        let ageRefusedCount = 0;
-
-        if (salesmen === 0) {
-            if (carDemands > 0) carLossMessage = `👤 営業スタッフ不在で ${carDemands}組 離脱`;
-            carDemands = 0;
-        } else if (carDemands > salesCap) {
-            let missed = carDemands - salesCap;
-            carDemands = salesCap;
-            carLossMessage = `👤 商談上限超過で ${missed}組 離脱`;
-        }
-
-        if (carDemands > 0) {
-            let baseInterestedBuyers = 0;
-            for (let i = 0; i < carDemands; i++) {
-                if (Math.random() < 0.40) { baseInterestedBuyers++; }
-            }
-            if (baseInterestedBuyers > 0) {
-                for (let b = 0; b < baseInterestedBuyers; b++) {
-                    if (v_stock_list.length === 0) {
-                        stockShortageCount++;
-                        continue;
-                    }
-                    let randomIndex = Math.floor(Math.random() * v_stock_list.length);
-                    let targetCarAge = v_stock_list[randomIndex];
-                    
-                    let finalClosingRate = 1.0; 
-                    if (targetCarAge >= 0 && targetCarAge <= 2) { finalClosingRate = 1.0; } 
-                    else if (targetCarAge >= 3 && targetCarAge <= 5) { finalClosingRate = 0.40; }  
-                    else if (targetCarAge >= 6 && targetCarAge <= 11) { finalClosingRate = 0.15; } 
-                    else if (targetCarAge >= 12) { finalClosingRate = 0.05; }                     
-                    
-                    if (Math.random() < finalClosingRate) {
-                        v_stock_list.splice(randomIndex, 1);
-                        funds += retailPrice;
-                        m_revenue += retailPrice;
-                        actualSales++;
-                        loyalCustomers += 1; 
-                    } else {
-                        ageRefusedCount++;
-                    }
-                }
-            }
-
-            if (currentEvent === "sales_order_error" && actualSales > 0) {
-                actualSales -= 1;
-                funds -= retailPrice;
-                m_revenue -= retailPrice;
-                loyalCustomers = Math.max(0, loyalCustomers - 1);
-                v_stock_list.push(0); 
-                carLossMessage = "⚠️ 発注ミスにより1台キャンセル(車は在庫へ戻りました)";
-            }
-
-            if (actualSales > 0) {
-                addLog(`🚗 中古車が **${actualSales} 台** 成約！(売上: +${(actualSales * retailPrice).toLocaleString()}円)`);
-                totalCarSales += actualSales;       
-                currentYearCarSales += actualSales; 
-            }
-            if (stockShortageCount > 0) carLossMessage = `📦 在庫不足で ${stockShortageCount}組 補給を！`;
-            if (ageRefusedCount > 0 && stockShortageCount === 0 && currentEvent !== "sales_order_error") carLossMessage = `🥀 長期在庫敬遠等で ${ageRefusedCount}組 失注`;
-        }
-
-        for (let i = 0; i < v_stock_list.length; i++) { v_stock_list[i] += 1; }
-        
-        lastMonthCarSales = actualSales;
-        lastMonthCarLossMsg = carLossMessage;
-        alertReport += `【車両販売】\n・来店数: ${lastMonthCarDemands} 組 ➔ 成約: ${actualSales} 台\n・状況: ${carLossMessage}\n\n`;
-
-        // --- 2. 車検整備部門の営業処理 ---
-        let baseRepairDemands = 0; 
-        let advRepairDemands = 0;  
-
-        if (mechanics > 0 && v_lift_ages.length > 0) {
-            let baseMin = 15 + (mechanics - 1) * 10;
-            let baseMax = 25 + (mechanics - 1) * 10;
-            let stockBonus = calculateStockBonus(); 
-            baseMin += stockBonus;
-            baseMax += stockBonus;
-
-            baseMin += (assistants * 4);
-            baseMax += (assistants * 4);
-
-            baseRepairDemands = Math.floor(Math.random() * (baseMax - baseMin + 1)) + baseMin; 
-        }
-
-        if (advRepairCount > 0) {
-            let rawInquiries = 0;
-            for(let r=0; r<advRepairCount; r++) {
-                rawInquiries += Math.floor(Math.random() * (30 - 15 + 1)) + 15;
-            }
-            advRepairDemands = Math.floor(rawInquiries * 0.5); 
-        }
-
-        let repairDemands = baseRepairDemands + advRepairDemands;
-        if (currentEvent === "big_fleet") {
-            repairDemands += 20;
-        }
-        lastMonthRepairDemands = repairDemands;
-
-        let factoryStatus = calculateFactoryStatus(currentEvent);
-        let factoryCapacity = factoryStatus.totalCapacity;
-        let repairLossMessage = "機会損失なし";
-
-        if (repairDemands > factoryCapacity) {
-            let missedRepairs = repairDemands - factoryCapacity;
-            if (v_lift_ages.length === 0) repairLossMessage = `🏋️‍♂️ リフトが0基のため全台辞退`;
-            else if (factoryCapacity === 0) repairLossMessage = `⚠️ スタッフ未配属で -${missedRepairs}台`;
-            else repairLossMessage = `容量オーバーで -${missedRepairs}台`;
-            repairDemands = factoryCapacity;
-        }
-        
-        let repairProfit = repairDemands * 30000; 
-        funds += repairProfit;
-        m_revenue += repairProfit;
-
-        if (repairDemands > 0) {
-            addLog(`🔧 車検整備を **${repairDemands} 台** 完了。 (粗利: +${repairProfit.toLocaleString()}円)`);
-            currentYearRepairDone += repairDemands; 
-            let newLoyals = Math.floor(repairDemands * 0.3);
-            loyalCustomers += newLoyals; 
-        }
-        
-        lastMonthRepairDone = repairDemands;
-        lastMonthRepairLossMsg = repairLossMessage;
-        alertReport += `【車検整備】\n・入庫要求: ${lastMonthRepairDemands} 台 ➔ 完了: ${repairDemands} 台\n・状況: ${repairLossMessage}\n\n`;
-
-        // 🏋️‍♂️ リフト経年メンテ
-        let totalLiftRepairCost = 0;
-        // リフトが1基以上ある場合のみ計算する
-        if (Array.isArray(v_lift_ages) && v_lift_ages.length > 0) {
-            for (let l = 0; l < v_lift_ages.length; l++) {
-            v_lift_ages[l] += 1; 
-                if (v_lift_ages[l] === 36) {
-                totalLiftRepairCost += 200000;
-                addLog(`⚙️ 【設備修繕】第 ${l + 1} リフトが3年経過。費用発生: -20万`);
-                }
-            }
-        }
-        if (totalLiftRepairCost > 0) {
-            funds -= totalLiftRepairCost;
-            m_expense += totalLiftRepairCost;
-        }
-
-        // --- 3. 固定費引き落とし（ここを修正） ---
-        let totalStaff = salesmen + mechanics + clerks + assistants;
-        // v_lift_ages.length が 0 でもエラーにならないように計算
-        let liftMaintenance = (Array.isArray(v_lift_ages) ? v_lift_ages.length : 0) * 100000;
-        let fixedExpenses = rent + liftMaintenance + (totalStaff * salaryPerStaff);
-
-        funds -= fixedExpenses;
-        m_expense += fixedExpenses;
-
-        // 年次店舗修繕コスト（12ヶ月目）
-        let annualRepairCost = 0;
-        if (month % 12 === 0) {
-            if (maxStock <= 10) annualRepairCost = 500000;
-            else if (maxStock <= 20) annualRepairCost = 1000000;
-            else if (maxStock <= 30) annualRepairCost = 1500000;
-            else if (maxStock <= 40) annualRepairCost = 2000000;
-            else annualRepairCost = 2500000;
-
-            funds -= annualRepairCost;
-            m_expense += annualRepairCost;
-        }
-
-        // --- 4. 🛠️ Ver 6.4 修正変更：ロイヤルカスタマー完全ランダム自然流出（バケツの穴） ---
-        let naturalLostLoyals = 0;
-        let currentLostRate = 0;
-        if (loyalCustomers > 0) {
-            // 2.5% 〜 5.5% の間で毎月変動流出
-            currentLostRate = 0.025 + (Math.random() * 0.030); 
-            naturalLostLoyals = Math.ceil(loyalCustomers * currentLostRate); 
-            loyalCustomers = Math.max(0, loyalCustomers - naturalLostLoyals);
-            addLog(`🍂 他社乗換え等により、固定客が **${naturalLostLoyals} 名** 必ず自然減少（今月の流出率: ${(currentLostRate*100).toFixed(1)}%）。`);
-        }
-
-        yearlyRevenue += m_revenue;
-        yearlyExpense += m_expense;
-        totalRevenue += m_revenue;
-        totalExpense += m_expense;
-
-        lastMonthRevenueDisplay = m_revenue;
-        lastMonthExpenseDisplay = m_expense;
-
-             // 【ステップ1】ここを追加して、ボタンを押した時にログが出るか確認する
-    console.log("🔥 nextMonth が実行されました！"); 
-    console.log("🔥 現在の pendingEvent:", pendingEvent);
-        
-    // 1. 変数の初期化（重複を削除）
-    alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n`;
-        
-        // --- 月間収支のレポート作成部分 ---
-        console.log("📊 レポート作成直前の m_expense:", m_expense);
-        console.log("📊 レポート作成直前の funds:", funds);
-        let monthlyNet = m_revenue - m_expense;
-        alertReport += 
-            `【顧客ストック】\n` +
-            `・今月の自然流出: -${naturalLostLoyals} 名（流出率: ${(currentLostRate*100).toFixed(1)}%）\n\n` +
-            `【月間収支】\n` +
-            `・売上合計: ＋${m_revenue.toLocaleString()} 円\n` +
-            `・支出合計: －${m_expense.toLocaleString()} 円\n` +
-            `・今月の純損益: ${monthlyNet >= 0 ? "＋" : ""}${monthlyNet.toLocaleString()} 円\n` +
-            `・現在の手元現金: ${funds.toLocaleString()} 円\n` +
-            `━━━━━━━━━━━━━━━━━━━━`;
-
-        if (funds < 0) {
-            alert(`🚨 資金ショートにより【倒産】しました（第 ${month} ヶ月目）。`);
-            location.reload();
-        }
-
-        alert(alertReport);
-
-        // ==========================================
-        // ⚖️ 年次確定決算
-        // ==========================================
-        if (month % 12 === 0) {
-            let yearNum = month / 12;
-            let currentStockAsset = calculateStockMarketValue(); 
-            let currentYearProfit = (yearlyRevenue + currentStockAsset) - (yearlyExpense + openingStockAsset);
-            
-            let corporationTax = 0;
-            if (currentYearProfit > 0) {
-                corporationTax = Math.floor(currentYearProfit * 0.20);
-                funds -= corporationTax; 
-            }
-
-            let repaidPrincipal = 0;
-            let paidInterest = 0;
-            if (loanBalance > 0) {
-                repaidPrincipal = Math.min(1500000, loanBalance);
-                paidInterest = Math.floor(loanBalance * interestRate);
-                
-                funds -= (repaidPrincipal + paidInterest);
-                loanBalance -= repaidPrincipal;
-                addLog(`🏦 【銀行返済】元金返済: -${repaidPrincipal.toLocaleString()}円 / 利息: -${paidInterest.toLocaleString()}円`);
-            }
-
-            addArchive(yearNum, yearlyRevenue, yearlyExpense, openingStockAsset, currentStockAsset, currentYearProfit, corporationTax, funds, repaidPrincipal, paidInterest, currentYearCarSales, currentYearRepairDone);
-
-            alert(`📊 【第 ${yearNum} 期 年次決算報告】\n━━━━━━━━━━━━━━━━━━━━\n` +
-                  `📊 【当期営業実績】\n` +
-                  `・年間車両販売台数: ${currentYearCarSales} 台\n` +
-                  `・年間車検整備台数: ${currentYearRepairDone} 台\n` +
-                  `━━━━━━━━━━━━━━━━━━━━\n` +
-                  `・年間総売上高(キャッシュイン): +${yearlyRevenue.toLocaleString()} 円\n` +
-                  `・年間総支出額(キャッシュアウト): -${yearlyExpense.toLocaleString()} 円\n` +
-                  `📦 期首在庫高(前の期からの引継): -${openingStockAsset.toLocaleString()} 円\n` +
-                  `📦 期末在庫高(現在の残り車時価): +${currentStockAsset.toLocaleString()} 円\n` +
-                  `━━━━━━━━━━━━━━━━━━━━\n` +
-                  `・★当期確定純利益: ${currentYearProfit >= 0 ? "＋" : ""}${currentYearProfit.toLocaleString()} 円\n` +
-                  `・確定法人税 (20%): -${corporationTax.toLocaleString()} 円\n` +
-                  `━━━━━━━━━━━━━━━━━━━━\n` +
-                  `🏦 【銀行への返済実行】\n` +
-                  `・元金定期償還: -${repaidPrincipal.toLocaleString()} 円\n` +
-                  `・融資利息(2%): -${paidInterest.toLocaleString()} 円\n` +
-                  `・銀行借入金残高: ${loanBalance.toLocaleString()} 円\n` +
-                  `━━━━━━━━━━━━━━━━━━━━\n` +
-                  `・次回への持越手元現金: **${funds.toLocaleString()} 円**`);
-
-            if (funds < 0) {
-                alert(`🚨 決算時の返済・税金により資金ショート、【倒産】しました。`);
-                location.reload();
-            }
-
-            openingStockAsset = currentStockAsset; 
-            currentYearCarSales = 0;   
-            currentYearRepairDone = 0; 
-            yearlyRevenue = 0;
-            yearlyExpense = 0;
-        }
-
-        advCarCount = 0;
-        advRepairCount = 0;
-
-        month++;
-        updateDisplay();
-       }
+    // 10. 後処理と更新
+    advCarCount = 0;
+    advRepairCount = 0;
+    month++;
+    updateDisplay();
+}
     
         // --- ゲーム起動時の初期処理 ---
         // ここで一度計算して画面に反映させる
