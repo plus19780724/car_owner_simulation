@@ -386,86 +386,90 @@
         return calculated;
     }
 
-    function calculateFactoryStatus(eventModifier = null) {
-        let tempMechanics = mechanics;
-        let tempClerks = clerks;
+   function calculateFactoryStatus(eventModifier = null) {
+    // 【修正】フラグを考慮して、今月稼働可能な人数を算出
+    let effectiveMechanics = mechanics - (mechanics_missing ? 1 : 0);
+    let effectiveAssistants = assistants - (assistants_missing ? 1 : 0);
 
-        if (eventModifier === "sick_mechanic") tempMechanics = Math.max(0, tempMechanics - 1);
-        
-        if (eventModifier === "audit_clerk") {
-            if (assistants > 0) {
-                // 🛡️ 補助事務員が監査ペナルティをブロック
-            } else {
-                tempClerks = Math.max(0, tempClerks - 1);
-            }
+    let tempMechanics = effectiveMechanics;
+    let tempClerks = clerks;
+
+    if (eventModifier === "sick_mechanic") tempMechanics = Math.max(0, tempMechanics - 1);
+    
+    if (eventModifier === "audit_clerk") {
+        if (effectiveAssistants > 0) {
+            // 🛡️ 補助事務員が監査ペナルティをブロック
+        } else {
+            tempClerks = Math.max(0, tempClerks - 1);
         }
-
-        let capacity = (effectiveMechanics * 20) + (effectiveAssistants * 5);
-        let liftDetails = [];
-        let currentLiftsCount = v_lift_ages.length;
-
-        for (let i = 1; i <= maxLiftsLimit; i++) {
-            if (i <= currentLiftsCount) {
-                let assignedClerk = 0;
-                let assignedMech = 0;
-                let cap = 0;
-                let statusStr = "❌ 人手不足で停止中 (0台)";
-                let statusClass = "lift-box stop";
-
-                if (tempClerks > 0 || tempMechanics > 0) {
-                    if (tempClerks >= 1 && tempMechanics >= 1) {
-                        assignedClerk = 1;
-                        assignedMech = 1;
-                        tempClerks -= 1;
-                        tempMechanics -= 1;
-                        cap = 29;
-                        statusStr = "🟡 省力稼働中 (+29台)";
-                        statusClass = "lift-box partial";
-
-                        if (tempMechanics >= 1) {
-                            assignedMech = 2;
-                            tempMechanics -= 1;
-                            cap = 58;
-                            statusStr = "🟢 フル稼働中 (+58台)";
-                            statusClass = "lift-box active";
-                        }
-                    } else {
-                        if (tempClerks >= 1) { assignedClerk = 1; tempClerks -= 1; }
-                        let fillMech = Math.min(tempMechanics, 2);
-                        assignedMech = fillMech;
-                        tempMechanics -= fillMech;
-                        statusStr = "❌ 相方が足りず停止 (0台)";
-                        statusClass = "lift-box stop";
-                    }
-                }
-
-                if (eventModifier === "parts_delay" && cap > 0) {
-                    cap = Math.floor(cap * 0.8);
-                    statusStr = statusStr.replace("+58", "+" + cap).replace("+29", "+" + cap) + " [部品遅延20%減]";
-                }
-                if (eventModifier === "staff_awakening" && cap > 0) {
-                    cap += 10;
-                    statusStr = statusStr.replace("+58", "+" + cap).replace("+29", "+" + cap) + " [業務効率UP+10]";
-                }
-
-                totalCapacity += cap;
-                let currentAge = v_lift_ages[i - 1];
-
-                liftDetails.push({
-                    id: i,
-                    exists: true,
-                    statusText: statusStr,
-                    cssClass: statusClass,
-                    mechCount: assignedMech,
-                    clerkCount: assignedClerk,
-                    age: currentAge
-                });
-            } else {
-                liftDetails.push({ id: i, exists: false });
-            }
-        }
-        return { totalCapacity: totalCapacity, details: liftDetails, leftoverMech: tempMechanics, leftoverClerk: tempClerks };
     }
+
+    let totalCapacity = 0; // totalCapacityが未定義にならないよう初期化
+    let liftDetails = [];
+    let currentLiftsCount = v_lift_ages.length;
+
+    for (let i = 1; i <= maxLiftsLimit; i++) {
+        if (i <= currentLiftsCount) {
+            let assignedClerk = 0;
+            let assignedMech = 0;
+            let cap = 0;
+            let statusStr = "❌ 人手不足で停止中 (0台)";
+            let statusClass = "lift-box stop";
+
+            if (tempClerks > 0 || tempMechanics > 0) {
+                if (tempClerks >= 1 && tempMechanics >= 1) {
+                    assignedClerk = 1;
+                    assignedMech = 1;
+                    tempClerks -= 1;
+                    tempMechanics -= 1;
+                    cap = 29;
+                    statusStr = "🟡 省力稼働中 (+29台)";
+                    statusClass = "lift-box partial";
+
+                    if (tempMechanics >= 1) {
+                        assignedMech = 2;
+                        tempMechanics -= 1;
+                        cap = 58;
+                        statusStr = "🟢 フル稼働中 (+58台)";
+                        statusClass = "lift-box active";
+                    }
+                } else {
+                    if (tempClerks >= 1) { assignedClerk = 1; tempClerks -= 1; }
+                    let fillMech = Math.min(tempMechanics, 2);
+                    assignedMech = fillMech;
+                    tempMechanics -= fillMech;
+                    statusStr = "❌ 相方が足りず停止 (0台)";
+                    statusClass = "lift-box stop";
+                }
+            }
+
+            if (eventModifier === "parts_delay" && cap > 0) {
+                cap = Math.floor(cap * 0.8);
+                statusStr = statusStr.replace("+58", "+" + cap).replace("+29", "+" + cap) + " [部品遅延20%減]";
+            }
+            if (eventModifier === "staff_awakening" && cap > 0) {
+                cap += 10;
+                statusStr = statusStr.replace("+58", "+" + cap).replace("+29", "+" + cap) + " [業務効率UP+10]";
+            }
+
+            totalCapacity += cap;
+            let currentAge = v_lift_ages[i - 1];
+
+            liftDetails.push({
+                id: i,
+                exists: true,
+                statusText: statusStr,
+                cssClass: statusClass,
+                mechCount: assignedMech,
+                clerkCount: assignedClerk,
+                age: currentAge
+            });
+        } else {
+            liftDetails.push({ id: i, exists: false });
+        }
+    }
+    return { totalCapacity: totalCapacity, details: liftDetails, leftoverMech: tempMechanics, leftoverClerk: tempClerks };
+}
 
     function updateDisplay() {
         let totalStaff = salesmen + mechanics + clerks + assistants; 
