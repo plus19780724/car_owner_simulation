@@ -255,6 +255,8 @@
     let mechanics = 0;
     let clerks = 0;
     let assistants = 0; 
+    let mechanics_missing = false;
+    let assistants_missing = false;
     const salaryPerStaff = 300000; 
     const maxAssistantsLimit = 3;      
 
@@ -275,7 +277,7 @@
 
     let lastMonthRevenueDisplay = 0;
     let lastMonthExpenseDisplay = 0;
-
+    
     let totalCarSales = 0;      
     let currentYearCarSales = 0; 
     let currentYearRepairDone = 0; 
@@ -824,8 +826,9 @@ function selectRandomEvent() {
 // --- 追加：イベント実行専用の関数 ---
 function executeEvent(eventRoll) {
     if (eventRoll === 0) {
-        mechanics = Math.max(0, mechanics - 1);
-        addLog(`🚨 【実施】メカニックが1名離脱しました。`);
+        // メカニックが欠員している状態にする
+        mechanics_missing = true; 
+        addLog(`🚨 【実施】メカニックが今月は1名欠勤しました！`);
     } else if (eventRoll === 1) {
         cooldown_parts = 12;
         addLog(`🚨 【実施】部品供給遅延：生産性が低下します。`);
@@ -844,8 +847,9 @@ function executeEvent(eventRoll) {
         if (assistants > 0) {
             addLog(`🛡️ 【実施】補助事務員の活躍で監査を回避！`);
         } else {
-            assistants = Math.max(0, assistants - 1);
-            addLog(`🚨 【実施】監査対応により事務員が1名離脱しました。`);
+            // 事務員総数は減らさず、フラグだけを立てる
+            assistants_missing = true;
+            addLog(`🚨 【実施】事務員が今月は欠勤しました！`);
         }
     } else if (eventRoll === 6) {
         // 在庫リストからランダムに1台削除
