@@ -388,8 +388,9 @@
 
    function calculateFactoryStatus(eventModifier = null) {
     // 【修正】メカニックと事務員、両方のフラグを考慮した「今月稼働可能な人数」を算出
-    let effectiveMechanics = mechanics - (mechanics_missing ? 1 : 0);
-    let effectiveAssistants = assistants - (assistants_missing ? 1 : 0);
+    // 【重要修正】0以下にならないように保護する
+    let effectiveMechanics = Math.max(0, mechanics - (mechanics_missing ? 1 : 0));
+    let effectiveAssistants = Math.max(0, assistants - (assistants_missing ? 1 : 0));
 
     let tempMechanics = effectiveMechanics;
     let tempClerks = clerks; 
@@ -851,13 +852,15 @@ function executeEvent(eventRoll) {
     } else if (eventRoll === 4) {
         count_weather_this_year++;
         addLog(`🚨 【実施】悪天候のため来店数が減少しました。`);
+   // 【イベント5の修正】
     } else if (eventRoll === 5) {
         if (assistants > 0) {
-            addLog(`🛡️ 【実施】補助事務員の活躍で監査を回避！`);
+        // 事務員がいれば監査のペナルティを防げる
+        addLog(`🛡️ 【実施】事務員の対応により、監査を無事に回避しました！`);
         } else {
-            // 事務員総数は減らさず、フラグだけを立てる
-            assistants_missing = true;
-            addLog(`🚨 【実施】事務員が今月は欠勤しました！`);
+        // 事務員がいない場合、事務員（事務作業）が欠勤している扱いになり、能力低下などのペナルティを受ける
+        assistants_missing = true;
+        addLog(`🚨 【実施】事務員不在により監査対応ができず、今月は事務作業が滞りました！`);
         }
     } else if (eventRoll === 6) {
         // 在庫リストからランダムに1台削除
@@ -1208,7 +1211,13 @@ function applyEvent(eventRoll) {
     }
        
     // --- 固定費引き落とし ---
-    let totalStaff = salesmen + mechanics + clerks + assistants;
+    // ここでもフラグを考慮し、0以下にならないよう保護する
+    let missingMechanics = mechanics_missing ? 1 : 0;
+    let missingAssistants = assistants_missing ? 1 : 0;
+
+    let totalStaff = Math.max(0, salesmen + mechanics + clerks + assistants - missingMechanics - missingAssistants);
+
+// これで TotalStaff は 2 になるはずです
 
     // 【デバッグ用】固定費計算の直前に挿入してください
 console.log("--- 固定費計算デバッグ ---");
