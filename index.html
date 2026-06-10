@@ -454,7 +454,6 @@
             if (eventModifier === "lift_bonus" && cap > 0 && !bonusApplied) {
                 cap += 20;
                 statusStr = statusStr.replace("+58", "+" + cap).replace("+29", "+" + cap) + " [チームワーク増強+20]";
-                bonusApplied = true; // 1台に適用したら終了
             }
             
             if (eventModifier === "parts_delay" && cap > 0) {
@@ -1000,7 +999,7 @@ function applyEvent(eventRoll) {
             else if (eventRoll === 11) {
                 eventTitle.style.color = "#27ae60";
                 eventTitle.innerText = "🚀 チャンス到来：スタッフたちの電撃覚醒";
-                eventDesc.innerText = "「営業とピットの連携が神がかり、工場内の無駄な動きがゼロに！」\n（今月のみ、稼働している各リフトの車検処理キャパシティが【一律＋10台】上昇しました）";
+                eventDesc.innerText = "「営業とピットの連携が神がかり、工場内の無駄な動きがゼロに！」\n（今月のみ、稼働している各リフトの車検処理キャパシティが【一律＋20台】上昇しました）";
             }
         }
 
