@@ -804,7 +804,12 @@ if (mechanics === 0 || currentLiftsCount === 0) {
 
     // 2. 【1. 適用フェーズ】前月に予告されたイベントを実行
     if (pendingEvent !== null) {
-        applyEvent(pendingEvent);
+        console.log("🔥 イベント実行開始！番号:", pendingEvent);
+        applyEvent(pendingEvent);//ここで止まっている？
+        console.log("🔥 イベント実行完了！");
+        } catch (e) {
+        console.error("🚨 イベント実行中にエラー発生！詳細:", e);
+        }
         pendingEvent = null;
     }
 
