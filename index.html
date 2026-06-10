@@ -1049,6 +1049,8 @@ function applyEvent(eventRoll) {
             console.log("🔥 イベント実行開始！番号:", pendingEvent);
             executeEvent(pendingEvent);
             console.log("🔥 イベント実行完了！");
+            console.log("--- イベント実行後の状態 ---");
+            console.log("assistants:", assistants, "assistants_missing:", assistants_missing);
         } catch (e) {
             console.error("🚨 イベント実行中にエラー発生！詳細:", e);
         }
