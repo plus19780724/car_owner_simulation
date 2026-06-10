@@ -810,6 +810,16 @@ if (mechanics === 0 || currentLiftsCount === 0) {
     
       // --- 【重要】イベント実行の集中管理関数 ---
 function applyEvent(eventRoll) {
+    // 【重要】まず最初にボードのスタイルをデフォルトに戻す
+    const eventBoard = document.getElementById("eventBoard");
+    eventBoard.style.display = "block";
+    eventBoard.style.background = "white"; // デフォルト背景色
+    eventBoard.style.borderColor = "#ccc"; // デフォルト枠線色
+    
+    // タイトルの文字色もリセット
+    const eventTitle = document.getElementById("eventTitle");
+    eventTitle.style.color = "black"; // デフォルト文字色
+    
     if (eventRoll === 0) {
             currentEvent = "sick_mechanic";
             eventBoard.style.display = "block";
