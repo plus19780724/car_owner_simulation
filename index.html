@@ -845,6 +845,8 @@ function executeEvent(eventRoll) {
             addLog(`🛡️ 【実施】補助事務員の活躍で監査を回避！`);
         } else {
             assistants -= 1;
+            console.log("監査イベント実行！現在の事務員数:", assistants); // ここでコンソールを確認
+            if (assistants < 0) assistants = 0;
             addLog(`🚨 【実施】監査対応により事務員が1名離脱しました。`);
         }
     } else if (eventRoll === 6) {
