@@ -1200,17 +1200,6 @@ function applyEvent(eventRoll) {
     funds -= fixedExpenses;
     m_expense += fixedExpenses;
     
-    // --- 年次展示場維持コスト（12ヶ月目） ---
-    if (month % 12 === 0) {
-        let annualRepairCost = 0;
-        if (maxStock <= 10) annualRepairCost = 500000;
-        else if (maxStock <= 20) annualRepairCost = 1000000;
-        else if (maxStock <= 30) annualRepairCost = 1500000;
-        else if (maxStock <= 40) annualRepairCost = 2000000;
-        else annualRepairCost = 2500000;
-        funds -= annualRepairCost;
-        m_expense += annualRepairCost;
-    }
     let naturalLostLoyals = 0;
     let currentLostRate = 0;
     if (loyalCustomers > 0) {
