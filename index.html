@@ -864,7 +864,7 @@ function executeEvent(eventRoll) {
     } else if (eventRoll === 10) {
         // 在庫を増やす処理
         currentEvent = "free_car";
-        carStock += 1;
+        stock += 1;
         addLog(`✨ 【実施】極上中古車を仕入れました！在庫: ${stock} 台`);
         updateDisplay(); // ← これが一番重要！
     } else if (eventRoll === 11) {
