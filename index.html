@@ -848,8 +848,8 @@ function executeEvent(eventRoll) {
             addLog(`🚨 【実施】監査対応により事務員が1名離脱しました。`);
         }
     } else if (eventRoll === 6) {
-        // 例: 在庫を1減らす場合
-        // stock -= 1; 
+        // ★ここを stock -= 1; にしないと在庫が減りません
+        stock -= 1; 
         addLog(`🚨 【実施】発注ミスにより成約が1台キャンセルされました。`);
     } else if (eventRoll === 7) {
         let percent = 0.07 + (Math.random() * 0.03);
@@ -858,18 +858,22 @@ function executeEvent(eventRoll) {
         addLog(`🚨 【実施】クレームにより顧客が ${lostLoyals} 名流出しました。`);
     } else if (eventRoll === 8) {
         cooldown_fleet = 36;
+        // ★特需の効果を発動させるフラグや変数をここに加える必要があります
         addLog(`✨ 【実施】大口特需により入庫デマンドが増加！`);
     } else if (eventRoll === 9) {
+        // ★来店数アップの処理（例：customers += 8;）
+        customers += 8;
         addLog(`✨ 【実施】SNS拡散により来店数がアップ！`);
     } else if (eventRoll === 10) {
-        // 在庫を増やす処理
-        currentEvent = "free_car";
-        stock += 1;
+        stock += 1; // これで在庫が増えるはず！
         addLog(`✨ 【実施】極上中古車を仕入れました！在庫: ${stock} 台`);
-        updateDisplay(); // ← これが一番重要！
     } else if (eventRoll === 11) {
+        // ★車検限界数アップの処理（例：capacity += 10;）
+        capacity += 10;
         addLog(`✨ 【実施】スタッフ連携が強化されました！`);
     }
+    
+    // 最後に一度だけ呼び出せばOK！
     updateDisplay();
 }
     
