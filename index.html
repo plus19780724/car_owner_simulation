@@ -832,6 +832,7 @@ if (mechanics === 0 || currentLiftsCount === 0) {
         // イベントがある時だけアラートを表示
         alert("【来月の予告】\n" + getEventDescription(nextMonthEvent));
         pendingEvent = nextMonthEvent;
+        console.log("📝 予約完了！セットした値:", pendingEvent);
         } else {
     // イベントがない時は pendingEvent を空にしておく
     pendingEvent = null;
