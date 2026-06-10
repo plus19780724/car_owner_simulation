@@ -452,8 +452,8 @@
 
             // 【追加】リフトボーナス処理
             if (eventModifier === "lift_bonus" && cap > 0 && !bonusApplied) {
-                cap += 58;
-                statusStr = statusStr.replace("+58", "+" + cap).replace("+29", "+" + cap) + " [機材増強+58]";
+                cap += 20;
+                statusStr = statusStr.replace("+58", "+" + cap).replace("+29", "+" + cap) + " [チームワーク増強+20]";
                 bonusApplied = true; // 1台に適用したら終了
             }
             
@@ -894,9 +894,13 @@ function executeEvent(eventRoll) {
         v_stock_list.push(0);
         addLog(`✨ 【実施】極上中古車を仕入れました！在庫: ${v_stock_list.length} 台`);
     } else if (eventRoll === 11) {
-        // 整備能力を一時的に上げる（factoryCapacityに影響するロジックがあるはずです）
-        currentEvent = "big_fleet"; 
+        // 1. イベント名を記録
+        currentEvent = "lift_bonus";
+        
         addLog(`✨ 【実施】スタッフ連携が強化され、整備能力が向上！`);
+        // 3. ここで「イベントボーナス付き」で再計算を行う
+        // これにより、画面の表示や売上の計算がボーナス込みになります
+        let status = calculateFactoryStatus("lift_bonus");
     }
     updateDisplay();
 }
