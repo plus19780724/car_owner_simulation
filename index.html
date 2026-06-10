@@ -1015,12 +1015,7 @@ function applyEvent(eventRoll) {
             eventBoard.style.display = "none";
         }
         
-        // 【ステップ1】ここを追加して、ボタンを押した時にログが出るか確認する
-    console.log("🔥 nextMonth が実行されました！"); 
-    console.log("🔥 現在の pendingEvent:", pendingEvent);
-        
-    // 1. 変数の初期化（重複を削除）
-    alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n`;
+   
 
     // 2. 【1. 適用フェーズ】前月に予告されたイベントを実行
     if (pendingEvent !== null) {
@@ -1268,7 +1263,7 @@ function applyEvent(eventRoll) {
             currentLostRate = 0.025 + (Math.random() * 0.030); 
             naturalLostLoyals = Math.ceil(loyalCustomers * currentLostRate); 
             loyalCustomers = Math.max(0, loyalCustomers - naturalLostLoyals);
-            addLog(`🍂 【バケツの穴】他社乗換え等により、固定客が **${naturalLostLoyals} 名** 必ず自然減少（今月の流出率: ${(currentLostRate*100).toFixed(1)}%）。`);
+            addLog(`🍂 他社乗換え等により、固定客が **${naturalLostLoyals} 名** 必ず自然減少（今月の流出率: ${(currentLostRate*100).toFixed(1)}%）。`);
         }
 
         yearlyRevenue += m_revenue;
@@ -1279,7 +1274,16 @@ function applyEvent(eventRoll) {
         lastMonthRevenueDisplay = m_revenue;
         lastMonthExpenseDisplay = m_expense;
 
+             // 【ステップ1】ここを追加して、ボタンを押した時にログが出るか確認する
+    console.log("🔥 nextMonth が実行されました！"); 
+    console.log("🔥 現在の pendingEvent:", pendingEvent);
+        
+    // 1. 変数の初期化（重複を削除）
+    alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n`;
+        
         // --- 月間収支のレポート作成部分 ---
+        console.log("📊 レポート作成直前の m_expense:", m_expense);
+        console.log("📊 レポート作成直前の funds:", funds);
         let monthlyNet = m_revenue - m_expense;
         alertReport += 
             `【顧客ストック】\n` +
