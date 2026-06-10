@@ -958,6 +958,11 @@ function applyEvent(eventRoll) {
 }
 
     function nextMonth() {
+        // 【追加】ここを入れるだけで、ボタンを押した瞬間にボードが消えます
+        const eventBoard = document.getElementById("eventBoard");
+        if (eventBoard) {
+            eventBoard.style.display = "none";
+        }
         
         // 【ステップ1】ここを追加して、ボタンを押した時にログが出るか確認する
     console.log("🔥 nextMonth が実行されました！"); 
