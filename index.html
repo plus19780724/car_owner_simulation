@@ -400,7 +400,7 @@
             }
         }
 
-        let totalCapacity = 0;
+        let capacity = (effectiveMechanics * 20) + (effectiveAssistants * 5);
         let liftDetails = [];
         let currentLiftsCount = v_lift_ages.length;
 
@@ -1008,6 +1008,10 @@ function applyEvent(eventRoll) {
 }
 
    function nextMonth() {
+    // 欠勤フラグを考慮した実働人数を計算
+    let effectiveMechanics = mechanics - (mechanics_missing ? 1 : 0);
+    let effectiveAssistants = assistants - (assistants_missing ? 1 : 0);
+       
     // 1. ボード処理
     const eventBoard = document.getElementById("eventBoard");
     if (eventBoard) {
@@ -1194,7 +1198,7 @@ function applyEvent(eventRoll) {
     }
        
     // --- 固定費引き落とし ---
-    let totalStaff = salesmen + mechanics + clerks + assistants;
+    let totalStaff = salesmen + effectiveMechanics + clerks + effectiveAssistants;
 
     // 【デバッグ用】固定費計算の直前に挿入してください
 console.log("--- 固定費計算デバッグ ---");
@@ -1308,6 +1312,9 @@ console.log("TotalStaff:", totalStaff);
        
     advCarCount = 0;
     advRepairCount = 0;
+    // ここでフラグをオフに戻すことで、翌月には元通りになる
+    mechanics_missing = false;
+    assistants_missing = false;
     month++;
     updateDisplay();
 }
