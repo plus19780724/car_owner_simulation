@@ -245,7 +245,8 @@
     const interestRate = 0.02;    
     
     let maxStock = 0;           
-    let rent = 200000;           
+    let rent = 200000; 
+    let pendingFreeCar = false; // 初期状態は「なし」
     
     let v_lift_ages = []; 
     let liftMaintenance = 0;     
@@ -1008,15 +1009,6 @@ function applyEvent(eventRoll) {
                 eventTitle.style.color = "#27ae60";
                 eventTitle.innerText = "🚀 チャンス到来：スタッフたちの電撃覚醒";
                 eventDesc.innerText = "「営業とピットの連携が神がかり、工場内の無駄な動きがゼロに！」\n（今月のみ、稼働している各リフトの車検処理キャパシティが【一律＋20台】上昇しました）";
-            }
-        }
-
-        if (pendingFreeCar) {
-            if (v_stock_list.length < maxStock) {
-                v_stock_list.push(0);
-                addLog(`✨ 【イベント】仕入れ原価0円の中古車を1台直接買い取り、展示場へ追加しました！`);
-            } else {
-                addLog(`✨ 【イベント】下取り買取が成立しましたが、展示場が満車のため辞退しました。`);
             }
         }
 
