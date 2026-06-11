@@ -1039,6 +1039,8 @@ function applyEvent(eventRoll) {
 }
 
    function nextMonth() {
+    // 【追加】月が変わるごとに、以前のイベントを一度リセットする
+    currentEvent = null;
     // 欠勤フラグを考慮した実働人数を計算
     let effectiveMechanics = mechanics - (mechanics_missing ? 1 : 0);
     let effectiveAssistants = assistants - (assistants_missing ? 1 : 0);
