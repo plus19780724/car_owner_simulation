@@ -860,6 +860,7 @@ function executeEvent(eventRoll) {
         loyalCustomers -= lostLoyals;
         addLog(`🚨 【実施】競合店開店！顧客が ${lostLoyals} 名流出しました。`);
     } else if (eventRoll === 4) {
+        currentEvent = "bad_weather"; // イベント発生を記録
         count_weather_this_year++;
         addLog(`🚨 【実施】悪天候のため来店数が減少しました。`);
    // 【イベント5の修正】
@@ -1101,8 +1102,9 @@ function applyEvent(eventRoll) {
         addLog(`🚀 【広告効果】販売広告により、来店客が計 **＋${totalBoost} 組** ブースト！`);
     }
 
-    if (currentEvent === "sns_buzz") carDemands += 8;
-    if (currentEvent === "bad_weather") carDemands = Math.floor(carDemands / 2);
+    if (currentEvent === "sns_buzz") {carDemands += 8;}
+    if (currentEvent === "bad_weather") {carDemands = Math.floor(carDemands / 2);
+    }
     lastMonthCarDemands = carDemands;
 
     let salesCap = salesmen * maxClearancePerSalesman;
