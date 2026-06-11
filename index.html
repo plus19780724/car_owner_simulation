@@ -124,14 +124,14 @@
     <div class="status-board">
         <div class="status-item">経過月数<br><div class="status-value" id="m-month">1ヶ月目</div></div>
         <div class="status-item">手元資金(現金)<br><div class="status-value" id="m-funds">15,000,000円</div></div>
-        <div class="status-item">来月の予定固定費<br><div class="status-value" id="m-expenses">0円</div></div>
+        <div class="status-item">来月の総支出予定<br><div class="status-value" id="m-expenses">0円</div></div>
         <div class="status-item">展示車在庫<br><div class="status-value" id="m-stock">0 / 10 台</div></div>
         <div class="status-item">借入金残高<br><div class="status-value" id="m-loan" style="color:#ff7675;">15,000,000円</div></div>
     </div>
 
     <div class="finance-board">
-        <div class="finance-item">💰 直近の月間売上高<br><div class="finance-val-plus" id="f-month-revenue">0円</div></div>
-        <div class="finance-item">💸 直近の月間総支出<br><div class="finance-val-minus" id="f-month-expense">0円</div></div>
+        <div class="finance-item">💰 前月の月間売上高<br><div class="finance-val-plus" id="f-month-revenue">0円</div></div>
+        <div class="finance-item">💸 前月の月間総支出<br><div class="finance-val-minus" id="f-month-expense">0円</div></div>
         <div class="finance-item">📦 現在の在庫時価棚卸高<br><div class="finance-val-stock" id="f-stock-asset">0円</div></div>
         <div class="finance-item">📈 累計売上高<br><div class="finance-val-plus" id="f-total-revenue">0円</div></div>
         <div class="finance-item">📉 累計支出額<br><div class="finance-val-minus" id="f-total-expense">0円</div></div>
@@ -485,6 +485,17 @@
 }
     
     function updateDisplay() {
+        // --- updateDisplay() 内の表示ロジック ---
+
+        // 1. 固定費の計算（既存関数を使用）
+        let baseFixedExpenses = calculateMonthlyExpenses();
+        // 2. 追加広告費の加算（1回30万円として計算）
+        let plannedAdExpenses = (advCarCount * 300000) + (advRepairCount * 300000);
+        // 3. 来月の予定総支出
+        let nextMonthTotalExpensePlan = baseFixedExpenses + plannedAdExpenses;
+        // 4. UIに反映（ID名は適宜合わせてください）
+        document.getElementById("f-next-month-expense-plan").innerText = `${nextMonthTotalExpensePlan.toLocaleString()}円`;
+
         console.log("現在のmaxStock:", maxStock); // これを足してコンソールを確認！
         let totalStaff = salesmen + mechanics + clerks + assistants; 
         let currentLiftsCount = v_lift_ages.length;
@@ -515,8 +526,8 @@
         document.getElementById("m-stock").innerText = `${v_stock_list.length} / ${maxStock} 台`;
         document.getElementById("m-loan").innerText = `${loanBalance.toLocaleString()}円`;
 
-        document.getElementById("f-month-revenue").innerText = `${lastMonthRevenueDisplay.toLocaleString()}円`;
-        document.getElementById("f-month-expense").innerText = `${lastMonthExpenseDisplay.toLocaleString()}円`;
+        document.getElementById("f-last-month-revenue").innerText = `${lastMonthRevenueDisplay.toLocaleString()}円`;
+        document.getElementById("f-last-month-expense").innerText = `${lastMonthExpenseDisplay.toLocaleString()}円`;
         document.getElementById("f-stock-asset").innerText = `${currentStockAsset.toLocaleString()}円`;
         document.getElementById("f-total-revenue").innerText = `${totalRevenue.toLocaleString()}円`;
         document.getElementById("f-total-expense").innerText = `${totalExpense.toLocaleString()}円`;
@@ -1024,6 +1035,9 @@ function applyEvent(eventRoll) {
         }
 
    function nextMonth() {
+       // 【追加】前月として確定させるために一時保存
+    lastMonthRevenueDisplay = m_revenue;
+    lastMonthExpenseDisplay = m_expense;
     // 欠勤フラグを考慮した実働人数を計算
     let effectiveMechanics = mechanics - (mechanics_missing ? 1 : 0);
     let effectiveAssistants = assistants - (assistants_missing ? 1 : 0);
