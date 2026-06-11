@@ -493,8 +493,8 @@
         let plannedAdExpenses = (advCarCount * 300000) + (advRepairCount * 300000);
         // 3. 来月の予定総支出
         let nextMonthTotalExpensePlan = baseFixedExpenses + plannedAdExpenses;
-        // 4. UIに反映（ID名は適宜合わせてください）
-        document.getElementById("f-next-month-expense-plan").innerText = `${nextMonthTotalExpensePlan.toLocaleString()}円`;
+        // 4. HTMLのID "m-expenses" に値を反映
+        document.getElementById("m-expenses").innerText = `${nextMonthTotalExpensePlan.toLocaleString()}円`;
 
         console.log("現在のmaxStock:", maxStock); // これを足してコンソールを確認！
         let totalStaff = salesmen + mechanics + clerks + assistants; 
