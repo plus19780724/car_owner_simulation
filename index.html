@@ -600,7 +600,7 @@ if (mechanics === 0 || currentLiftsCount === 0) {
 
         let upgradeBtn = document.getElementById("btn-showroom-upgrade");
         if (maxStock < 50) {
-            upgradeBtn.innerHTML = `🏢 展示場を拡張（＋10台）<br>費用300万 / 家賃+50万`;
+            upgradeBtn.innerHTML = `🏢 展示場を拡張（＋10台）<br>費用300万 / 家賃+20万`;
             upgradeBtn.disabled = false;
         } else {
             upgradeBtn.innerHTML = "🏢 展示場は最大サイズです<br>(上限50台到達)";
@@ -793,7 +793,7 @@ if (mechanics === 0 || currentLiftsCount === 0) {
             lastMonthExpenseDisplay += 3000000; 
             maxStock += 10; 
             rent += 200000; 
-            addLog(`🏢 展示場を拡張し上限を ${maxStock} 台にしました（費用-300万円）。毎月の固定家賃が50万円上昇します。`);
+            addLog(`🏢 展示場を拡張し上限を ${maxStock} 台にしました（費用-300万円）。毎月の固定家賃が20万円上昇します。`);
         } else { 
             alert("❌ 拡張費用300万円が足りません。"); 
         }
