@@ -1123,7 +1123,7 @@ function applyEvent(eventRoll) {
     if (carDemands > 0) {
         let baseInterestedBuyers = 0;
         for (let i = 0; i < carDemands; i++) {
-            if (Math.random() < 0.40) { baseInterestedBuyers++; }
+            if (Math.random() < 0.50) { baseInterestedBuyers++; }
         }
         if (baseInterestedBuyers > 0) {
             for (let b = 0; b < baseInterestedBuyers; b++) {
@@ -1134,10 +1134,10 @@ function applyEvent(eventRoll) {
                 let randomIndex = Math.floor(Math.random() * v_stock_list.length);
                 let targetCarAge = v_stock_list[randomIndex];
                 let finalClosingRate = 1.0;
-                if (targetCarAge >= 0 && targetCarAge <= 2) { finalClosingRate = 1.0; }
+                if (targetCarAge >= 0 && targetCarAge <= 2) { finalClosingRate = 0.80; }
                 else if (targetCarAge >= 3 && targetCarAge <= 5) { finalClosingRate = 0.40; }
-                else if (targetCarAge >= 6 && targetCarAge <= 11) { finalClosingRate = 0.15; }
-                else if (targetCarAge >= 12) { finalClosingRate = 0.05; }
+                else if (targetCarAge >= 6 && targetCarAge <= 11) { finalClosingRate = 0.20; }
+                else if (targetCarAge >= 12) { finalClosingRate = 0.10; }
                 if (Math.random() < finalClosingRate) {
                     v_stock_list.splice(randomIndex, 1);
                     funds += retailPrice;
