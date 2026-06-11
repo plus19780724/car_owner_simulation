@@ -848,8 +848,9 @@ function executeEvent(eventRoll) {
         mechanics_missing = true; 
         addLog(`🚨 【実施】メカニックが今月は1名欠勤しました！`);
     } else if (eventRoll === 1) {
-        cooldown_parts = 12;
-        addLog(`🚨 【実施】部品供給遅延：生産性が低下します。`);
+        cooldown_parts = 3;
+        currentEvent = "parts_delay"; // 【重要】この合図を出す
+        addLog(`🚨 【実施】部品供給遅延：生産性が3か月低下します。`);
     } else if (eventRoll === 2) {
         funds -= 300000;
         m_expense += 300000;
@@ -1058,12 +1059,17 @@ function applyEvent(eventRoll) {
 
     // 3. クールダウン・カウント処理
     if (cooldown_rival > 0) cooldown_rival--;
-    if (cooldown_parts > 0) cooldown_parts--;
+    if (cooldown_parts > 0) {
+        cooldown_parts--;
+        if (cooldown_parts === 0) {
+            currentEvent = null; // 12ヶ月経ったらフラグを消す
+        }
+    }
     if (cooldown_audit > 0) cooldown_audit--;
     if (cooldown_fleet > 0) {
         cooldown_fleet--;
         if (cooldown_fleet === 0) {
-        currentEvent = null; // カウンターが切れたらフラグもクリアする
+            currentEvent = null; // カウンターが切れたらフラグもクリアする
         }
     }
     if ((month - 1) % 12 === 0) {
