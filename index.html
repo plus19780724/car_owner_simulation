@@ -873,12 +873,27 @@ function executeEvent(eventRoll) {
         addLog(`🚨 【実施】事務員不在により監査対応ができず、今月は事務作業が滞りました！`);
         }
     } else if (eventRoll === 6) {
-        // 在庫リストからランダムに1台削除
-        if (v_stock_list.length > 0) {
-            v_stock_list.pop();
-            addLog(`🚨 【実施】発注ミスにより在庫が1台キャンセルされました。`);
+    if (actualSales > 0) {
+        // 1. 成約数と売上の取り消し処理
+        actualSales -= 1;
+        let cancelAmount = retailPrice; // 1台分の販売価格
+        
+        m_revenue -= cancelAmount; // 月間売上から減らす
+        funds -= cancelAmount;     // 手元現金から引く
+        
+        // 2. 在庫を1台復活させる（車齢は仮に3年として戻す）
+        v_stock_list.push(3); 
+        
+        // 3. プレイヤーへの通知
+        addLog(`🚨 【契約破棄】残念ながら1件成約が取り消されました。`);
+        addLog(`📉 成約数: -1台 | 売上: -${cancelAmount.toLocaleString()}円 | 在庫: +1台`);
+        
+        // 【重要】画面を最新にする
+        updateDisplay(); 
+        } else {
+        addLog(`✨ 【発注ミス】報告がありましたが、今月は成約がなかったため影響なし！`);
         }
-    } else if (eventRoll === 7) {
+    }else if (eventRoll === 7) {
         let percent = 0.07 + (Math.random() * 0.03);
         let lostLoyals = Math.floor(loyalCustomers * percent);
         loyalCustomers -= lostLoyals;
