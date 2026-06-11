@@ -946,7 +946,7 @@ function applyEvent(eventRoll) {
     } 
     else if (eventRoll === 1) {
                 eventTitle.innerText = "⚠️ 突発トラブル：パーツ供給の遅延";
-                eventDesc.innerText = "「世界的な物流遅延で、車検用の交換部品の届きが大幅に遅れています…」\n（今月のみ、各リフトの車検完了上限台数が一律20%ダウンしました）";
+                eventDesc.innerText = "「世界的な物流遅延で、車検用の交換部品の入荷が大幅に遅れています…」\n（3か月間、各リフトの車検完了上限台数が一律20%ダウンしました）";
             } 
             else if (eventRoll === 2) {
                 eventTitle.innerText = "⚠️ 突発トラブル：代車・設備の突発故障";
@@ -987,7 +987,7 @@ function applyEvent(eventRoll) {
             else if (eventRoll === 8) {
                 eventTitle.style.color = "#27ae60";
                 eventTitle.innerText = "🚀 チャンス到来：大口の法人フリート契約獲得";
-                eventDesc.innerText = "「地元の運送会社から、一括での車検入庫オーダーを勝ち取りました！」\n（今月のみ、車検の入庫要求台数が【＋20台】一気にブーストされました）";
+                eventDesc.innerText = "「地元の運送会社から、一括での車検入庫オーダーを勝ち取りました！」\n（3か月間、車検の入庫要求台数が【＋20台】一気にブーストされました）";
             } 
             else if (eventRoll === 9) {
                 eventTitle.style.color = "#27ae60";
@@ -1019,24 +1019,6 @@ function applyEvent(eventRoll) {
                 addLog(`✨ 【イベント】下取り買取が成立しましたが、展示場が満車のため辞退しました。`);
             }
         }
-
-      function getEventDescription(eventRoll) {
-    const descriptions = [
-        "メカニック1名がギックリ腰で一時離脱します。",
-        "部品供給遅延が発生します。",
-        "機材・代車トラブルが発生します。",
-        "競合店が開店します。",
-        "悪天候が予想されます。",
-        "工場監査が入ります。",
-        "発注ミスが起きるかもしれません。",
-        "整備作業へのクレーム対応が必要です。",
-        "大口法人からの特需が期待できます。",
-        "SNSで口コミが拡散しそうです。",
-        "下取り買取のチャンスです。",
-        "スタッフ連携が強化されます。"
-    ];
-    return descriptions[eventRoll] || "未知のイベントが発生します。";
-}
 
    function nextMonth() {
     // 欠勤フラグを考慮した実働人数を計算
