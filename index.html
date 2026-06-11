@@ -1039,8 +1039,6 @@ function applyEvent(eventRoll) {
 }
 
    function nextMonth() {
-    // 【追加】月が変わるごとに、以前のイベントを一度リセットする
-    currentEvent = null;
     // 欠勤フラグを考慮した実働人数を計算
     let effectiveMechanics = mechanics - (mechanics_missing ? 1 : 0);
     let effectiveAssistants = assistants - (assistants_missing ? 1 : 0);
@@ -1061,19 +1059,23 @@ function applyEvent(eventRoll) {
 
     // 3. クールダウン・カウント処理
     if (cooldown_rival > 0) cooldown_rival--;
+    
     if (cooldown_parts > 0) {
         cooldown_parts--;
-        if (cooldown_parts === 0) {
-            currentEvent = null; // 12ヶ月経ったらフラグを消す
+            if (cooldown_parts === 0 && currentEvent === "parts_delay") { currentEvent = null; }
         }
     }
+       
     if (cooldown_audit > 0) cooldown_audit--;
+    
     if (cooldown_fleet > 0) {
         cooldown_fleet--;
         if (cooldown_fleet === 0) {
-            currentEvent = null; // カウンターが切れたらフラグもクリアする
+        // カウンターが尽きたらイベント8を終了
+            if (currentEvent === "big_fleet") { currentEvent = null; }
         }
     }
+    
     if ((month - 1) % 12 === 0) {
         count_weather_this_year = 0;
     }
