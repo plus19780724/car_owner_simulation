@@ -881,6 +881,7 @@ function executeEvent(eventRoll) {
         // 【修正：流出数に応じた現金ペナルティを課す】
         let penalty = lostLoyals * 100000; // 1人あたり10万円の損失と見なす
         funds -= penalty;
+        m_expense += penalty;     // 年間集計（決算）に反映させるために加算
         addLog(`🚨 【実施】競合店開店！顧客が ${lostLoyals} 名流出しました。`);
     } else if (eventRoll === 4) {
         currentEvent = "bad_weather"; // イベント発生を記録
@@ -988,6 +989,9 @@ function applyEvent(eventRoll) {
                 eventDesc.innerText = "「無料代車の車検切れと、ピットリフトのセンサー不調が同時発生！」\n（突発的な設備修繕費用として、今月の支出に30万円が強制追加されます）";
             } 
             else if (eventRoll === 3) {
+                // 【修正】applyEventの中で再度計算を行い、表示用の変数を定義する
+                let lostLoyals = Math.floor(loyalCustomers * 0.10);
+                let penalty = lostLoyals * 100000;
                 eventTitle.innerText = "⚠️ 突発トラブル：格安ライバル店の電撃オープン";
                 // 全て半角のバッククォートで囲み、余計な記号を削除しました
                 eventDesc.innerText = `近隣に、安さを売りにした大型スピード車検専門店が出店！（経営打撃：流出による既存顧客維持の穴埋めで -${penalty.toLocaleString()}円 発生！）`;
