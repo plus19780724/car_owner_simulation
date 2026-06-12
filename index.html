@@ -1045,35 +1045,30 @@ function applyEvent(eventRoll) {
         }
 
    function nextMonth() {
-       // 2. 「来月の予定」のための固定費を再計算
-    let totalStaff = salesmen + mechanics + clerks + assistants;
-    let MonthFixed = rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff);
-    // 1. 今月確定した「前月実績」を計算（変動費＋固定費）
-    // m_expense は各イベントやボタンで加算されている前提です
-    lastMonthExpenseDisplay = m_expense; 
-    lastMonthRevenueDisplay = m_revenue;
+     // 1. 【計算】固定費を算出（変数名を monthlyFixed に統一）
+        let totalStaff = salesmen + mechanics + clerks + assistants;
+        let monthlyFixed = rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff);
     
-       // 前月の総支出として、変動費(m_expense) ＋ 固定費(monthlyFixed) を代入
-    lastMonthExpenseDisplay = m_expense + monthlyFixed;
-    // 3. 【反映】来月の固定費として保存
-    currentMonthFixed = nextMonthFixed; // これを表示用変数に代入
-    // 欠勤フラグを考慮した実働人数を計算
-    let effectiveMechanics = mechanics - (mechanics_missing ? 1 : 0);
-    let effectiveAssistants = assistants - (assistants_missing ? 1 : 0);
-       
-    // 1. ボード処理
-    const eventBoard = document.getElementById("eventBoard");
-    if (eventBoard) {
-        eventBoard.style.display = "none";
-    }
-    // 3. 次月用変数にセット
-    currentMonthFixed = nextMonthFixed;
-    // 2. 【リセット】今月分を空にする
-    currentMonthFixed = 0;
-    currentMonthAd = 0;
-    currentMonthBuy = 0;
-    m_revenue = 0;
-    m_expense = 0;
+    // 2. 【記録】前月の総支出実績を確定
+    // 変動費(m_expense) ＋ 今月の固定費(monthlyFixed) を代入
+        lastMonthExpenseDisplay = m_expense + monthlyFixed; 
+        lastMonthRevenueDisplay = m_revenue;
+    
+    // 3. 【表示用】「今月の引き落し予定」として固定費を保存
+        currentMonthFixed = monthlyFixed; 
+
+    // 4. 【処理】ボード処理など
+        const eventBoard = document.getElementById("eventBoard");
+        if (eventBoard) {
+            eventBoard.style.display = "none";
+        }
+
+    // 5. 【リセット】次月のために「今月の変動費」だけをリセット
+    // ※ currentMonthFixed (表示用) は 0 にしてはいけないので、ここから外します
+        m_revenue = 0;
+        m_expense = 0;
+        currentMonthAd = 0;
+        currentMonthBuy = 0;
 
     addLog(`<br><span style='color:#2ecc71;'>━━━━━━━━━ 【第 ${month} ヶ月目 営業結果】 ━━━━━━━━━</span>`);
 
