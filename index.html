@@ -1382,7 +1382,8 @@ console.log("TotalStaff:", totalStaff);
     console.log("確定前の monthlyFixed (再計算):", rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff));
      console.log("--- 【集計デバッグ終了】 ---");
        // ここで合計を確定させる行
-    lastMonthExpenseDisplay = m_expense + (rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff));
+    lastMonthExpenseDisplay = m_expense;
+    lastMonthRevenueDisplay = m_revenue;
 
        // 5. 【リセット】次月のために「今月の変動費」だけをリセット
     // ※ currentMonthFixed (表示用) は 0 にしてはいけないので、ここから外します
