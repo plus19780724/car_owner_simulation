@@ -1014,8 +1014,14 @@ function applyEvent(eventRoll) {
                 }
             }
             else if (eventRoll === 6) {
+                if (lastMonthCarSales > 0) {
                 eventTitle.innerText = "🚨 重大トラブル：営業マンの発注・書類ミス";
                 eventDesc.innerText = "「商談成約車のオプション発注、または書類手続きに重大なミスが発覚しキャンセルに…」\n（今月成約した車両のうち、強制的に【マイナス1台】失注となりました。仕入在庫は手元に戻ります）";
+                } else {
+                // 成約が0の時の平和なメッセージ
+                eventTitle.innerText = "🍀 営業報告：確認の結果...";
+                eventDesc.innerText = "「今月は車両購入の受注がなかったので今のところ平和に業務が進んでいます。」";
+                }
             }
             else if (eventRoll === 7) {
                 eventTitle.innerText = "🚨 重大トラブル：車検整備の作業内容に大クレーム発生";
