@@ -496,21 +496,22 @@
 }
     
     function updateDisplay() {
-        // --- updateDisplay() 内の表示ロジック ---
+        // --- ① 今月の予定支出の表示 ---
+        let currentTotalExpense = currentMonthFixed + currentMonthAd + currentMonthBuy;
+        document.getElementById("m-expenses").innerText = `${currentTotalExpense.toLocaleString()}円`;
 
-        // 1. 固定費の計算（既存関数を使用）
-        let baseFixedExpenses = calculateMonthlyExpenses();
-        // 2. 追加広告費の加算（1回30万円として計算）
-        let plannedAdExpenses = (advCarCount * 300000) + (advRepairCount * 300000);
-        // 3. 来月の予定総支出
-        let nextMonthTotalExpensePlan = baseFixedExpenses + plannedAdExpenses;
-        // 4. HTMLのID "m-expenses" に値を反映
-        document.getElementById("m-expenses").innerText = `${nextMonthTotalExpensePlan.toLocaleString()}円`;
+        // --- ② 前月実績の表示 ---
+        document.getElementById("f-last-month-revenue").innerText = `${lastMonthRevenueDisplay.toLocaleString()}円`;
+        document.getElementById("f-last-month-expense").innerText = `${lastMonthExpenseDisplay.toLocaleString()}円`;
 
-        console.log("現在のmaxStock:", maxStock); // これを足してコンソールを確認！
+        // --- ③ その他の既存の表示処理 ---
+        document.getElementById("m-month").innerText = `${month}ヶ月目`;
+        document.getElementById("m-funds").innerText = `${funds.toLocaleString()}円`;
+        document.getElementById("m-stock").innerText = `${v_stock_list.length} / ${maxStock} 台`;
+        document.getElementById("m-loan").innerText = `${loanBalance.toLocaleString()}円`;
+        
         let totalStaff = salesmen + mechanics + clerks + assistants; 
         let currentLiftsCount = v_lift_ages.length;
-        let futureExpenses = rent + liftMaintenance + (totalStaff * salaryPerStaff);
 
         let factoryStatus = calculateFactoryStatus();
         let factoryCapacity = factoryStatus.totalCapacity;
@@ -533,7 +534,6 @@
 
         document.getElementById("m-month").innerText = `${month}ヶ月目`;
         document.getElementById("m-funds").innerText = `${funds.toLocaleString()}円`;
-        document.getElementById("m-expenses").innerText = `${futureExpenses.toLocaleString()}円`;
         document.getElementById("m-stock").innerText = `${v_stock_list.length} / ${maxStock} 台`;
         document.getElementById("m-loan").innerText = `${loanBalance.toLocaleString()}円`;
 
@@ -1047,12 +1047,15 @@ function applyEvent(eventRoll) {
         }
 
    function nextMonth() {
-       // 【追加】前月として確定させるために一時保存
-    lastMonthRevenueDisplay = m_revenue;
-    lastMonthExpenseDisplay = lastMonthFixed + lastMonthAd + lastMonthBuy;
+    // 1. 【確定】今月の結果を「前月分」の箱へ保存
     lastMonthFixed = currentMonthFixed;
     lastMonthAd = currentMonthAd;
     lastMonthBuy = currentMonthBuy;
+
+    // 表示用データの更新
+    lastMonthRevenueDisplay = m_revenue;
+    lastMonthExpenseDisplay = lastMonthFixed + lastMonthAd + lastMonthBuy;
+    
     // 欠勤フラグを考慮した実働人数を計算
     let effectiveMechanics = mechanics - (mechanics_missing ? 1 : 0);
     let effectiveAssistants = assistants - (assistants_missing ? 1 : 0);
@@ -1063,15 +1066,12 @@ function applyEvent(eventRoll) {
         eventBoard.style.display = "none";
     }
 
-    // 2. 変数の初期化
+    // 2. 【リセット】今月分を空にする
     currentMonthFixed = 0;
     currentMonthAd = 0;
     currentMonthBuy = 0;
-    lastMonthRevenueDisplay = 0;
-    lastMonthExpenseDisplay = 0;
     m_revenue = 0;
     m_expense = 0;
-    currentMonthExpense = 0;
 
     addLog(`<br><span style='color:#2ecc71;'>━━━━━━━━━ 【第 ${month} ヶ月目 営業結果】 ━━━━━━━━━</span>`);
 
