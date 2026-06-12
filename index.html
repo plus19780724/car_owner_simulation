@@ -496,12 +496,14 @@
 }
     
     function updateDisplay() {
-        // --- ① 今月の予定支出の表示 ---
-        let currentTotalExpense = currentMonthFixed + currentMonthAd + currentMonthBuy;
-        document.getElementById("m-expenses").innerText = `${currentTotalExpense.toLocaleString()}円`;
+        // --- ① 来月の支出予定（人件費 ＋ 維持費） ---
+        // 固定費のみを計算して表示
+        let totalStaff = salesmen + mechanics + clerks + assistants;
+        let plannedFixed = rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff);
+        document.getElementById("m-expenses").innerText = `${plannedFixed.toLocaleString()}円`;
 
-        // --- ② 前月実績の表示 ---
-        document.getElementById("f-last-month-revenue").innerText = `${lastMonthRevenueDisplay.toLocaleString()}円`;
+        // --- ② 前月実績（確定した合計） ---
+        // nextMonth() で計算された lastMonthExpenseDisplay をそのまま表示
         document.getElementById("f-last-month-expense").innerText = `${lastMonthExpenseDisplay.toLocaleString()}円`;
 
         // --- ③ その他の既存の表示処理 ---
@@ -812,6 +814,7 @@ if (mechanics === 0 || currentLiftsCount === 0) {
         if (maxStock >= 50) { alert("❌ 展示場は上限50台に達しています。"); return; }
         if (funds >= 3000000) { 
             funds -= 3000000; 
+            m_expense += 3000000; // ここに必ず加算する
             yearlyExpense += 3000000; 
             lastMonthExpenseDisplay += 3000000; 
             maxStock += 10; 
@@ -1047,14 +1050,13 @@ function applyEvent(eventRoll) {
         }
 
    function nextMonth() {
-    // 1. 【確定】今月の結果を「前月分」の箱へ保存
-    lastMonthFixed = currentMonthFixed;
-    lastMonthAd = currentMonthAd;
-    lastMonthBuy = currentMonthBuy;
+    // 1. 今月確定した「前月実績」を計算（変動費＋固定費）
+    // m_expense は各イベントやボタンで加算されている前提です
+    lastMonthExpenseDisplay = m_expense; 
 
-    // 表示用データの更新
-    lastMonthRevenueDisplay = m_revenue;
-    lastMonthExpenseDisplay = lastMonthFixed + lastMonthAd + lastMonthBuy;
+    // 2. 「来月の予定」のための固定費を再計算
+    let totalStaff = salesmen + mechanics + clerks + assistants;
+    let nextMonthFixed = rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff);
     
     // 欠勤フラグを考慮した実働人数を計算
     let effectiveMechanics = mechanics - (mechanics_missing ? 1 : 0);
@@ -1065,7 +1067,8 @@ function applyEvent(eventRoll) {
     if (eventBoard) {
         eventBoard.style.display = "none";
     }
-
+    // 3. 次月用変数にセット
+    currentMonthFixed = nextMonthFixed;
     // 2. 【リセット】今月分を空にする
     currentMonthFixed = 0;
     currentMonthAd = 0;
