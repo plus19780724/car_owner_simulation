@@ -1372,6 +1372,17 @@ console.log("TotalStaff:", totalStaff);
        
     advCarCount = 0;
     advRepairCount = 0;
+
+    console.log("--- 【集計デバッグ開始】 ---");
+    console.log("確定前の m_expense:", m_expense);
+    console.log("確定前の monthlyFixed (再計算):", rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff));
+
+    // ここで合計を確定させる行
+    lastMonthExpenseDisplay = m_expense + (rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff));
+
+    console.log("確定後の lastMonthExpenseDisplay:", lastMonthExpenseDisplay);
+    console.log("--- 【集計デバッグ終了】 ---");
+       
     // ここでフラグをオフに戻すことで、翌月には元通りになる
        // 2. 【記録】前月の総支出実績を確定
     // 変動費(m_expense) ＋ 今月の固定費(monthlyFixed) を代入
@@ -1388,15 +1399,7 @@ console.log("TotalStaff:", totalStaff);
     assistants_missing = false;
     month++;
     
-    console.log("--- 【集計デバッグ開始】 ---");
-    console.log("確定前の m_expense:", m_expense);
-    console.log("確定前の monthlyFixed (再計算):", rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff));
-
-    // ここで合計を確定させる行
-    lastMonthExpenseDisplay = m_expense + (rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff));
-
-    console.log("確定後の lastMonthExpenseDisplay:", lastMonthExpenseDisplay);
-    console.log("--- 【集計デバッグ終了】 ---");
+    
     updateDisplay();
 }
     
