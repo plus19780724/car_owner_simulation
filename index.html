@@ -234,6 +234,15 @@
 
 <script>
     // --- 経営データ初期値 ---
+
+    // 【これらをプログラムの冒頭に記述】
+    let currentMonthFixed = 0; // 固定費
+    let currentMonthAd = 0;    // 広告費
+    let currentMonthBuy = 0;   // 仕入れ費
+    let lastMonthFixed = 0;    // 前月分の固定費
+    let lastMonthAd = 0;       // 前月分の広告費
+    let lastMonthBuy = 0;      // 前月分の仕入れ費
+    
     let m_revenue = 0;
     let m_expense = 0;   // ここでちゃんと箱を用意しておく！
     let pendingEvent = null;
@@ -741,6 +750,7 @@ if (mechanics === 0 || currentLiftsCount === 0) {
             if (funds >= 300000) {
                 advCarCount++;
                 funds -= 300000;
+                currentMonthAd += 300000; // ここに足す
                 yearlyExpense += 300000; 
                 currentMonthExpense += 300000;
                 addLog(`📢 【広告】車両販売広告を1回追加発注！(今月 ${advCarCount} 回目)`);
@@ -762,7 +772,7 @@ if (mechanics === 0 || currentLiftsCount === 0) {
         if (funds >= buyPrice) {
             funds -= buyPrice;
             yearlyExpense += buyPrice; 
-            currentMonthBuyCost += buyPrice;
+            currentMonthBuy += buyPrice;
             v_stock_list.push(0); 
             addLog(`🟢 【仕入れ】100万円で中古車を1台仕入れました。`);
             updateDisplay();
@@ -1039,7 +1049,10 @@ function applyEvent(eventRoll) {
    function nextMonth() {
        // 【追加】前月として確定させるために一時保存
     lastMonthRevenueDisplay = m_revenue;
-    lastMonthExpenseDisplay = m_expense　+ currentMonthExpense;
+    lastMonthExpenseDisplay = lastMonthFixed + lastMonthAd + lastMonthBuy;
+    lastMonthFixed = currentMonthFixed;
+    lastMonthAd = currentMonthAd;
+    lastMonthBuy = currentMonthBuy;
     // 欠勤フラグを考慮した実働人数を計算
     let effectiveMechanics = mechanics - (mechanics_missing ? 1 : 0);
     let effectiveAssistants = assistants - (assistants_missing ? 1 : 0);
@@ -1051,6 +1064,9 @@ function applyEvent(eventRoll) {
     }
 
     // 2. 変数の初期化
+    currentMonthFixed = 0;
+    currentMonthAd = 0;
+    currentMonthBuy = 0;
     lastMonthRevenueDisplay = 0;
     lastMonthExpenseDisplay = 0;
     m_revenue = 0;
