@@ -748,6 +748,7 @@
             if (funds >= 300000) {
                 advCarCount++;
                 funds -= 300000;
+                m_expense += 300000; // ★ここを修正
                 currentMonthAd += 300000; // ここに足す
                 yearlyExpense += 300000; 
                 currentMonthExpense += 300000;
@@ -757,8 +758,8 @@
             if (funds >= 300000) {
                 advRepairCount++;
                 funds -= 300000;
+                m_expense += 300000; // ★ここを修正（lastMonthExpenseDisplayへの加算は削除）
                 yearlyExpense += 300000; 
-                lastMonthExpenseDisplay += 300000;
                 addLog(`📢 【広告】車検案内DMを1回追加発送！(今月 ${advRepairCount} 回目)`);
             } else { alert("❌ 車検広告費（30万円）が足りません！"); }
         }
@@ -770,6 +771,7 @@
         if (funds >= buyPrice) {
             funds -= buyPrice;
             yearlyExpense += buyPrice; 
+            m_expense += buyPrice;
             currentMonthBuy += buyPrice;
             v_stock_list.push(0); 
             addLog(`🟢 【仕入れ】100万円で中古車を1台仕入れました。`);
