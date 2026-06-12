@@ -752,7 +752,6 @@
                 funds -= 300000;
                 m_expense += 300000; // ★ここを修正
                 currentMonthAd += 300000; // ここに足す
-                yearlyExpense += 300000; 
                 currentMonthExpense += 300000;
                 addLog(`📢 【広告】車両販売広告を1回追加発注！(今月 ${advCarCount} 回目)`);
             } else { alert("❌ 販売広告費（30万円）が足りません！"); }
@@ -760,8 +759,7 @@
             if (funds >= 300000) {
                 advRepairCount++;
                 funds -= 300000;
-                m_expense += 300000; // ★ここを修正（lastMonthExpenseDisplayへの加算は削除）
-                yearlyExpense += 300000; 
+                m_expense += 300000; // ★ここを修正（lastMonthExpenseDisplayへの加算は削除） 
                 addLog(`📢 【広告】車検案内DMを1回追加発送！(今月 ${advRepairCount} 回目)`);
             } else { alert("❌ 車検広告費（30万円）が足りません！"); }
         }
@@ -772,7 +770,6 @@
         if (v_stock_list.length >= maxStock) { alert("❌ 展示場が満車です！"); return; }
         if (funds >= buyPrice) {
             funds -= buyPrice;
-            yearlyExpense += buyPrice; 
             m_expense += buyPrice;
             currentMonthBuy += buyPrice;
             v_stock_list.push(0); 
@@ -815,7 +812,6 @@
         if (funds >= 3000000) { 
             funds -= 3000000; 
             m_expense += 3000000; // ここに必ず加算する
-            yearlyExpense += 3000000; 
             maxStock += 10; 
             rent += 200000; 
             addLog(`🏢 展示場を拡張し上限を ${maxStock} 台にしました（費用-300万円）。毎月の固定家賃が20万円上昇します。`);
@@ -829,7 +825,6 @@
         if (v_lift_ages.length >= maxLiftsLimit) { alert("❌ これ以上リフトは設置できません。"); return; }
         if (funds >= 2000000) { 
             funds -= 2000000;
-            yearlyExpense += 2000000;
             m_expense += 2000000;
             v_lift_ages.push(0);
             liftMaintenance += 100000; 
