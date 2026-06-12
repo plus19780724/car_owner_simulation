@@ -267,7 +267,8 @@
 
     let advCarCount = 0;
     let advRepairCount = 0;
-
+    
+    let currentMonthBuyCost = 0;
     let lastMonthCarSales = 0;
     let lastMonthCarDemands = 0;
     let lastMonthCarLossMsg = "-";
@@ -740,7 +741,7 @@ if (mechanics === 0 || currentLiftsCount === 0) {
                 advCarCount++;
                 funds -= 300000;
                 yearlyExpense += 300000; 
-                lastMonthExpenseDisplay += 300000;
+                currentMonthExpense += 300000;
                 addLog(`📢 【広告】車両販売広告を1回追加発注！(今月 ${advCarCount} 回目)`);
             } else { alert("❌ 販売広告費（30万円）が足りません！"); }
         } else if (type === 'repair') {
@@ -760,7 +761,7 @@ if (mechanics === 0 || currentLiftsCount === 0) {
         if (funds >= buyPrice) {
             funds -= buyPrice;
             yearlyExpense += buyPrice; 
-            lastMonthExpenseDisplay += buyPrice;
+            currentMonthBuyCost += buyPrice;
             v_stock_list.push(0); 
             addLog(`🟢 【仕入れ】100万円で中古車を1台仕入れました。`);
             updateDisplay();
@@ -1037,7 +1038,7 @@ function applyEvent(eventRoll) {
    function nextMonth() {
        // 【追加】前月として確定させるために一時保存
     lastMonthRevenueDisplay = m_revenue;
-    lastMonthExpenseDisplay = m_expense;
+    lastMonthExpenseDisplay = m_expense　+ currentMonthExpense;
     // 欠勤フラグを考慮した実働人数を計算
     let effectiveMechanics = mechanics - (mechanics_missing ? 1 : 0);
     let effectiveAssistants = assistants - (assistants_missing ? 1 : 0);
@@ -1053,6 +1054,7 @@ function applyEvent(eventRoll) {
     lastMonthExpenseDisplay = 0;
     m_revenue = 0;
     m_expense = 0;
+    currentMonthExpense = 0;
 
     addLog(`<br><span style='color:#2ecc71;'>━━━━━━━━━ 【第 ${month} ヶ月目 営業結果】 ━━━━━━━━━</span>`);
 
