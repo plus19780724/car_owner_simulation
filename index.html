@@ -493,7 +493,7 @@
         }
     }
     return { totalCapacity: totalCapacity, details: liftDetails, leftoverMech: tempMechanics, leftoverClerk: tempClerks };
-}
+    }
     
     function updateDisplay() {
         // --- ① 来月の支出予定（人件費 ＋ 維持費） ---
@@ -553,44 +553,41 @@
         
         let salesBonus = getCarSalesBonus();
         let loyalPenalty = getCarSalesLoyalPenalty(); 
- // --- updateDisplay内の来店数計算ブロック ---
+         // --- updateDisplay内の来店数計算ブロック ---
 
-// --- ここから書き換え ---
-// --- updateDisplay内のここを書き換えてください ---
+        // --- 1. 車両販売の来店数計算 ---
+        let stockRatio = maxStock > 0 ? (v_stock_list.length / maxStock) : 1;
+        let salesBaseMin = 0;
+        let salesBaseMax = 3;
+        if(maxStock === 20) { salesBaseMin = 1; salesBaseMax = 6; }
+        else if(maxStock === 30) { salesBaseMin = 2; salesBaseMax = 10; }
+        else if(maxStock === 40) { salesBaseMin = 3; salesBaseMax = 13; }
+        else if(maxStock === 50) { salesBaseMin = 4; salesBaseMax = 16; }
 
-// --- 1. 車両販売の来店数計算 ---
-let stockRatio = maxStock > 0 ? (v_stock_list.length / maxStock) : 1;
-let salesBaseMin = 0;
-let salesBaseMax = 3;
-if(maxStock === 20) { salesBaseMin = 1; salesBaseMax = 6; }
-else if(maxStock === 30) { salesBaseMin = 2; salesBaseMax = 10; }
-else if(maxStock === 40) { salesBaseMin = 3; salesBaseMax = 13; }
-else if(maxStock === 50) { salesBaseMin = 4; salesBaseMax = 16; }
+        let f_car_min = Math.max(0, Math.floor((salesBaseMin + salesBonus + loyalPenalty) * stockRatio));
+        let f_car_max = Math.max(0, Math.floor((salesBaseMax + salesBonus + loyalPenalty) * stockRatio));
 
-let f_car_min = Math.max(0, Math.floor((salesBaseMin + salesBonus + loyalPenalty) * stockRatio));
-let f_car_max = Math.max(0, Math.floor((salesBaseMax + salesBonus + loyalPenalty) * stockRatio));
+        // --- 2. 車検入庫数の計算（★ここを分けるのがポイント！） ---
+        let repairBaseMin = 0;
+        let repairBaseMax = 3;
+        // ※ここで車検用の計算ロジック（もしあれば）を定義してください
+        // もし以前のコードでbaseMinを使っていた場合は、ここに本来の数値を入れてください
+    
+        // --- 3. UI表示用のテキスト生成（★ここも変数名を合わせる） ---
+        let forecastText = `通常来店: ${f_car_min}〜${f_car_max}組/月`;
+        if (stockRatio < 1.0) {
+            forecastText += ` <font color="#e67e22">(展示率:${Math.round(stockRatio * 100)}%)</font>`;
+        }
+        // ...（以下、bonusPartsの処理などはそのまま）...
+        document.getElementById("c-car-forecast").innerHTML = forecastText;
 
-// --- 2. 車検入庫数の計算（★ここを分けるのがポイント！） ---
-let repairBaseMin = 0;
-let repairBaseMax = 3;
-// ※ここで車検用の計算ロジック（もしあれば）を定義してください
-// もし以前のコードでbaseMinを使っていた場合は、ここに本来の数値を入れてください
-
-// --- 3. UI表示用のテキスト生成（★ここも変数名を合わせる） ---
-let forecastText = `通常来店: ${f_car_min}〜${f_car_max}組/月`;
-if (stockRatio < 1.0) {
-    forecastText += ` <font color="#e67e22">(展示率:${Math.round(stockRatio * 100)}%)</font>`;
-}
-// ...（以下、bonusPartsの処理などはそのまま）...
-document.getElementById("c-car-forecast").innerHTML = forecastText;
-
-// --- 4. 車検入庫のUI表示（repairBaseMin/Maxを使う） ---
-if (mechanics === 0 || currentLiftsCount === 0) {
-    document.getElementById("c-incoming-forecast").innerText = `通常入庫: 0台`;
-} else {
-    // ここで repairBaseMin / repairBaseMax を使って表示する
-    document.getElementById("c-incoming-forecast").innerText = `通常入庫: ${repairBaseMin}〜${repairBaseMax}台/月 ...`;
-}// --- ここまで書き換え ---
+        // --- 4. 車検入庫のUI表示（repairBaseMin/Maxを使う） ---
+        if (mechanics === 0 || currentLiftsCount === 0) {
+        document.getElementById("c-incoming-forecast").innerText = `通常入庫: 0台`;
+        } else {
+        // ここで repairBaseMin / repairBaseMax を使って表示する
+        document.getElementById("c-incoming-forecast").innerText = `通常入庫: ${repairBaseMin}〜${repairBaseMax}台/月 ...`;
+        }// --- ここまで書き換え ---
         if (mechanics === 0 || currentLiftsCount === 0) {
             document.getElementById("c-incoming-forecast").innerText = `通常入庫: 0台`;
             document.getElementById("c-incoming-forecast").style.color = "#7f8c8d";
@@ -1268,10 +1265,9 @@ function applyEvent(eventRoll) {
     // ここでもフラグを考慮し、0以下にならないよう保護する
     let missingMechanics = mechanics_missing ? 1 : 0;
     let missingAssistants = assistants_missing ? 1 : 0;
-
-    let totalStaff = Math.max(0, salesmen + mechanics + clerks + assistants - missingMechanics - missingAssistants);
-
-// これで TotalStaff は 2 になるはずです
+    // 1回目は let を使って宣言
+    
+    totalStaff = Math.max(0, salesmen + mechanics + clerks + assistants - missingMechanics - missingAssistants);
 
     // 【デバッグ用】固定費計算の直前に挿入してください
 console.log("--- 固定費計算デバッグ ---");
