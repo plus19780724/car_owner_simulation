@@ -1053,11 +1053,6 @@ function applyEvent(eventRoll) {
         let totalStaff = salesmen + mechanics + clerks + assistants;
         let monthlyFixed = rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff);
     
-    // 2. 【記録】前月の総支出実績を確定
-    // 変動費(m_expense) ＋ 今月の固定費(monthlyFixed) を代入
-        lastMonthExpenseDisplay = m_expense + monthlyFixed; 
-        lastMonthRevenueDisplay = m_revenue;
-    
     // 3. 【表示用】「今月の引き落し予定」として固定費を保存
         currentMonthFixed = monthlyFixed; 
 
@@ -1068,7 +1063,6 @@ function applyEvent(eventRoll) {
         }
 
     
-
     addLog(`<br><span style='color:#2ecc71;'>━━━━━━━━━ 【第 ${month} ヶ月目 営業結果】 ━━━━━━━━━</span>`);
 
     // 3. クールダウン・カウント処理
@@ -1379,6 +1373,10 @@ console.log("TotalStaff:", totalStaff);
     advCarCount = 0;
     advRepairCount = 0;
     // ここでフラグをオフに戻すことで、翌月には元通りになる
+       // 2. 【記録】前月の総支出実績を確定
+    // 変動費(m_expense) ＋ 今月の固定費(monthlyFixed) を代入
+        lastMonthExpenseDisplay = m_expense + monthlyFixed; 
+        lastMonthRevenueDisplay = m_revenue;
        // 5. 【リセット】次月のために「今月の変動費」だけをリセット
     // ※ currentMonthFixed (表示用) は 0 にしてはいけないので、ここから外します
         m_revenue = 0;
