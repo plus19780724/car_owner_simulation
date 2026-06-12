@@ -307,6 +307,7 @@
     let cooldown_audit = 0;         
     let cooldown_fleet = 0;         
     let count_weather_this_year = 0; 
+    let unitRepairProfit = 35000; // 車検1台あたりの利益
 
     // 【重要】ここで window に参照を渡してあげる
     window.funds = funds; 
@@ -1228,7 +1229,7 @@ function applyEvent(eventRoll) {
         else repairLossMessage = `容量オーバーで -${missedRepairs}台`;
         repairDemands = factoryCapacity;
     }
-    let repairProfit = repairDemands * 30000;
+    let repairProfit = repairDemands * unitRepairProfit;
     funds += repairProfit;
     m_revenue += repairProfit;
     if (repairDemands > 0) {
