@@ -1057,6 +1057,8 @@ function applyEvent(eventRoll) {
     // 変動費(m_expense) ＋ 今月の固定費(monthlyFixed) を代入
         lastMonthExpenseDisplay = m_expense + monthlyFixed; 
         lastMonthRevenueDisplay = m_revenue;
+       // 2. 【最重要】変動費の箱を空にする
+        m_expense = 0;
     
     // 3. 【表示用】「今月の引き落し予定」として固定費を保存
         currentMonthFixed = monthlyFixed; 
