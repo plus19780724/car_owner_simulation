@@ -1049,23 +1049,21 @@ function applyEvent(eventRoll) {
 
    function nextMonth() {
        console.log("デバッグ：nextMonth開始時点のm_expense（変動費）は:", m_expense);
-       // 4. イベント実行←先に実行する
+
+    // 1. 【イベント実行】（今月の支出を確定させる）
     if (pendingEvent !== null) {
         try {
             console.log("🔥 イベント実行開始！番号:", pendingEvent);
             executeEvent(pendingEvent);
             console.log("🔥 イベント実行完了！");
-            console.log("--- イベント実行後の状態 ---");
-            console.log("assistants:", assistants, "assistants_missing:", assistants_missing);
         } catch (e) {
-            console.error("🚨 イベント実行中にエラー発生！詳細:", e);
+            console.error("🚨 イベント実行中にエラー発生！:", e);
         }
         pendingEvent = null;
     }
-       console.log("デバッグ：イベント実行後のm_expense（変動費）は:", m_expense);
-     // 1. 【計算】固定費を算出（変数名を monthlyFixed に統一）
-        let totalStaff = salesmen + mechanics + clerks + assistants;
-        let monthlyFixed = rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff);
+        console.log("デバッグ：イベント実行後のm_expense（変動費）は:", m_expense);
+       
+     
     
     // 3. 【表示用】「今月の引き落し予定」として固定費を保存
         currentMonthFixed = monthlyFixed; 
@@ -1369,34 +1367,33 @@ console.log("TotalStaff:", totalStaff);
         pendingEvent = null;
         console.log("📝 来月はイベントなし");
     }
-       
-    advCarCount = 0;
-    advRepairCount = 0;
-
-    console.log("--- 【集計デバッグ開始】 ---");
-    console.log("確定前の m_expense:", m_expense);
-    console.log("確定前の monthlyFixed (再計算):", rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff));
-
-    // ここで合計を確定させる行
-    lastMonthExpenseDisplay = m_expense + (rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff));
-
-    console.log("確定後の lastMonthExpenseDisplay:", lastMonthExpenseDisplay);
-    console.log("--- 【集計デバッグ終了】 ---");
-       
-    // ここでフラグをオフに戻すことで、翌月には元通りになる
-       // 2. 【記録】前月の総支出実績を確定
+    // 1. 【計算】固定費を算出（変数名を monthlyFixed に統一）
+        let totalStaff = salesmen + mechanics + clerks + assistants;
+        let monthlyFixed = rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff);
+         // 2. 【記録】前月の総支出実績を確定
     // 変動費(m_expense) ＋ 今月の固定費(monthlyFixed) を代入
         lastMonthExpenseDisplay = m_expense + monthlyFixed; 
         lastMonthRevenueDisplay = m_revenue;
+       
+    console.log("--- 【集計デバッグ開始】 ---");
+    console.log("確定前の m_expense:", m_expense);
+    console.log("確定後の lastMonthExpenseDisplay:", lastMonthExpenseDisplay);
+    console.log("確定前の monthlyFixed (再計算):", rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff));
+     console.log("--- 【集計デバッグ終了】 ---");
+       // ここで合計を確定させる行
+    lastMonthExpenseDisplay = m_expense + (rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff));
+
        // 5. 【リセット】次月のために「今月の変動費」だけをリセット
     // ※ currentMonthFixed (表示用) は 0 にしてはいけないので、ここから外します
         m_revenue = 0;
         m_expense = 0;
         currentMonthAd = 0;
         currentMonthBuy = 0;
-       
-    mechanics_missing = false;
-    assistants_missing = false;
+        advCarCount = 0;
+        advRepairCount = 0;
+        mechanics_missing = false;
+        assistants_missing = false;
+    
     month++;
     
     
