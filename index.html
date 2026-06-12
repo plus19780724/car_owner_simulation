@@ -512,7 +512,6 @@
         document.getElementById("m-stock").innerText = `${v_stock_list.length} / ${maxStock} 台`;
         document.getElementById("m-loan").innerText = `${loanBalance.toLocaleString()}円`;
         
-        let totalStaff = salesmen + mechanics + clerks + assistants; 
         let currentLiftsCount = v_lift_ages.length;
 
         let factoryStatus = calculateFactoryStatus();
@@ -816,7 +815,6 @@ if (mechanics === 0 || currentLiftsCount === 0) {
             funds -= 3000000; 
             m_expense += 3000000; // ここに必ず加算する
             yearlyExpense += 3000000; 
-            lastMonthExpenseDisplay += 3000000; 
             maxStock += 10; 
             rent += 200000; 
             addLog(`🏢 展示場を拡張し上限を ${maxStock} 台にしました（費用-300万円）。毎月の固定家賃が20万円上昇します。`);
