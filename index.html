@@ -1057,8 +1057,6 @@ function applyEvent(eventRoll) {
     // 変動費(m_expense) ＋ 今月の固定費(monthlyFixed) を代入
         lastMonthExpenseDisplay = m_expense + monthlyFixed; 
         lastMonthRevenueDisplay = m_revenue;
-       // 2. 【最重要】変動費の箱を空にする
-        m_expense = 0;
     
     // 3. 【表示用】「今月の引き落し予定」として固定費を保存
         currentMonthFixed = monthlyFixed; 
@@ -1069,12 +1067,7 @@ function applyEvent(eventRoll) {
             eventBoard.style.display = "none";
         }
 
-    // 5. 【リセット】次月のために「今月の変動費」だけをリセット
-    // ※ currentMonthFixed (表示用) は 0 にしてはいけないので、ここから外します
-        m_revenue = 0;
-        m_expense = 0;
-        currentMonthAd = 0;
-        currentMonthBuy = 0;
+    
 
     addLog(`<br><span style='color:#2ecc71;'>━━━━━━━━━ 【第 ${month} ヶ月目 営業結果】 ━━━━━━━━━</span>`);
 
@@ -1386,6 +1379,13 @@ console.log("TotalStaff:", totalStaff);
     advCarCount = 0;
     advRepairCount = 0;
     // ここでフラグをオフに戻すことで、翌月には元通りになる
+       // 5. 【リセット】次月のために「今月の変動費」だけをリセット
+    // ※ currentMonthFixed (表示用) は 0 にしてはいけないので、ここから外します
+        m_revenue = 0;
+        m_expense = 0;
+        currentMonthAd = 0;
+        currentMonthBuy = 0;
+       
     mechanics_missing = false;
     assistants_missing = false;
     month++;
