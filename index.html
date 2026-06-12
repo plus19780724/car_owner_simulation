@@ -1179,7 +1179,7 @@ function applyEvent(eventRoll) {
             currentYearCarSales += actualSales;
         }
         if (stockShortageCount > 0) carLossMessage = `📦 在庫不足で ${stockShortageCount}組 補給を！`;
-        if (ageRefusedCount > 0 && stockShortageCount === 0 && currentEvent !== "sales_order_error") carLossMessage = `🥀 商談力不足で ${ageRefusedCount}組 失注`;
+        if (ageRefusedCount > 0 && stockShortageCount === 0 && currentEvent !== "sales_order_error") carLossMessage = `🥀 ご希望合わずで ${ageRefusedCount}組 失注`;
     }
     for (let i = 0; i < v_stock_list.length; i++) { v_stock_list[i] += 1; }
     lastMonthCarSales = actualSales;
