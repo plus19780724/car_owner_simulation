@@ -504,6 +504,7 @@
 
         // --- ② 前月実績（確定した合計） ---
         // nextMonth() で計算された lastMonthExpenseDisplay をそのまま表示
+        console.log("デバッグ：updateDisplayで表示しようとしている値:", lastMonthExpenseDisplay); // ★追加
         document.getElementById("f-last-month-expense").innerText = `${lastMonthExpenseDisplay.toLocaleString()}円`;
 
         // --- ③ その他の既存の表示処理 ---
