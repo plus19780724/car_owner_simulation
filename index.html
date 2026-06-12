@@ -1040,12 +1040,21 @@ function applyEvent(eventRoll) {
             } 
            else if (eventRoll === 10) {
             // 色のグループ分けルールに従って設定
+                if (v_stock_list.length > 0){
                 eventBoard.style.background = "#eefbf2"; // 緑（良いイベント）
                 eventBoard.style.borderColor = "#27ae60";
                 eventTitle.style.color = "#27ae60";
 
-                eventTitle.innerText = "🚀 チャンス到来：極上中古車のダイレクト買取成功";
+                eventTitle.innerText = "🚀 ：極上中古車のダイレクト買取成功";
                 eventDesc.innerText = "「既存ユーザーの乗り換えに伴い、状態抜群の人気車種を格安で下取り・直接買取！」\n（仕入れ費用0円で、展示車在庫が【＋1台】増えます。上限オーバー時は無効）";
+                }else {
+                eventBoard.style.background = "#fff0f0"; // 赤系の色（惜しいイベント）
+                eventBoard.style.borderColor = "#e74c3c";
+                eventTitle.style.color = "#e74c3c";       
+
+                eventTitle.innerText = "⚠️ 買取のチャンスでしたが...";
+                eventDesc.innerText = "「現在展示場が開設されていないため、このままだと状態抜群の人気車種を格安で下取り・直接買取ができません！」\n（展示場が開設されていれば仕入れ費用0円で、展示車在庫が【＋1台】増えます。上限オーバー時は無効）";
+                }
             }
             else if (eventRoll === 11) {
                 eventTitle.style.color = "#27ae60";
