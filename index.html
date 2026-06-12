@@ -114,7 +114,7 @@
 
 <div class="container">
     <h1>自動車販売・修理工場 経営シミュレーション</h1>
-    <div class="subtitle">〜 Ver 8.3　版 〜</div>
+    <div class="subtitle">〜 Ver 8.4　版 〜</div>
 
     <div class="control-panel">
         <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
@@ -882,7 +882,7 @@ function executeEvent(eventRoll) {
         let penalty = lostLoyals * 100000; // 1人あたり10万円の損失と見なす
         funds -= penalty;
         m_expense += penalty;     // 年間集計（決算）に反映させるために加算
-        addLog(`🚨 【実施】競合店開店！顧客が ${lostLoyals} 名流出しました。`);
+        addLog(`🚨 【実施】競合店開店！顧客が ${lostLoyals} 名流出しました。(損失: -${penalty.toLocaleString()}円)`);
     } else if (eventRoll === 4) {
         currentEvent = "bad_weather"; // イベント発生を記録
         count_weather_this_year++;
@@ -915,10 +915,15 @@ function executeEvent(eventRoll) {
         addLog(`✨ 【発注ミス】報告がありましたが、先月は成約がなかったため影響なし！`);
         }
     }else if (eventRoll === 7) {
-        let percent = 0.07 + (Math.random() * 0.03);
-        let lostLoyals = Math.floor(loyalCustomers * percent);
+        // 1. 顧客の10%が流出（固定）
+        let lostLoyals = Math.floor(loyalCustomers * 0.10);
+        // 2. 1人あたり10万円の損失
+        let penalty = lostLoyals * 100000;
+        funds -= penalty;
+        m_expense += penalty; // 決算に反映
         loyalCustomers -= lostLoyals;
-        addLog(`🚨 【実施】クレームにより顧客が ${lostLoyals} 名流出しました。`);
+        
+        addLog(`🚨 【実施】クレームにより顧客が ${lostLoyals} 名流出しました。(損失: -${penalty.toLocaleString()}円)`);
     } else if (eventRoll === 8) {
         cooldown_fleet = 3;
         currentEvent = "big_fleet"; // 【追加】これで判定用変数に値をセット
@@ -1027,8 +1032,10 @@ function applyEvent(eventRoll) {
                 }
             }
             else if (eventRoll === 7) {
+                let lostLoyals = Math.floor(loyalCustomers * 0.10);
+                let penalty = lostLoyals * 100000;
                 eventTitle.innerText = "🚨 重大トラブル：車検整備の作業内容に大クレーム発生";
-                eventDesc.innerText = "「引き渡した車検車両の組み付け不良により大クレームに発展。地域の信頼が低下…」\n（既存の信頼が失墜し、顧客ストック（ロイヤルカスタマー）が【7%〜10%】一気に流出します）";
+                eventDesc.innerText = `「組み付け不良により大クレームに発展！」（信頼失墜により顧客 ${lostLoyals} 名が流出、補填費用として -${penalty.toLocaleString()}円 発生！）`;
             }
             else if (eventRoll === 8) {
                 eventTitle.style.color = "#27ae60";
