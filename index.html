@@ -114,7 +114,7 @@
 
 <div class="container">
     <h1>自動車販売・修理工場 経営シミュレーション</h1>
-    <div class="subtitle">〜 Ver 9.0　版 〜</div>
+    <div class="subtitle">〜 Ver 9.1　版 〜</div>
 
     <div class="control-panel">
         <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
@@ -1056,11 +1056,17 @@ function applyEvent(eventRoll) {
                 // 【修正】applyEventの中で再度計算を行い、表示用の変数を定義する
                 let lostLoyals = Math.floor(loyalCustomers * 0.10);
                 let penalty = lostLoyals * 100000;
+                eventBoard.style.background = "#fff0f0"; // 赤（トラブル）
+                eventBoard.style.borderColor = "#cc0000";
+                eventTitle.style.color = "#cc0000";
                 eventTitle.innerText = "⚠️ 突発トラブル：格安ライバル店の電撃オープン";
                 // 全て半角のバッククォートで囲み、余計な記号を削除しました
                 eventDesc.innerText = `近隣に、安さを売りにした大型フランチャイズ店が出店！（経営打撃：流出による既存顧客維持の穴埋めで -${penalty.toLocaleString()}円 発生！）`;
             } 
             else if (eventRoll === 4) {
+                eventBoard.style.background = "#fff0f0"; // 赤（トラブル）
+                eventBoard.style.borderColor = "#cc0000";
+                eventTitle.style.color = "#cc0000";
                 eventTitle.innerText = "⚠️ 突発トラブル：台風・悪天候の直撃";
                 eventDesc.innerText = "「週末の大悪天候が重なり、店頭への商談来店客数が激減…」\n（今月のみ、車両販売部門の来店客数が通常より『半減』します）";
             } 
@@ -1517,6 +1523,7 @@ console.log("TotalStaff:", totalStaff);
         // ここで一度計算して画面に反映させる
         let initialExpenses = calculateMonthlyExpenses();
     updateDisplay(); // 最後に画面更新
+    console.log("【確認】nextMonth終了時点の表示更新完了");
 </script>
 
 </body>
