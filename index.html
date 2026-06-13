@@ -114,7 +114,7 @@
 
 <div class="container">
     <h1>自動車販売・修理工場 経営シミュレーション</h1>
-    <div class="subtitle">〜 Ver 8.8　版 〜</div>
+    <div class="subtitle">〜 Ver 8.9　版 〜</div>
 
     <div class="control-panel">
         <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
@@ -947,9 +947,15 @@ function executeEvent(eventRoll) {
         
         addLog(`🚨 【実施】クレームにより顧客が ${lostLoyals} 名流出しました。(損失: -${penalty.toLocaleString()}円)`);
     } else if (eventRoll === 8) {
+        if (currentLiftsCount > 0) {
+        // リフトがあり、整備事業が動いている場合のみ発生
         cooldown_fleet = 3;
         currentEvent = "big_fleet"; // 【追加】これで判定用変数に値をセット
-        addLog(`✨ 【実施】大口特需により入庫台数が3か月増加！`);
+        addLog(`✨ 【実施】大口特需により入庫台数が3か月増加！`);}
+         } else {
+        // リフトが0なら、パーツの需要自体がないので平穏
+        addLog(`✨ 【実施】現在整備事業を行っていないため、大口特需をお断りしました。`);
+        }
     } else if (eventRoll === 9) {
         // 1. その場で顧客数に基づいたボーナスを計算
         let socialBonus = Math.max(1, Math.floor(loyalCustomers * 0.1));
@@ -1098,9 +1104,16 @@ function applyEvent(eventRoll) {
                 eventDesc.innerText = `「対応への不手際により大クレームに発展！」（信頼失墜により顧客 ${lostLoyals} 名が流出、対応費用として -${penalty.toLocaleString()}円 発生！）`;
             }
             else if (eventRoll === 8) {
+                if (currentLiftsCount > 0) {
                 eventTitle.style.color = "#27ae60";
                 eventTitle.innerText = "🚀 チャンス到来：大口の法人フリート契約獲得";
                 eventDesc.innerText = "「地元の運送会社から、一括での車検入庫オーダーを勝ち取りました！」\n（3か月間、車検の入庫要求台数が【＋20台】一気にブーストされました）";
+                } else {
+                // 今回は「ラッキーな回避（何も起きない）」として処理
+                eventTitle.innerText = "✨ 車検大量入庫のチャンス";
+                eventDesc.innerText = "車検の大量入庫のオファーがありました。\n設備がないままなら入庫は、されません。";
+                eventBoard.style.background = "#eefbf2"; // 緑（成功）
+                }
             } 
             else if (eventRoll === 9) {
                 let socialBonus = Math.max(1, Math.floor(loyalCustomers * 0.1));
