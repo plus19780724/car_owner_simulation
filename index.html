@@ -898,13 +898,16 @@ function executeEvent(eventRoll) {
         addLog(`🚨 【実施】悪天候のため来店数が減少しました。`);
    // 【イベント5の修正】
     } else if (eventRoll === 5) {
-        if (assistants > 0) {
-        // 事務員がいれば監査のペナルティを防げる
-        addLog(`🛡️ 【実施】事務員の対応により、監査を無事に回避しました！`);
+        if (mechanics === 0) {
+        // メカニックがいなければ、整備事業を行っていないため監査なし
+        addLog(`✨ 【実施】現在整備事業を行っていないため、監査の対象外でした。`);
+        } else if (assistants > 0) {
+        // メカニックがいて、かつ事務員もいれば監査回避
+        addLog(`🛡️ 【実施】事務員とメカニックの連携により、監査を無事に回避しました！`);
         } else {
-        // 事務員がいない場合、事務員（事務作業）が欠勤している扱いになり、能力低下などのペナルティを受ける
+        // メカニックはいるが事務員が不在だと、事務作業が滞るペナルティ
         assistants_missing = true;
-        addLog(`🚨 【実施】事務員不在により監査対応ができず、今月は事務作業が滞りました！`);
+        addLog(`🚨 【実施】事務員不在のため監査対応ができず、今月は事務作業が滞りました！`);
         }
     }else if (eventRoll === 6) {
         if (lastMonthCarSales > 0) {
@@ -1023,18 +1026,27 @@ function applyEvent(eventRoll) {
             } 
             else if (eventRoll === 5) {
             // 告知の段階で、すでに補助事務員の有無を確認して設定する
-                if (assistants > 0) {
-                    eventBoard.style.background = "#eefbf2"; // 緑（良いイベントグループ）
-                    eventBoard.style.borderColor = "#27ae60";
-                    eventTitle.style.color = "#27ae60";
-                    eventTitle.innerText = "🛡️ 監査クリア：コンプライアンス監査対応";
-                    eventDesc.innerText = "「補助事務員が書類を完璧に整理していたため、無傷でクリアしました！」";
+                if (mechanics === 0) {
+            // 1. メカニックがいない：監査対象外
+                eventBoard.style.background = "#f0f8ff"; // 青系（平穏）
+                eventBoard.style.borderColor = "#3498db";
+                eventTitle.style.color = "#3498db";
+                eventTitle.innerText = "✨ 監査対象外";
+                eventDesc.innerText = "「現在整備事業を行っていないため、今回の監査対象外でした。」";
+                } else if (assistants > 0) {
+            // 2. メカニックがいて、かつ事務員もいる：クリア
+                eventBoard.style.background = "#eefbf2"; // 緑（成功）
+                eventBoard.style.borderColor = "#27ae60";
+                eventTitle.style.color = "#27ae60";
+                eventTitle.innerText = "🛡️ 監査クリア：コンプライアンス監査対応";
+                eventDesc.innerText = "「事務員とメカニックの連携により、書類・整備記録ともに完璧です！」";
                 } else {
-                    eventBoard.style.background = "#fff0f0"; // 赤（悪いイベントグループ）
-                    eventBoard.style.borderColor = "#cc0000";
-                    eventTitle.style.color = "#cc0000";
-                    eventTitle.innerText = "⚠️ 突発トラブル：コンプライアンス監査対応";
-                    eventDesc.innerText = "「書類の再整理で大忙しです…（今月のみ事務員1名が通常業務から離脱）」";
+            // 3. メカニックはいるが事務員がいない：トラブル発生
+                eventBoard.style.background = "#fff0f0"; // 赤（トラブル）
+                eventBoard.style.borderColor = "#cc0000";
+                eventTitle.style.color = "#cc0000";
+                eventTitle.innerText = "⚠️ 突発トラブル：コンプライアンス監査対応";
+                eventDesc.innerText = "「書類の不備で大忙しです…（今月のみ事務員1名分の能力が下がります。補助事務員での対応を検討！）」";
                 }
             }
             else if (eventRoll === 6) {
