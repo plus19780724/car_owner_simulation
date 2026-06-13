@@ -868,9 +868,13 @@ function selectRandomEvent() {
 // --- 追加：イベント実行専用の関数 ---
 function executeEvent(eventRoll) {
     if (eventRoll === 0) {
+        if (mechanics > 0) {
         // メカニックが欠員している状態にする
         mechanics_missing = true; 
         addLog(`🚨 【実施】メカニックが今月は1名欠勤しました！`);
+        } else {
+        addLog(`🚨 現在整備スタッフは不在のため影響なし`);
+        }
     } else if (eventRoll === 1) {
         cooldown_parts = 3;
         currentEvent = "parts_delay"; // 【重要】この合図を出す
@@ -994,8 +998,16 @@ function applyEvent(eventRoll) {
     }
     
     if (eventRoll === 0) {
+            if (mechanics > 0) {
             eventTitle.innerText = "⚠️ 突発トラブル：メカニックの戦線離脱";
             eventDesc.innerText = "「ベテラン整備士がギックリ腰で長期療養に…！」\n（今月のみ、稼働する整備士の人数がマイナス1名されます）";
+            } else {
+                eventBoard.style.background = "#f0f8ff"; // 青系（平穏）
+                eventBoard.style.borderColor = "#3498db";
+                eventTitle.style.color = "#3498db";
+                eventTitle.innerText = "✨ 本日は、平穏です。";
+                eventDesc.innerText = "「現在整備スタッフは不在のため影響なし」";
+            }
     } 
     else if (eventRoll === 1) {
                 eventTitle.innerText = "⚠️ 突発トラブル：パーツ供給の遅延";
