@@ -114,7 +114,7 @@
 
 <div class="container">
     <h1>自動車販売・修理工場 経営シミュレーション</h1>
-    <div class="subtitle">〜 Ver 9.2　版 〜</div>
+    <div class="subtitle">〜 Ver 9.3　版 〜</div>
 
     <div class="control-panel">
         <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
@@ -1000,58 +1000,52 @@ function applyEvent(eventRoll) {
     // 1. まず表示して、基本スタイルをセット
     eventBoard.style.display = "block";
     
-    // --- ここでイベントの種類に応じた色を決定 ---
-    if (eventRoll === 0 || eventRoll === 1 || eventRoll === 2) {
-        // 「悪いイベント」グループ
-        eventBoard.style.background = "#fff0f0"; // 薄い赤
-        eventBoard.style.borderColor = "#cc0000";
-        eventTitle.style.color = "#cc0000";
-    } else if (eventRoll === 8) {
-        // 「良いイベント」グループ
-        eventBoard.style.background = "#eefbf2"; // 薄い緑
-        eventBoard.style.borderColor = "#27ae60";
-        eventTitle.style.color = "#27ae60";
-    } else {
-        // 「通常イベント」グループ
-        eventBoard.style.background = "#ffffff";
-        eventBoard.style.borderColor = "#cccccc";
-        eventTitle.style.color = "#000000";
-    }
-    
+    // --- ここでイベントの表示内容と色の決定 ---
     if (eventRoll === 0) {
             if (mechanics > 0) {
+                eventBoard.style.background = "#fff0f0"; // 薄い赤
+                eventBoard.style.borderColor = "#cc0000";
+                eventTitle.style.color = "#cc0000";
             eventTitle.innerText = "⚠️ 突発トラブル：メカニックの戦線離脱";
             eventDesc.innerText = "「ベテラン整備士がギックリ腰で長期療養に…！」\n（今月のみ、稼働する整備士の人数がマイナス1名されます）";
             } else {
                 eventBoard.style.background = "#f0f8ff"; // 青系（平穏）
                 eventBoard.style.borderColor = "#3498db";
                 eventTitle.style.color = "#3498db";
-                eventTitle.innerText = "✨ 本日は、平穏です。";
-                eventDesc.innerText = "「現在整備スタッフは不在のため影響なし」";
+            eventTitle.innerText = "✨ 本日は、平穏です。";
+            eventDesc.innerText = "「現在整備スタッフは不在のため影響なし」";
             }
     } 
     else if (eventRoll === 1) {
                 if (currentLiftsCount > 0) {
                 // リフトがあり、整備事業が動いている場合のみ発生
-                eventTitle.innerText = "⚠️ 突発トラブル：パーツ供給の遅延";
-                eventDesc.innerText = "「世界的な物流遅延で、車検用の交換部品の入荷が大幅に遅れています…」\n（3か月間、各リフトの車検完了上限台数が一律20%ダウンしました）";
+                eventBoard.style.background = "#fff0f0"; // 薄い赤
+                eventBoard.style.borderColor = "#cc0000";
+                eventTitle.style.color = "#cc0000";
+            eventTitle.innerText = "⚠️ 突発トラブル：パーツ供給の遅延";
+            eventDesc.innerText = "「世界的な物流遅延で、車検用の交換部品の入荷が大幅に遅れています…」\n（3か月間、各リフトの車検完了上限台数が一律20%ダウンしました）";
                 } else {
                 eventBoard.style.background = "#f0f8ff"; // 青系（平穏）
                 eventBoard.style.borderColor = "#3498db";
                 eventTitle.style.color = "#3498db";
-                eventTitle.innerText = "✨ 本日は、平穏です";
-                eventDesc.innerText = "「現在整備事業を行っていないため、部品供給の影響はありません。」";
+            eventTitle.innerText = "✨ 本日は、平穏です";
+            eventDesc.innerText = "「現在整備事業を行っていないため、部品供給の影響はありません。」";
                 }
             } 
             else if (eventRoll === 2) {
                 if (currentLiftsCount > 0) {
-                eventTitle.innerText = "⚠️ 突発トラブル：代車・設備の突発故障";
-                eventDesc.innerText = "「ピットリフトのセンサー不調が同時発生！」\n（突発的な設備修繕費用として、今月の支出に30万円が強制追加されます）";
+                eventBoard.style.background = "#fff0f0"; // 薄い赤
+                eventBoard.style.borderColor = "#cc0000";
+                eventTitle.style.color = "#cc0000";
+            eventTitle.innerText = "⚠️ 突発トラブル：代車・設備の突発故障";
+            eventDesc.innerText = "「ピットリフトのセンサー不調が同時発生！」\n（突発的な設備修繕費用として、今月の支出に30万円が強制追加されます）";
                 } else {
                // 今回は「ラッキーな回避（何も起きない）」として処理
-                eventTitle.innerText = "✨ 本日は平穏です";
-                eventDesc.innerText = "設備トラブルの予兆がありましたが、稼働中の設備がないため影響はありませんでした。";
-                eventBoard.style.background = "#f0f8ff"; // 平穏な色
+                eventBoard.style.background = "#f0f8ff"; // 青系（平穏）
+                eventBoard.style.borderColor = "#3498db";
+                eventTitle.style.color = "#3498db";          
+            eventTitle.innerText = "✨ 本日は平穏です";
+            eventDesc.innerText = "設備トラブルの予兆がありましたが、稼働中の設備がないため影響はありませんでした。";
                 } 
             } 
             else if (eventRoll === 3) {
@@ -1061,16 +1055,16 @@ function applyEvent(eventRoll) {
                 eventBoard.style.background = "#fff0f0"; // 赤（トラブル）
                 eventBoard.style.borderColor = "#cc0000";
                 eventTitle.style.color = "#cc0000";
-                eventTitle.innerText = "⚠️ 突発トラブル：格安ライバル店の電撃オープン";
+            eventTitle.innerText = "⚠️ 突発トラブル：格安ライバル店の電撃オープン";
                 // 全て半角のバッククォートで囲み、余計な記号を削除しました
-                eventDesc.innerText = `近隣に、安さを売りにした大型フランチャイズ店が出店！（経営打撃：流出による既存顧客維持の穴埋めで -${penalty.toLocaleString()}円 発生！）`;
+            eventDesc.innerText = `近隣に、安さを売りにした大型フランチャイズ店が出店！（経営打撃：流出による既存顧客維持の穴埋めで -${penalty.toLocaleString()}円 発生！）`;
             } 
             else if (eventRoll === 4) {
                 eventBoard.style.background = "#fff0f0"; // 赤（トラブル）
                 eventBoard.style.borderColor = "#cc0000";
                 eventTitle.style.color = "#cc0000";
-                eventTitle.innerText = "⚠️ 突発トラブル：台風・悪天候の直撃";
-                eventDesc.innerText = "「週末の大悪天候が重なり、店頭への商談来店客数が激減…」\n（今月のみ、車両販売部門の来店客数が通常より『半減』します）";
+            eventTitle.innerText = "⚠️ 突発トラブル：台風・悪天候の直撃";
+            eventDesc.innerText = "「週末の大悪天候が重なり、店頭への商談来店客数が激減…」\n（今月のみ、車両販売部門の来店客数が通常より『半減』します）";
             } 
             else if (eventRoll === 5) {
             // 告知の段階で、すでに補助事務員の有無を確認して設定する
@@ -1079,15 +1073,15 @@ function applyEvent(eventRoll) {
                 eventBoard.style.background = "#f0f8ff"; // 青系（平穏）
                 eventBoard.style.borderColor = "#3498db";
                 eventTitle.style.color = "#3498db";
-                eventTitle.innerText = "✨ 監査対象外";
-                eventDesc.innerText = "「現在整備事業を行っていないため、今回の監査対象外でした。」";
+            eventTitle.innerText = "✨ 監査対象外";
+            eventDesc.innerText = "「現在整備事業を行っていないため、今回の監査対象外でした。」";
                 } else if (assistants > 0) {
             // 2. メカニックがいて、かつ事務員もいる：クリア
                 eventBoard.style.background = "#eefbf2"; // 緑（成功）
                 eventBoard.style.borderColor = "#27ae60";
                 eventTitle.style.color = "#27ae60";
-                eventTitle.innerText = "🛡️ 監査クリア：コンプライアンス監査対応";
-                eventDesc.innerText = "「事務員とメカニックの連携により、書類・整備記録ともに完璧です！」";
+            eventTitle.innerText = "🛡️ 監査クリア：コンプライアンス監査対応";
+            eventDesc.innerText = "「事務員とメカニックの連携により、書類・整備記録ともに完璧です！」";
                 } else {
             // 3. メカニックはいるが事務員がいない：トラブル発生
                 eventBoard.style.background = "#fff0f0"; // 赤（トラブル）
@@ -1099,37 +1093,52 @@ function applyEvent(eventRoll) {
             }
             else if (eventRoll === 6) {
                 if (lastMonthCarSales > 0) {
-                eventTitle.innerText = "🚨 重大トラブル：営業マンの発注・書類ミス";
-                eventDesc.innerText = "「商談成約車のオプション発注、または書類手続きに重大なミスが発覚しキャンセルに…」\n（今月成約した車両のうち、強制的に【マイナス1台】失注となりました。仕入在庫は手元に戻ります）";
+                eventBoard.style.background = "#fff0f0"; // 赤（トラブル）
+                eventBoard.style.borderColor = "#cc0000";
+                eventTitle.style.color = "#cc0000";
+            eventTitle.innerText = "🚨 重大トラブル：営業マンの発注・書類ミス";
+            eventDesc.innerText = "「商談成約車のオプション発注、または書類手続きに重大なミスが発覚しキャンセルに…」\n（今月成約した車両のうち、強制的に【マイナス1台】失注となりました。仕入在庫は手元に戻ります）";
                 } else {
                 // 成約が0の時の平和なメッセージ
-                eventTitle.innerText = "🍀 営業報告：確認の結果...";
-                eventDesc.innerText = "「今月は車両購入の受注がなかったので今のところ平和に業務が進んでいます。」";
+                eventBoard.style.background = "#f0f8ff"; // 青系（平穏）
+                eventBoard.style.borderColor = "#3498db";
+                eventTitle.style.color = "#3498db";
+            eventTitle.innerText = "🍀 営業報告：確認の結果...";
+            eventDesc.innerText = "「今月は車両購入の受注がなかったので今のところ平和に業務が進んでいます。」";
                 }
             }
             else if (eventRoll === 7) {
                 let lostLoyals = Math.floor(loyalCustomers * 0.10);
                 let penalty = lostLoyals * 100000;
-                eventTitle.innerText = "🚨 重大トラブル：車検整備の作業内容に大クレーム発生";
-                eventDesc.innerText = `「対応への不手際により大クレームに発展！」（信頼失墜により顧客 ${lostLoyals} 名が流出、対応費用として -${penalty.toLocaleString()}円 発生！）`;
+                eventBoard.style.background = "#fff0f0"; // 赤（トラブル）
+                eventBoard.style.borderColor = "#cc0000";
+                eventTitle.style.color = "#cc0000";
+            eventTitle.innerText = "🚨 重大トラブル：車検整備の作業内容に大クレーム発生";
+            eventDesc.innerText = `「対応への不手際により大クレームに発展！」（信頼失墜により顧客 ${lostLoyals} 名が流出、対応費用として -${penalty.toLocaleString()}円 発生！）`;
             }
             else if (eventRoll === 8) {
                 if (currentLiftsCount > 0) {
+                eventBoard.style.background = "#eefbf2"; // 緑（成功）
+                eventBoard.style.borderColor = "#27ae60";
                 eventTitle.style.color = "#27ae60";
-                eventTitle.innerText = "🚀 チャンス到来：大口の法人フリート契約獲得";
-                eventDesc.innerText = "「地元の運送会社から、一括での車検入庫オーダーを勝ち取りました！」\n（3か月間、車検の入庫要求台数が【＋20台】一気にブーストされました）";
+            eventTitle.innerText = "🚀 チャンス到来：大口の法人フリート契約獲得";
+            eventDesc.innerText = "「地元の運送会社から、一括での車検入庫オーダーを勝ち取りました！」\n（3か月間、車検の入庫要求台数が【＋20台】一気にブーストされました）";
                 } else {
                 // 今回は「ラッキーな回避（何も起きない）」として処理
-                eventTitle.innerText = "✨ 車検大量入庫のチャンス";
-                eventDesc.innerText = "車検の大量入庫のオファーがありました。\n設備がないままなら入庫は、されません。";
-                eventBoard.style.background = "#eefbf2"; // 緑（成功）
+                eventBoard.style.background = "#fff0f0"; // 赤（トラブル）
+                eventBoard.style.borderColor = "#cc0000";
+                eventTitle.style.color = "#cc0000";
+            eventTitle.innerText = "✨ 車検大量入庫のチャンス";
+            eventDesc.innerText = "車検の大量入庫のオファーがありました。\n設備がないままなら入庫は、されません。";
                 }
             } 
             else if (eventRoll === 9) {
                 let socialBonus = Math.max(1, Math.floor(loyalCustomers * 0.1));
+                eventBoard.style.background = "#eefbf2"; // 緑（成功）
+                eventBoard.style.borderColor = "#27ae60";
                 eventTitle.style.color = "#27ae60";
-                eventTitle.innerText = "🚀 チャンス到来：奇跡の口コミ・SNSバズ";
-                eventDesc.innerText =`「SNSで『親切すぎる街の整備工場』として紹介され、一躍話題に！」\n（広告費ゼロで、今月の車両販売への来店客数が【＋${socialBonus}組】追加されます）`;
+            eventTitle.innerText = "🚀 チャンス到来：奇跡の口コミ・SNSバズ";
+            eventDesc.innerText =`「SNSで『親切すぎる街の整備工場』として紹介され、一躍話題に！」\n（広告費ゼロで、今月の車両販売への来店客数が【＋${socialBonus}組】追加されます）`;
             } 
            else if (eventRoll === 10) {
             // 色のグループ分けルールに従って設定
@@ -1137,22 +1146,22 @@ function applyEvent(eventRoll) {
                 eventBoard.style.background = "#eefbf2"; // 緑（良いイベント）
                 eventBoard.style.borderColor = "#27ae60";
                 eventTitle.style.color = "#27ae60";
-
-                eventTitle.innerText = "🚀 ：極上中古車のダイレクト買取成功";
-                eventDesc.innerText = "「既存ユーザーの乗り換えに伴い、状態抜群の人気車種を格安で下取り・直接買取！」\n（仕入れ費用0円で、展示車在庫が【＋1台】増えます。上限オーバー時は無効）";
+            eventTitle.innerText = "🚀 ：極上中古車のダイレクト買取成功";
+            eventDesc.innerText = "「既存ユーザーの乗り換えに伴い、状態抜群の人気車種を格安で下取り・直接買取！」\n（仕入れ費用0円で、展示車在庫が【＋1台】増えます。上限オーバー時は無効）";
                 }else {
                 eventBoard.style.background = "#fff0f0"; // 赤系の色（惜しいイベント）
                 eventBoard.style.borderColor = "#e74c3c";
                 eventTitle.style.color = "#e74c3c";       
-
-                eventTitle.innerText = "⚠️ 買取のチャンスでしたが...";
-                eventDesc.innerText = "「現在展示場が開設されていないため、このままだと状態抜群の人気車種を格安で下取り・直接買取ができません！」\n（展示場が開設されていれば仕入れ費用0円で、展示車在庫が【＋1台】増えます。上限オーバー時は無効）";
+            eventTitle.innerText = "⚠️ 買取のチャンスでしたが...";
+            eventDesc.innerText = "「現在展示場が開設されていないため、このままだと状態抜群の人気車種を格安で下取り・直接買取ができません！」\n（展示場が開設されていれば仕入れ費用0円で、展示車在庫が【＋1台】増えます。上限オーバー時は無効）";
                 }
             }
             else if (eventRoll === 11) {
+                eventBoard.style.background = "#eefbf2"; // 緑（良いイベント）
+                eventBoard.style.borderColor = "#27ae60";
                 eventTitle.style.color = "#27ae60";
-                eventTitle.innerText = "🚀 チャンス到来：スタッフたちの電撃覚醒";
-                eventDesc.innerText = "「スタッフの動きが神がかり、無駄な動きがゼロに！」\n（【覚醒】営業マンの接客力が極まり、今月の商談発生率が100%に！）\n（今月のみ、稼働している各リフトの車検処理キャパシティが【一律＋20台】上昇します）";
+            eventTitle.innerText = "🚀 チャンス到来：スタッフたちの電撃覚醒";
+            eventDesc.innerText = "「スタッフの動きが神がかり、無駄な動きがゼロに！」\n（【覚醒】営業マンの接客力が極まり、今月の商談発生率が100%に！）\n（今月のみ、稼働している各リフトの車検処理キャパシティが【一律＋20台】上昇します）";
             }
         }
 
