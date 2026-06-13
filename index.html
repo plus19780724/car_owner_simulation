@@ -114,7 +114,7 @@
 
 <div class="container">
     <h1>自動車販売・修理工場 経営シミュレーション</h1>
-    <div class="subtitle">〜 Ver 10.0　版 〜</div>
+    <div class="subtitle">〜 Ver 10.1　版 〜</div>
 
     <div class="control-panel">
         <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
@@ -1426,15 +1426,19 @@ console.log("TotalStaff:", totalStaff);
     // 8. レポート作成
     let monthlyNet = m_revenue - m_expense;
     let alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n` +
-        `【車両販売】\n・来店数: ${lastMonthCarDemands} 組 ➔ 成約: ${actualSales} 台\n・台当り売上: ${retailPrice.toLocaleString()}円\n・状況: ${carLossMessage}\n\n` +
-        `【車検整備】\n・入庫要求: ${lastMonthRepairDemands} 台 ➔ 完了: ${repairDemands} 台\n・台当り粗利: ${monthlyUnitProfit.toLocaleString()}円\n・状況: ${repairLossMessage}\n\n` +
-        `【顧客ストック】\n・今月の自然流出: -${naturalLostLoyals} 名\n\n` +
-        `【月間収支】\n` +
-        `・売上合計: ＋${m_revenue.toLocaleString()} 円\n` +
-        `・支出合計: －${m_expense.toLocaleString()} 円\n` +
-        `・今月の純損益: ${monthlyNet >= 0 ? "＋" : ""}${monthlyNet.toLocaleString()} 円\n` +
-        `・現在の手元現金: ${funds.toLocaleString()} 円\n` +
-        `━━━━━━━━━━━━━━━━━━━━`;
+    `【車両販売】\n・来店数: ${lastMonthCarDemands} 組 ➔ 成約: ${actualSales} 台\n` +
+    `・台当り売上: ${actualSales > 0 ? retailPrice.toLocaleString() : "0"}円\n` + // 0台なら0と表示
+    `・状況: ${carLossMessage}\n\n` +
+    `【車検整備】\n・入庫要求: ${lastMonthRepairDemands} 台 ➔ 完了: ${repairDemands} 台\n` +
+    `・台当り粗利: ${repairDemands > 0 ? monthlyUnitProfit.toLocaleString() : "0"}円\n` + // 0台なら0と表示
+    `・状況: ${repairLossMessage}\n\n` +
+    `【顧客ストック】\n・今月の自然流出: -${naturalLostLoyals} 名\n\n` +
+    `【月間収支】\n` +
+    `・売上合計: ＋${m_revenue.toLocaleString()} 円\n` +
+    `・支出合計: －${m_expense.toLocaleString()} 円\n` +
+    `・今月の純損益: ${monthlyNet >= 0 ? "＋" : ""}${monthlyNet.toLocaleString()} 円\n` +
+    `・現在の手元現金: ${funds.toLocaleString()} 円\n` +
+    `━━━━━━━━━━━━━━━━━━━━`;
 
     if (funds < 0) {
         alert(`🚨 資金ショートにより【倒産】しました（第 ${month} ヶ月目）。`);
