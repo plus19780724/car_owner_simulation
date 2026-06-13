@@ -78,7 +78,7 @@
         /* 左側：スタッフ・在庫表示 */
         .showroom-staff-office { display: flex; flex-wrap: wrap; gap: 6px; background: #dfe4ea; padding: 10px; border-radius: 6px; margin-bottom: 10px; min-height: 40px; border-left: 5px solid #8e44ad; }
         .staff-icon { background: #8e44ad; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-align: center; }
-        .staff-icon.assistant { background: #10ac84; } 
+        .staff-icon.assistant { bckground: #10ac84; } 
         .staff-empty { font-size: 11px; color: #7f8c8d; font-weight: bold; font-style: italic; padding: 5px; }
         
         .garage-floor { display: flex; flex-wrap: wrap; gap: 8px; background: #dfe4ea; padding: 10px; border-radius: 6px; min-height: 50px; }
@@ -114,7 +114,7 @@
 
 <div class="container">
     <h1>自動車販売・修理工場 経営シミュレーション</h1>
-    <div class="subtitle">〜 Ver 8.9　版 〜</div>
+    <div class="subtitle">〜 Ver 9.0　版 〜</div>
 
     <div class="control-panel">
         <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
@@ -976,6 +976,8 @@ function executeEvent(eventRoll) {
         currentEvent = "lift_bonus";
         // 【追加】営業覚醒フラグをONにする
         isSalesBoosted = true;
+        // ログを追加
+        console.log("【デバッグ】イベント11発生：isSalesBoosted を " + isSalesBoosted + " に設定");
         
         addLog(`✨ 【実施】スタッフ連携が強化され、整備能力が向上！`);
         addLog(`🔥 【覚醒】営業マンの接客力が極まり、今月の商談発生率が100%に！`);
@@ -1246,6 +1248,12 @@ function applyEvent(eventRoll) {
     }
 
     if (carDemands > 0) {
+        // 【重要】ここでイベント効果を計算する
+        let interestRate = (typeof isSalesBoosted !== 'undefined' && isSalesBoosted) ? 1.0 : 0.50;
+
+        // 【ログ2】ここで計算に使うフラグと確率を確認
+        console.log("【デバッグ】商談数計算 - 覚醒フラグ: " + (typeof isSalesBoosted !== 'undefined' ? isSalesBoosted : "未定義"));
+        console.log("【デバッグ】商談数計算 - 使用する商談発生率: " + interestRate);
         let baseInterestedBuyers = 0;
         for (let i = 0; i < carDemands; i++) {
             if (Math.random() < 0.50) { baseInterestedBuyers++; }
