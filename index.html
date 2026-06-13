@@ -951,8 +951,10 @@ function executeEvent(eventRoll) {
         currentEvent = "big_fleet"; // 【追加】これで判定用変数に値をセット
         addLog(`✨ 【実施】大口特需により入庫台数が3か月増加！`);
     } else if (eventRoll === 9) {
-        // sns_buzz というイベントフラグを立てる（既存のロジックに合わせる）
-        currentEvent = "sns_buzz"; 
+        // 1. その場で顧客数に基づいたボーナスを計算
+        let socialBonus = Math.max(1, Math.floor(loyalCustomers * 0.1));
+        // 2. 直接 carDemands に加算
+        carDemands += socialBonus;
         addLog(`✨ 【実施】SNS拡散により来店数がアップ！`);
     } else if (eventRoll === 10) {
         if (v_stock_list.length < maxStock) {
@@ -1098,10 +1100,10 @@ function applyEvent(eventRoll) {
                 eventDesc.innerText = "「地元の運送会社から、一括での車検入庫オーダーを勝ち取りました！」\n（3か月間、車検の入庫要求台数が【＋20台】一気にブーストされました）";
             } 
             else if (eventRoll === 9) {
+                let socialBonus = Math.max(1, Math.floor(loyalCustomers * 0.1));
                 eventTitle.style.color = "#27ae60";
-                currentEvent = "sns_buzz";
                 eventTitle.innerText = "🚀 チャンス到来：奇跡の口コミ・SNSバズ";
-                eventDesc.innerText = "「SNSで『親切すぎる街の整備工場』として紹介され、一躍話題に！」\n（広告費ゼロで、今月の車両販売への来店客数が【＋8組】追加されます）";
+                eventDesc.innerText =`「SNSで『親切すぎる街の整備工場』として紹介され、一躍話題に！」\n（広告費ゼロで、今月の車両販売への来店客数が【＋${socialBonus}組】追加されます）`;
             } 
            else if (eventRoll === 10) {
             // 色のグループ分けルールに従って設定
