@@ -876,9 +876,14 @@ function executeEvent(eventRoll) {
         currentEvent = "parts_delay"; // 【重要】この合図を出す
         addLog(`🚨 【実施】部品供給遅延：生産性が3か月低下します。`);
     } else if (eventRoll === 2) {
+        // リフトがある場合のみ発生させる
+        if (lifters > 0) {
         funds -= 300000;
         m_expense += 300000;
         addLog(`🚨 【実施】突発修繕費30万円が発生しました。`);
+        } else {
+        addLog(`🚨 設備トラブルの予兆がありましたが、稼働中の設備がないため影響はありませんでした。`);
+        }
     } else if (eventRoll === 3) {
         let lostLoyals = Math.floor(loyalCustomers * 0.10);
         loyalCustomers -= lostLoyals;
@@ -994,8 +999,15 @@ function applyEvent(eventRoll) {
                 eventDesc.innerText = "「世界的な物流遅延で、車検用の交換部品の入荷が大幅に遅れています…」\n（3か月間、各リフトの車検完了上限台数が一律20%ダウンしました）";
             } 
             else if (eventRoll === 2) {
+                if (lifters > 0) {
                 eventTitle.innerText = "⚠️ 突発トラブル：代車・設備の突発故障";
-                eventDesc.innerText = "「無料代車の車検切れと、ピットリフトのセンサー不調が同時発生！」\n（突発的な設備修繕費用として、今月の支出に30万円が強制追加されます）";
+                eventDesc.innerText = "「ピットリフトのセンサー不調が同時発生！」\n（突発的な設備修繕費用として、今月の支出に30万円が強制追加されます）";
+                } else {
+               // 今回は「ラッキーな回避（何も起きない）」として処理
+                eventTitle.innerText = "✨ 本日は平穏です";
+                eventDesc.innerText = "設備トラブルの予兆がありましたが、稼働中の設備がないため影響はありませんでした。";
+                eventBoard.style.background = "#f0f8ff"; // 平穏な色
+                } 
             } 
             else if (eventRoll === 3) {
                 // 【修正】applyEventの中で再度計算を行い、表示用の変数を定義する
