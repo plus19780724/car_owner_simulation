@@ -876,9 +876,15 @@ function executeEvent(eventRoll) {
         addLog(`🚨 現在整備スタッフは不在のため影響なし`);
         }
     } else if (eventRoll === 1) {
+        if (lifters > 0) {
+        // リフトがあり、整備事業が動いている場合のみ発生
         cooldown_parts = 3;
         currentEvent = "parts_delay"; // 【重要】この合図を出す
         addLog(`🚨 【実施】部品供給遅延：生産性が3か月低下します。`);
+        } else {
+        // リフトが0なら、パーツの需要自体がないので平穏
+        addLog(`✨ 【実施】現在整備事業を行っていないため、部品供給の影響はありません。`);
+        }
     } else if (eventRoll === 2) {
         // リフトがある場合のみ発生させる
         if (lifters > 0) {
@@ -1010,8 +1016,17 @@ function applyEvent(eventRoll) {
             }
     } 
     else if (eventRoll === 1) {
+                if (lifters > 0) {
+                // リフトがあり、整備事業が動いている場合のみ発生
                 eventTitle.innerText = "⚠️ 突発トラブル：パーツ供給の遅延";
                 eventDesc.innerText = "「世界的な物流遅延で、車検用の交換部品の入荷が大幅に遅れています…」\n（3か月間、各リフトの車検完了上限台数が一律20%ダウンしました）";
+                } else {
+                eventBoard.style.background = "#f0f8ff"; // 青系（平穏）
+                eventBoard.style.borderColor = "#3498db";
+                eventTitle.style.color = "#3498db";
+                eventTitle.innerText = "✨ 本日は、平穏です";
+                eventDesc.innerText = "「現在整備事業を行っていないため、部品供給の影響はありません。」";
+                }
             } 
             else if (eventRoll === 2) {
                 if (lifters > 0) {
