@@ -114,7 +114,7 @@
 
 <div class="container">
     <h1>自動車販売・修理工場 経営シミュレーション</h1>
-    <div class="subtitle">〜 Ver 9.1　版 〜</div>
+    <div class="subtitle">〜 Ver 9.2　版 〜</div>
 
     <div class="control-panel">
         <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
@@ -312,7 +312,9 @@
     let cooldown_fleet = 0;         
     let count_weather_this_year = 0; 
     let unitRepairProfit = 35000; // 車検1台あたりの利益
-
+    let currentLiftsCount = 0; 
+    let isSalesBoosted = false;
+    
     // 【重要】ここで window に参照を渡してあげる
     window.funds = funds; 
     window.m_expense = m_expense;    
@@ -428,7 +430,7 @@
     // (以下、ループ処理は変更なし)
     let totalCapacity = 0;
     let liftDetails = [];
-    let currentLiftsCount = v_lift_ages.length;
+    currentLiftsCount = v_lift_ages.length;
     let bonusApplied = false; // 【追加】ボーナス適用済みか管理するフラグ
 
     for (let i = 1; i <= maxLiftsLimit; i++) {
@@ -518,7 +520,7 @@
         document.getElementById("m-stock").innerText = `${v_stock_list.length} / ${maxStock} 台`;
         document.getElementById("m-loan").innerText = `${loanBalance.toLocaleString()}円`;
         
-        let currentLiftsCount = v_lift_ages.length;
+        currentLiftsCount = v_lift_ages.length;
 
         let factoryStatus = calculateFactoryStatus();
         let factoryCapacity = factoryStatus.totalCapacity;
