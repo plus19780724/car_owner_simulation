@@ -114,7 +114,7 @@
 
 <div class="container">
     <h1>自動車販売・修理工場 経営シミュレーション</h1>
-    <div class="subtitle">〜 Ver 9.4　版 〜</div>
+    <div class="subtitle">〜 Ver 9.5　版 〜</div>
 
     <div class="control-panel">
         <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
@@ -307,7 +307,7 @@
     let cooldown_audit = 0;         
     let cooldown_fleet = 0;         
     let count_weather_this_year = 0; 
-    let unitRepairProfit = 35000; // 車検1台あたりの利益
+    let unitRepairProfit = 33000; // 車検1台あたりの利益
     let currentLiftsCount = 0; 
     let isSalesBoosted = false;
     
@@ -327,16 +327,20 @@
             ` ・手元資金【現金】がなくなれば資金ショートして倒産します。\n\n` +
             `⚠️ 【車両販売】\n` +
             ` ・営業マンを採用しないと車を展示していても販売することは、できません。\n` +
+            ` ・営業マンが1か月に対応できる接客数は22組が最大です。\n` +
             ` ・長期在庫になればなるほど販売成約率は、落ちていきます。\n` +
             ` ・通常来店者数は車両の展示率によって変動します。販売実績が増えれば増えるほど通常来店者数も増えます。\n` +
             ` ・展示場は最大50台まで拡張することが可能です。\n` +
             ` ・1回の広告費用は30万円です。来客数が+4～8組増えます。\n` +
-            ` ・販売成約率はランダムで約40％です。\n\n` +
+            ` ・1台当りの売上価格はランダムで125万円前後です。\n` +
+            ` ・来場者のうち約50％が商談対象になります。\n\n` +
             `⚠️ 【車検整備】\n` +
             ` ・リフト1基に対して整備士2名、事務員1名が最大人数になります。\n` +
             ` ・リフトは3年ごとにメンテナンス費用が50万円かかります。\n` +
             ` ・車検整備はリフト1基に対して整備士、事務員それぞれが最低1名いないと作業できません。\n` +
+            ` ・1台のリフトで作業できる台数は最大58台です。※イベントブーストは除く\n` +
             ` ・1回のDM発送費用は30万円です。反響は15～30台で実入庫はランダムで約50％です。`
+            ` ・1台当りの粗利価格はランダムで33,000円前後です。\n` +
         );
     }
     function resetGame() {
@@ -1311,7 +1315,7 @@ function getRetailPrice() {
             carLossMessage = "⚠️ 発注ミスにより1台キャンセル(車は在庫へ戻りました)";
         }
         if (actualSales > 0) {
-            addLog(`🚗 中古車が **${actualSales} 台** 成約！(売上: +${(actualSales * retailPrice).toLocaleString()}円)`);
+            addLog(`🚗 中古車が **${actualSales} 台** 成約！(単価: ${retailPrice.toLocaleString()}円 /売上: +${(actualSales * retailPrice).toLocaleString()}円)`);
             totalCarSales += actualSales;
             currentYearCarSales += actualSales;
         }
@@ -1355,11 +1359,13 @@ function getRetailPrice() {
         else repairLossMessage = `容量オーバーで -${missedRepairs}台`;
         repairDemands = factoryCapacity;
     }
-    let repairProfit = repairDemands * unitRepairProfit;
+       // ★ここを変更：その月の単価を ±10% の範囲で決定
+    let monthlyUnitProfit = Math.floor(unitRepairProfit * (0.9 + Math.random() * 0.2));
+    let repairProfit = repairDemands * monthlyUnitProfit;
     funds += repairProfit;
     m_revenue += repairProfit;
     if (repairDemands > 0) {
-        addLog(`🔧 車検整備を **${repairDemands} 台** 完了。 (粗利: +${repairProfit.toLocaleString()}円)`);
+        addLog(`🔧 車検整備を **${repairDemands} 台** 完了。 (単価: ${monthlyUnitProfit.toLocaleString()}円 /粗利: +${repairProfit.toLocaleString()}円)`);
         currentYearRepairDone += repairDemands;
         let newLoyals = Math.floor(repairDemands * 0.3);
         loyalCustomers += newLoyals;
