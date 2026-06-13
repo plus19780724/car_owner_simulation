@@ -876,7 +876,7 @@ function executeEvent(eventRoll) {
         addLog(`🚨 現在整備スタッフは不在のため影響なし`);
         }
     } else if (eventRoll === 1) {
-        if (lifters > 0) {
+        if (currentLiftsCount > 0) {
         // リフトがあり、整備事業が動いている場合のみ発生
         cooldown_parts = 3;
         currentEvent = "parts_delay"; // 【重要】この合図を出す
@@ -887,7 +887,7 @@ function executeEvent(eventRoll) {
         }
     } else if (eventRoll === 2) {
         // リフトがある場合のみ発生させる
-        if (lifters > 0) {
+        if (currentLiftsCount > 0) {
         funds -= 300000;
         m_expense += 300000;
         addLog(`🚨 【実施】突発修繕費30万円が発生しました。`);
@@ -1021,7 +1021,7 @@ function applyEvent(eventRoll) {
             }
     } 
     else if (eventRoll === 1) {
-                if (lifters > 0) {
+                if (currentLiftsCount > 0) {
                 // リフトがあり、整備事業が動いている場合のみ発生
                 eventTitle.innerText = "⚠️ 突発トラブル：パーツ供給の遅延";
                 eventDesc.innerText = "「世界的な物流遅延で、車検用の交換部品の入荷が大幅に遅れています…」\n（3か月間、各リフトの車検完了上限台数が一律20%ダウンしました）";
@@ -1034,7 +1034,7 @@ function applyEvent(eventRoll) {
                 }
             } 
             else if (eventRoll === 2) {
-                if (lifters > 0) {
+                if (currentLiftsCount > 0) {
                 eventTitle.innerText = "⚠️ 突発トラブル：代車・設備の突発故障";
                 eventDesc.innerText = "「ピットリフトのセンサー不調が同時発生！」\n（突発的な設備修繕費用として、今月の支出に30万円が強制追加されます）";
                 } else {
