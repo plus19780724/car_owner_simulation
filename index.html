@@ -114,7 +114,7 @@
 
 <div class="container">
     <h1>自動車販売・修理工場 経営シミュレーション</h1>
-    <div class="subtitle">〜 Ver 9.3　版 〜</div>
+    <div class="subtitle">〜 Ver 9.4　版 〜</div>
 
     <div class="control-panel">
         <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
@@ -300,10 +300,6 @@
 
     // 1. 仕入れ値は固定
     const buyPrice = 1000000; 
-    // 2. 粗利に「ブレ幅」を導入（ベース25万 ± 5万）
-    let profit = 250000 + (Math.floor(Math.random() * 100001) - 50000);
-    // 3. 販売価格は「仕入れ値 ＋ 確定した利益」で計算
-    const retailPrice = buyPrice + profit;   
     const maxClearancePerSalesman = 22; 
 
     let cooldown_rival = 0;         
@@ -1183,8 +1179,6 @@ function applyEvent(eventRoll) {
         pendingEvent = null;
     }
         console.log("デバッグ：イベント実行後のm_expense（変動費）は:", m_expense);
-       
-     
     
     // 3. 【表示用】「今月の引き落し予定」として固定費を保存
         currentMonthFixed = monthlyFixed; 
@@ -1222,6 +1216,11 @@ function applyEvent(eventRoll) {
     }
 
     // 5. 車両販売部門の営業処理
+function getRetailPrice() {
+    let profit = 250000 + (Math.floor(Math.random() * 100001) - 50000);
+    return buyPrice + profit;
+}
+    let retailPrice = getRetailPrice(); // これで毎回ランダムな価格が生成される！
     let salesBonus = getCarSalesBonus();
     let loyalPenalty = getCarSalesLoyalPenalty();
     let carDemands = Math.floor(Math.random() * (3 - 0 + 1)) + 0 + salesBonus;
