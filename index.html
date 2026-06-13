@@ -114,7 +114,7 @@
 
 <div class="container">
     <h1>自動車販売・修理工場 経営シミュレーション</h1>
-    <div class="subtitle">〜 Ver 8.7　版 〜</div>
+    <div class="subtitle">〜 Ver 8.8　版 〜</div>
 
     <div class="control-panel">
         <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
@@ -968,8 +968,11 @@ function executeEvent(eventRoll) {
     } else if (eventRoll === 11) {
         // 1. イベント名を記録
         currentEvent = "lift_bonus";
+        // 【追加】営業覚醒フラグをONにする
+        isSalesBoosted = true;
         
         addLog(`✨ 【実施】スタッフ連携が強化され、整備能力が向上！`);
+        addLog(`🔥 【覚醒】営業マンの接客力が極まり、今月の商談発生率が100%に！`);
         // 3. ここで「イベントボーナス付き」で再計算を行う
         // これにより、画面の表示や売上の計算がボーナス込みになります
         let status = calculateFactoryStatus("lift_bonus");
@@ -1126,7 +1129,7 @@ function applyEvent(eventRoll) {
             else if (eventRoll === 11) {
                 eventTitle.style.color = "#27ae60";
                 eventTitle.innerText = "🚀 チャンス到来：スタッフたちの電撃覚醒";
-                eventDesc.innerText = "「営業とピットの連携が神がかり、工場内の無駄な動きがゼロに！」\n（今月のみ、稼働している各リフトの車検処理キャパシティが【一律＋20台】上昇します）";
+                eventDesc.innerText = "「スタッフの動きが神がかり、無駄な動きがゼロに！」\n（【覚醒】営業マンの接客力が極まり、今月の商談発生率が100%に！）\n（今月のみ、稼働している各リフトの車検処理キャパシティが【一律＋20台】上昇します）";
             }
         }
 
@@ -1209,7 +1212,7 @@ function applyEvent(eventRoll) {
         addLog(`🚀 【広告効果】販売広告により、来店客が計 **＋${totalBoost} 組** ブースト！`);
     }
 
-    if (currentEvent === "sns_buzz") {carDemands += 8;}
+    if (currentEvent === "sns_buzz") 
     if (currentEvent === "bad_weather") {carDemands = Math.floor(carDemands / 2);
     }
     lastMonthCarDemands = carDemands;
@@ -1247,6 +1250,10 @@ function applyEvent(eventRoll) {
                 else if (targetCarAge >= 3 && targetCarAge <= 5) { finalClosingRate = 0.60; }
                 else if (targetCarAge >= 6 && targetCarAge <= 11) { finalClosingRate = 0.40; }
                 else if (targetCarAge >= 12) { finalClosingRate = 0.20; }
+                // 覚醒中なら強制的に 1.0 にする
+                if (typeof isSalesBoosted !== 'undefined' && isSalesBoosted) {
+                finalClosingRate = 1.0;
+                }
                 if (Math.random() < finalClosingRate) {
                     v_stock_list.splice(randomIndex, 1);
                     funds += retailPrice;
