@@ -14,12 +14,17 @@
         }
            /* 全体をFlexで管理して、ログだけを押し出す */
         .container {
-            height: 98vh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            padding: 10px;
+            box-sizing: border-box;
         }
-
+         /* ヘッダーは高さ固定 */
+        .header-section {
+            flex: 0 0 auto;
+            margin-bottom: 10px;
+        }
         /* メイン部分を左右に分割 */
         .main-body {
             display: grid;
@@ -27,17 +32,19 @@
             gap: 15px;
             flex: 1;
             overflow-y: auto; /* ここで中のコンテンツをスクロール */
-            padding: 10px;
         }
-
-        /* ログの折りたたみ設定 */
+        /* パネル内はスクロール可能に */
+        .left-panel, .right-panel {
+            overflow-y: auto;
+            padding: 10px;
+            background: #f8f9fa;
+        }
+        /* ログは最下部に固定 */
         .log-section {
-            background: #1e272e;
-            color: white;
-            padding: 10px;
             flex: 0 0 auto;
+            margin-top: 10px;
         }
-.log-section summary { cursor: pointer; font-weight: bold; }
+        .log-section summary { cursor: pointer; font-weight: bold; }
         
         h1 { text-align: center; color: #2c3e50; margin-bottom: 5px; font-size: 28px; /* ここでサイズを指定（お好みの数字に変えてください） */}
         .subtitle { text-align: center; color: #7f8c8d; margin-bottom: 15px; font-weight: bold; }
@@ -148,7 +155,7 @@
 <div class="container">
     <div class="header-section">
     <h1>自動車販売・修理工場 経営シミュレーション</h1>
-    <div class="subtitle">〜 Ver 10.5　版 〜</div>
+    <div class="subtitle">〜 Ver 10.6　版 〜</div>
     </div>
     <div class="main-body">
         <div class="left-panel"></div>
