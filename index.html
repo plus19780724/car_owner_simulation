@@ -4,30 +4,22 @@
     <meta charset="UTF-8">
     <title>自動車販売・修理工場 経営シミュレーション</title>
     <style>
-        body { 
-            font-family: 'Helvetica Neue', Arial, sans-serif; 
-            background: #eef2f3; 
-            margin: 0; 
-            height: 100vh; /* 画面の高さをブラウザと完全に一致させる */
+        body {
+            height: 100vh;
+            overflow: hidden;
+            margin: 0;
             display: flex;
-            justify-content: center; /* 左右中央寄せ */
-            align-items: center;     /* 上下中央寄せ */
-            padding: 10px;
-            box-sizing: border-box;  /* パディングを含めてサイズ計算する */
-            overflow: hidden;        /* ページ全体のスクロールを無効化 */
+            justify-content: center;
+            background: #eef2f3;
         }
-        .container { 
-            width: 100%;
-            max-width: 1000px; 
-            height: 95vh;            /* 画面内に収まるように高さを制限 */
-            background: white; 
-            padding: 10px; 
-            border-radius: 12px; 
+        /* ゲーム全体を囲む箱を画面サイズに合わせる */
+        .container {
+            height: 98vh; /* 画面高さの98%に収める */
+            width: 1000px; /* 必要であれば固定幅に */
+            overflow-y: auto; /* ここでスクロールさせる */
+            padding: 10px;
+            background: white;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;  /* 中身を縦に並べる */
-            overflow-y: auto;        /* はみ出た分はここだけでスクロール */
-            box-sizing: border-box;
         }
         /* 3. ゲームのメイン操作エリア（スクロールさせない） */
         #main-game-area {
@@ -149,7 +141,7 @@
 <div class="container">
     <div id="main-game-area"
     <h1>自動車販売・修理工場 経営シミュレーション</h1>
-    <div class="subtitle">〜 Ver 10.3　版 〜</div>
+    <div class="subtitle">〜 Ver 10.4　版 〜</div>
 
     <div class="control-panel">
         <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
