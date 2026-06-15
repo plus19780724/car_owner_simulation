@@ -12,30 +12,32 @@
             justify-content: center;
             background: #eef2f3;
         }
-        /* ゲーム全体を囲む箱を画面サイズに合わせる */
+           /* 全体をFlexで管理して、ログだけを押し出す */
         .container {
             height: 98vh;
             display: flex;
-            flex-direction: column; /* 縦に並べる */
-            overflow: hidden;       /* コンテナ自体はスクロールさせない */
-        }
-
-        #main-game-area {
-            flex: 0 0 auto;         /* 中身の高さに合わせて固定 */
+            flex-direction: column;
             overflow: hidden;
         }
 
-        .log-container {
-            flex: 1;                /* 余った空間を全部使う */
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;       /* ログエリア内を制御 */
+        /* メイン部分を左右に分割 */
+        .main-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            flex: 1;
+            overflow-y: auto; /* ここで中のコンテンツをスクロール */
+            padding: 10px;
         }
 
-        #game-logs {
-            flex: 1;
-            overflow-y: auto;       /* ログが長いときだけここがスクロールする！ */
+        /* ログの折りたたみ設定 */
+        .log-section {
+            background: #1e272e;
+            color: white;
+            padding: 10px;
+            flex: 0 0 auto;
         }
+.log-section summary { cursor: pointer; font-weight: bold; }
         
         h1 { text-align: center; color: #2c3e50; margin-bottom: 5px; font-size: 28px; /* ここでサイズを指定（お好みの数字に変えてください） */}
         .subtitle { text-align: center; color: #7f8c8d; margin-bottom: 15px; font-weight: bold; }
@@ -144,10 +146,20 @@
 <body>
 
 <div class="container">
-    <div id="main-game-area"
+    <div class="header-section">
     <h1>自動車販売・修理工場 経営シミュレーション</h1>
-    <div class="subtitle">〜 Ver 10.4　版 〜</div>
-
+    <div class="subtitle">〜 Ver 10.5　版 〜</div>
+    </div>
+    <div class="main-body">
+        <div class="left-panel"></div>
+        <div class="right-panel"> </div>
+    </div>
+    <details class="log-section">
+        <summary>📋 経営・営業報告ログを表示</summary>
+        <div class="log-window" id="logWindow">...</div>
+    </details>
+    </div>
+        
     <div class="control-panel">
         <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
         <button class="btn-ctrl btn-reset" onclick="resetGame()">🔄 経営リセット</button>
