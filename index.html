@@ -184,6 +184,12 @@
                 <div class="result-sub" id="r-car-loss">-</div>
                 <div class="total-badge">📊 今期（当期）販売台数: <font id="t-car-current">0</font> 台</div>
             </div>
+             <div class="result-panel repair">
+                <div class="result-title">🔧 直近の車検整備実績</div>
+                <div class="result-main" id="r-repair-done">0 <span style="font-size:13px;">台完了</span> <span style="color:#7f8c8d;">/ 実際の入庫:</span> <span id="r-repair-demands">0</span> <span style="font-size:13px;">台</span></div>
+                <div class="result-sub" id="r-repair-loss">-</div>
+                <div class="total-badge">📊 今期（当期）車検台数: <font id="t-repair-current">0</font> 台</div>
+            </div>
             <div class="adv-sector-box">
                 <div style="text-align: center; border-right: 1px dashed #ff9800; padding-right: 10px;">
                 <span style="font-weight: bold; color: #2c3e50; font-size: 14px;">🚗 車両販売広告</span><br>
@@ -198,9 +204,49 @@
                 <div class="adv-counter" id="v-adv-repair-status" style="color:#27ae60; border-color:#27ae60;">今月の発注数: 0回 (反響予測: +0台)</div>
                 </div>
             </div>
-            <div class="game-zone">...</div>
+            <div class="game-zone">
+                <div class="zone-title">🚗 車両販売部門 (営業マン: <span id="c-salesmen">0</span>名) <span id="badge-adv-car" class="adv-active-badge">🚀 広告発注済</span></div>
+            
+                <div class="btn-grid">
+                    <button class="btn-buy" onclick="buyCar()">🛠 車を仕入れる<br>(-100万円)</button>
+                    <button class="btn-sell" onclick="fireSale()">🚨 最古の在庫を損切<br>(いつでも可)</button>
+                    <button class="btn-hire" onclick="hireStaff('salesman')">👨‍💼 営業マンを採用<br>(人件費:月30万)</button>
+                    <button class="btn-upgrade" id="btn-showroom-upgrade" onclick="upgradeShowroom()">🏢 展示場を拡張<br>費用300万/上限50台</button>
+                </div>
+                <div style="font-size: 13px; font-weight: bold; margin-bottom: 5px;">事務所の営業・事務スタッフ：</div>
+                <div class="showroom-staff-office" id="staff-office-floor"></div>
+                <p style="font-size: 12px; margin: 5px 0; color:#555;" id="c-car-forecast">通常来店: 0〜3組/月</p>
+                <div style="font-size: 13px; font-weight: bold; margin-bottom: 5px;">展示場の様子：</div>
+                <div class="garage-floor" id="garage-floor"></div>
+            </div>
+            <div class="zone-box">
+                <div class="zone-title">🔧 車検整備部門 (整備士: <span id="c-mechanics">0</span>/ 事務: <span id="c-clerks">0</span> / 補助事務: <span id="c-assistants">0</span>) <span id="badge-adv-repair" class="adv-active-badge">🚀 広告発注済</span></div>
+            
+                <div class="btn-grid">
+                <button class="btn-hire" style="background:#2980b9;" onclick="hireStaff('mechanic')">🔧 メカニック採用<br>(人件費:月30万)</button>
+                <button class="btn-hire" style="background:#27ae60;" onclick="hireStaff('clerk')">👩‍💻 事務員を採用<br>(人件費:月30万)</button>
+                <button class="btn-assistant" id="btn-hire-assistant" onclick="hireStaff('assistant')">🛡️ 補助事務員採用<br>(人件費:月30万)</button>
+                <button class="btn-upgrade" style="background:#d35400;" id="btn-lift-upgrade" onclick="upgradeLift()">🏋️‍♂️ リフト増設（+1基）<br>投資200万 / 月10万</button>
+                </div>
+                <div class="rule-info" style="background:#e8f5e9; border-left:4px solid #4caf50; color:#1b5e20; padding:10px; border-radius:5px; margin-bottom:10px;">
+                👥 現在の自社管理顧客数: <span id="c-loyal-customers" style="font-size:16px;color:#d35400;font-weight:bold;">0</span> 名
+                </div>
+                <p style="font-size: 12px; margin: 5px 0; color:#34495e; font-weight: bold;" id="c-incoming-forecast">通常入庫: 0台</p>    
+                <div style="background: #f1f2f6; padding: 10px; border-radius: 5px; font-size: 13px; line-height: 1.5; margin-bottom: 5px;">
+                現在の工場車検限界: <span id="c-factory-cap" style="font-weight:bold; color:#e74c3c;">0</span> 台 / 月
+                </div>
+                <div style="font-size: 13px; font-weight: bold; margin-bottom: 5px;">ピット工場の様子（最大5基）：</div>
+                <div class="factory-floor" id="factory-floor"></div>
+                <div id="factory-backyard" style="font-size:11px; margin-top:5px; color:#7f8c8d; font-weight:bold;"></div>
+            </div>
 
         <div class="right-panel">
+            <div class="event-board" id="eventBoard">
+                <div class="event-title" id="eventTitle">⚠️ 今月の突発イベント</div>
+                <div class="event-desc" id="eventDesc">イベント内容がここに表示されます。</div>
+            </div>
+            <button class="btn-next" onclick="nextMonth()">🎲 今月の営業を実行して次の月へ進む ➔</button>
+
             <div class="event-board" id="eventBoard">...</div>
             <div class="archive-container">...</div>
             <div class="log-container">...</div>
@@ -211,64 +257,9 @@
         <div class="log-window" id="logWindow">...</div>
     </details>
 
-        <div class="result-panel repair">
-            <div class="result-title">🔧 直近の車検整備実績</div>
-            <div class="result-main" id="r-repair-done">0 <span style="font-size:13px;">台完了</span> <span style="color:#7f8c8d;">/ 実際の入庫:</span> <span id="r-repair-demands">0</span> <span style="font-size:13px;">台</span></div>
-            <div class="result-sub" id="r-repair-loss">-</div>
-            <div class="total-badge">📊 今期（当期）車検台数: <font id="t-repair-current">0</font> 台</div>
-        </div>
+        
     </div>
-
-    <div class="event-board" id="eventBoard">
-        <div class="event-title" id="eventTitle">⚠️ 今月の突発イベント</div>
-        <div class="event-desc" id="eventDesc">イベント内容がここに表示されます。</div>
-    </div>
-
-    <button class="btn-next" onclick="nextMonth()">🎲 今月の営業を実行して次の月へ進む ➔</button>
-
-    <div class="game-zone">
-        <div class="zone-box">
-            <div class="zone-title">🚗 車両販売部門 (営業マン: <span id="c-salesmen">0</span>名) <span id="badge-adv-car" class="adv-active-badge">🚀 広告発注済</span></div>
-            
-            <div class="btn-grid">
-                <button class="btn-buy" onclick="buyCar()">🛠 車を仕入れる<br>(-100万円)</button>
-                <button class="btn-sell" onclick="fireSale()">🚨 最古の在庫を損切<br>(いつでも可)</button>
-                <button class="btn-hire" onclick="hireStaff('salesman')">👨‍💼 営業マンを採用<br>(人件費:月30万)</button>
-                <button class="btn-upgrade" id="btn-showroom-upgrade" onclick="upgradeShowroom()">🏢 展示場を拡張<br>費用300万/上限50台</button>
-            </div>
-
-            <div style="font-size: 13px; font-weight: bold; margin-bottom: 5px;">事務所の営業・事務スタッフ：</div>
-            <div class="showroom-staff-office" id="staff-office-floor"></div>
-
-            <p style="font-size: 12px; margin: 5px 0; color:#555;" id="c-car-forecast">通常来店: 0〜3組/月</p>
-            <div style="font-size: 13px; font-weight: bold; margin-bottom: 5px;">展示場の様子：</div>
-            <div class="garage-floor" id="garage-floor"></div>
-        </div>
-
-        <div class="zone-box">
-            <div class="zone-title">🔧 車検整備部門 (整備士: <span id="c-mechanics">0</span>/ 事務: <span id="c-clerks">0</span> / 補助事務: <span id="c-assistants">0</span>) <span id="badge-adv-repair" class="adv-active-badge">🚀 広告発注済</span></div>
-            
-            <div class="btn-grid">
-                <button class="btn-hire" style="background:#2980b9;" onclick="hireStaff('mechanic')">🔧 メカニック採用<br>(人件費:月30万)</button>
-                <button class="btn-hire" style="background:#27ae60;" onclick="hireStaff('clerk')">👩‍💻 事務員を採用<br>(人件費:月30万)</button>
-                <button class="btn-assistant" id="btn-hire-assistant" onclick="hireStaff('assistant')">🛡️ 補助事務員採用<br>(人件費:月30万)</button>
-                <button class="btn-upgrade" style="background:#d35400;" id="btn-lift-upgrade" onclick="upgradeLift()">🏋️‍♂️ リフト増設（+1基）<br>投資200万 / 月10万</button>
-            </div>
-
-            <div class="rule-info" style="background:#e8f5e9; border-left:4px solid #4caf50; color:#1b5e20; padding:10px; border-radius:5px; margin-bottom:10px;">
-                👥 現在の自社管理顧客数: <span id="c-loyal-customers" style="font-size:16px;color:#d35400;font-weight:bold;">0</span> 名
-            </div>
-
-            <p style="font-size: 12px; margin: 5px 0; color:#34495e; font-weight: bold;" id="c-incoming-forecast">通常入庫: 0台</p>
-            
-            <div style="background: #f1f2f6; padding: 10px; border-radius: 5px; font-size: 13px; line-height: 1.5; margin-bottom: 5px;">
-                現在の工場車検限界: <span id="c-factory-cap" style="font-weight:bold; color:#e74c3c;">0</span> 台 / 月
-            </div>
-
-            <div style="font-size: 13px; font-weight: bold; margin-bottom: 5px;">ピット工場の様子（最大5基）：</div>
-            <div class="factory-floor" id="factory-floor"></div>
-            <div id="factory-backyard" style="font-size:11px; margin-top:5px; color:#7f8c8d; font-weight:bold;"></div>
-        </div>
+        
     </div>
 
     <div class="archive-container">
