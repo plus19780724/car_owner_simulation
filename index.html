@@ -154,25 +154,57 @@
 <div class="container"> <div class="header-section">
         <h1>自動車販売・修理工場 経営シミュレーション</h1>
         <div class="subtitle">〜 Ver 10.7 版 〜</div>
+        <div class="control-panel">
+                <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
+                <button class="btn-ctrl btn-reset" onclick="resetGame()">🔄 経営リセット</button>
+        </div>
     </div>
 
     <div class="main-body">
         
         <div class="left-panel">
-            <div class="control-panel">
-                <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
-                <button class="btn-ctrl btn-reset" onclick="resetGame()">🔄 経営リセット</button>
+            <div class="status-board">
+                <div class="status-item">経過月数<br><div class="status-value" id="m-month">1ヶ月目</div></div>
+                <div class="status-item">手元資金(現金)<br><div class="status-value" id="m-funds">15,000,000円</div></div>
+                <div class="status-item">今月の引き落し予定<br><div class="status-value" id="m-expenses">0円</div></div>
+                <div class="status-item">展示車在庫<br><div class="status-value" id="m-stock">0 / 10 台</div></div>
+                <div class="status-item">借入金残高<br><div class="status-value" id="m-loan" style="color:#ff7675;">15,000,000円</div></div>
             </div>
-            <div class="status-board">...</div>
-            <div class="finance-board">...</div>
-            <div class="result-board">...</div>
-            <div class="adv-sector-box">...</div>
+            <div class="finance-board">
+                <div class="finance-item">💰 前月の月間売上高<br><div class="finance-val-plus" id="f-last-month-revenue">0円</div></div>
+                <div class="finance-item">💸 前月の月間総支出<br><div class="finance-val-minus" id="f-last-month-expense">0円</div></div>
+                <div class="finance-item">📦 現在の在庫時価棚卸高<br><div class="finance-val-stock" id="f-stock-asset">0円</div></div>
+                <div class="finance-item">📈 累計売上高<br><div class="finance-val-plus" id="f-total-revenue">0円</div></div>
+                <div class="finance-item">📉 累計支出額<br><div class="finance-val-minus" id="f-total-expense">0円</div></div>
+            </div>
+            <div class="result-board">
+                <div class="result-panel car">
+                <div class="result-title">🚗 直近の車両販売実績</div>
+                <div class="result-main" id="r-car-sales">0 <span style="font-size:13px;">台成約</span> <span style="color:#7f8c8d;">/ 来店:</span> <span id="r-car-demands">0</span> <span style="font-size:13px;">組</span></div>
+                <div class="result-sub" id="r-car-loss">-</div>
+                <div class="total-badge">📊 今期（当期）販売台数: <font id="t-car-current">0</font> 台</div>
+            </div>
+            <div class="adv-sector-box">
+                <div style="text-align: center; border-right: 1px dashed #ff9800; padding-right: 10px;">
+                <span style="font-weight: bold; color: #2c3e50; font-size: 14px;">🚗 車両販売広告</span><br>
+                <span style="font-size: 11px; color: #666;">コスト: 1回 30万円 / 効果: 来店客数＋4〜8組</span>
+                <button class="adv-btn-car" onclick="triggerAdvertising('car')">🚀 広告を追加発注する (-30万)</button>
+                <div class="adv-counter" id="v-adv-car-status">今月の発注数: 0回 (効果: +0組)</div>
+                </div>
+                <div style="text-align: center; padding-left: 10px;">
+                 <span style="font-weight: bold; color: #27ae60; font-size: 14px;">🔧 車検整備広告</span><br>
+                <span style="font-size: 11px; color: #c0392b; font-weight:bold;">コスト: 1回 30万円 / 実入庫率は案内数の約50%</span>
+                <button class="adv-btn-repair" onclick="triggerAdvertising('repair')">🚀 DMを追加発送する (-30万)</button>
+                <div class="adv-counter" id="v-adv-repair-status" style="color:#27ae60; border-color:#27ae60;">今月の発注数: 0回 (反響予測: +0台)</div>
+                </div>
+            </div>
             <div class="game-zone">...</div>
+
+                
         </div>
 
         <div class="right-panel">
             <div class="event-board" id="eventBoard">...</div>
-            <button class="btn-next" onclick="nextMonth()">🎲 今月の営業を実行して次の月へ進む ➔</button>
             <div class="archive-container">...</div>
             <div class="log-container">...</div>
         </div>
@@ -181,55 +213,12 @@
         <summary>📋 経営・営業報告ログを表示</summary>
         <div class="log-window" id="logWindow">...</div>
     </details>
-        
-    <div class="control-panel">
-        <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
-        <button class="btn-ctrl btn-reset" onclick="resetGame()">🔄 経営リセット</button>
-    </div>
 
-    <div class="status-board">
-        <div class="status-item">経過月数<br><div class="status-value" id="m-month">1ヶ月目</div></div>
-        <div class="status-item">手元資金(現金)<br><div class="status-value" id="m-funds">15,000,000円</div></div>
-        <div class="status-item">今月の引き落し予定<br><div class="status-value" id="m-expenses">0円</div></div>
-        <div class="status-item">展示車在庫<br><div class="status-value" id="m-stock">0 / 10 台</div></div>
-        <div class="status-item">借入金残高<br><div class="status-value" id="m-loan" style="color:#ff7675;">15,000,000円</div></div>
-    </div>
-
-    <div class="finance-board">
-        <div class="finance-item">💰 前月の月間売上高<br><div class="finance-val-plus" id="f-last-month-revenue">0円</div></div>
-        <div class="finance-item">💸 前月の月間総支出<br><div class="finance-val-minus" id="f-last-month-expense">0円</div></div>
-        <div class="finance-item">📦 現在の在庫時価棚卸高<br><div class="finance-val-stock" id="f-stock-asset">0円</div></div>
-        <div class="finance-item">📈 累計売上高<br><div class="finance-val-plus" id="f-total-revenue">0円</div></div>
-        <div class="finance-item">📉 累計支出額<br><div class="finance-val-minus" id="f-total-expense">0円</div></div>
-    </div>
-
-    <div class="result-board">
-        <div class="result-panel car">
-            <div class="result-title">🚗 直近の車両販売実績</div>
-            <div class="result-main" id="r-car-sales">0 <span style="font-size:13px;">台成約</span> <span style="color:#7f8c8d;">/ 来店:</span> <span id="r-car-demands">0</span> <span style="font-size:13px;">組</span></div>
-            <div class="result-sub" id="r-car-loss">-</div>
-            <div class="total-badge">📊 今期（当期）販売台数: <font id="t-car-current">0</font> 台</div>
-        </div>
         <div class="result-panel repair">
             <div class="result-title">🔧 直近の車検整備実績</div>
             <div class="result-main" id="r-repair-done">0 <span style="font-size:13px;">台完了</span> <span style="color:#7f8c8d;">/ 実際の入庫:</span> <span id="r-repair-demands">0</span> <span style="font-size:13px;">台</span></div>
             <div class="result-sub" id="r-repair-loss">-</div>
             <div class="total-badge">📊 今期（当期）車検台数: <font id="t-repair-current">0</font> 台</div>
-        </div>
-    </div>
-
-    <div class="adv-sector-box">
-        <div style="text-align: center; border-right: 1px dashed #ff9800; padding-right: 10px;">
-            <span style="font-weight: bold; color: #2c3e50; font-size: 14px;">🚗 車両販売広告</span><br>
-            <span style="font-size: 11px; color: #666;">コスト: 1回 30万円 / 効果: 来店客数＋4〜8組</span>
-            <button class="adv-btn-car" onclick="triggerAdvertising('car')">🚀 広告を追加発注する (-30万)</button>
-            <div class="adv-counter" id="v-adv-car-status">今月の発注数: 0回 (効果: +0組)</div>
-        </div>
-        <div style="text-align: center; padding-left: 10px;">
-            <span style="font-weight: bold; color: #27ae60; font-size: 14px;">🔧 車検整備広告</span><br>
-            <span style="font-size: 11px; color: #c0392b; font-weight:bold;">コスト: 1回 30万円 / 実入庫率は案内数の約50%</span>
-            <button class="adv-btn-repair" onclick="triggerAdvertising('repair')">🚀 DMを追加発送する (-30万)</button>
-            <div class="adv-counter" id="v-adv-repair-status" style="color:#27ae60; border-color:#27ae60;">今月の発注数: 0回 (反響予測: +0台)</div>
         </div>
     </div>
 
