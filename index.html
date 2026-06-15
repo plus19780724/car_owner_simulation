@@ -4,8 +4,42 @@
     <meta charset="UTF-8">
     <title>自動車販売・修理工場 経営シミュレーション</title>
     <style>
-        body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #eef2f3; margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        body { 
+            font-family: 'Helvetica Neue', Arial, sans-serif; 
+            background: #eef2f3; 
+            margin: 0; 
+            height: 100vh; /* 画面の高さをブラウザと完全に一致させる */
+            display: flex;
+            justify-content: center; /* 左右中央寄せ */
+            align-items: center;     /* 上下中央寄せ */
+            padding: 10px;
+            box-sizing: border-box;  /* パディングを含めてサイズ計算する */
+            overflow: hidden;        /* ページ全体のスクロールを無効化 */
+        }
+        .container { 
+            width: 100%;
+            max-width: 1000px; 
+            height: 95vh;            /* 画面内に収まるように高さを制限 */
+            background: white; 
+            padding: 20px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;  /* 中身を縦に並べる */
+            overflow-y: auto;        /* はみ出た分はここだけでスクロール */
+            box-sizing: border-box;
+        }
+        /* 3. ゲームのメイン操作エリア（スクロールさせない） */
+        #main-game-area {
+            flex: 0 0 auto; /* 高さを固定 */
+        }
+
+        /* 4. ログエリア（ここがメインでスクロールする） */
+        .log-container { 
+            flex: 1;             /* 残りのスペースをすべて使う */
+            min-height: 150px;   /* 最低限の高さは確保 */
+            overflow-y: auto;    /* ここにログが溜まる */
+        }
         h1 { text-align: center; color: #2c3e50; margin-bottom: 5px; }
         .subtitle { text-align: center; color: #7f8c8d; margin-bottom: 15px; font-weight: bold; }
         
@@ -113,6 +147,7 @@
 <body>
 
 <div class="container">
+    <div id="main-game-area"
     <h1>自動車販売・修理工場 経営シミュレーション</h1>
     <div class="subtitle">〜 Ver 10.1　版 〜</div>
 
