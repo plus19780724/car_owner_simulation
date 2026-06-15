@@ -14,24 +14,23 @@
         }
            /* 全体をFlexで管理して、ログだけを押し出す */
         .container {
-            height: 100vh;
             display: flex;
-            flex-direction: column;
+            flex-direction: column; /* これが重要：縦に並ぶ */
+            width: 100%;
+            max-width: 1200px; /* 横幅を制限して広がりすぎを防ぐ */
+            margin: 0 auto;
             padding: 10px;
-            box-sizing: border-box;
         }
          /* ヘッダーは高さ固定 */
         .header-section {
             flex: 0 0 auto;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
         /* メイン部分を左右に分割 */
         .main-body {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            flex: 1;
-            overflow-y: auto; /* ここで中のコンテンツをスクロール */
+            grid-template-columns: 1fr 1fr; /* 左右に分割 */
+            gap: 20px;
         }
         /* パネル内はスクロール可能に */
         .left-panel, .right-panel {
