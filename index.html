@@ -193,12 +193,6 @@
             <div class="game-zone">
                 <div class="zone-title">🚗 車両販売部門 (営業マン: <span id="c-salesmen">0</span>名) <span id="badge-adv-car" class="adv-active-badge">🚀 広告発注済</span></div>
             </div>
-            <div class="btn-grid">
-                <button class="btn-buy" onclick="buyCar()">🛠 車を仕入れる<br>(-100万円)</button>
-                <button class="btn-sell" onclick="fireSale()">🚨 最古の在庫を損切<br>(いつでも可)</button>
-                <button class="btn-hire" onclick="hireStaff('salesman')">👨‍💼 営業マンを採用<br>(人件費:月30万)</button>
-                <button class="btn-upgrade" id="btn-showroom-upgrade" onclick="upgradeShowroom()">🏢 展示場を拡張<br>費用300万/上限50台</button>
-            </div>
                 <div style="font-size: 13px; font-weight: bold; margin-bottom: 5px;">事務所の営業・事務スタッフ：</div>
                 <div class="showroom-staff-office" id="staff-office-floor"></div>
                 <p style="font-size: 12px; margin: 5px 0; color:#555;" id="c-car-forecast">通常来店: 0〜3組/月</p>
@@ -207,12 +201,6 @@
             </div>
             <div class="zone-box">
                 <div class="zone-title">🔧 車検整備部門 (整備士: <span id="c-mechanics">0</span>/ 事務: <span id="c-clerks">0</span> / 補助事務: <span id="c-assistants">0</span>) <span id="badge-adv-repair" class="adv-active-badge">🚀 広告発注済</span></div>
-            </div>
-            <div class="btn-grid">
-                <button class="btn-hire" style="background:#2980b9;" onclick="hireStaff('mechanic')">🔧 メカニック採用<br>(人件費:月30万)</button>
-                <button class="btn-hire" style="background:#27ae60;" onclick="hireStaff('clerk')">👩‍💻 事務員を採用<br>(人件費:月30万)</button>
-                <button class="btn-assistant" id="btn-hire-assistant" onclick="hireStaff('assistant')">🛡️ 補助事務員採用<br>(人件費:月30万)</button>
-                <button class="btn-upgrade" style="background:#d35400;" id="btn-lift-upgrade" onclick="upgradeLift()">🏋️‍♂️ リフト増設（+1基）<br>投資200万 / 月10万</button>
             </div>
             <div class="rule-info" style="background:#e8f5e9; border-left:4px solid #4caf50; color:#1b5e20; padding:10px; border-radius:5px; margin-bottom:10px;">
                 👥 現在の自社管理顧客数: <span id="c-loyal-customers" style="font-size:16px;color:#d35400;font-weight:bold;">0</span> 名
@@ -246,7 +234,21 @@
                 <div class="adv-counter" id="v-adv-repair-status" style="color:#27ae60; border-color:#27ae60;">今月の発注数: 0回 (反響予測: +0台)</div>
                 </div>
             </div>
-            <div class="log-container">
+            <div class="btn-grid">
+                <button class="btn-buy" onclick="buyCar()">🛠 車を仕入れる<br>(-100万円)</button>
+                <button class="btn-sell" onclick="fireSale()">🚨 最古の在庫を損切<br>(いつでも可)</button>
+                <button class="btn-hire" onclick="hireStaff('salesman')">👨‍💼 営業マンを採用<br>(人件費:月30万)</button>
+                <button class="btn-upgrade" id="btn-showroom-upgrade" onclick="upgradeShowroom()">🏢 展示場を拡張<br>費用300万/上限50台</button>
+            </div>
+            <div class="btn-grid">
+                <button class="btn-hire" style="background:#2980b9;" onclick="hireStaff('mechanic')">🔧 メカニック採用<br>(人件費:月30万)</button>
+                <button class="btn-hire" style="background:#27ae60;" onclick="hireStaff('clerk')">👩‍💻 事務員を採用<br>(人件費:月30万)</button>
+                <button class="btn-assistant" id="btn-hire-assistant" onclick="hireStaff('assistant')">🛡️ 補助事務員採用<br>(人件費:月30万)</button>
+                <button class="btn-upgrade" style="background:#d35400;" id="btn-lift-upgrade" onclick="upgradeLift()">🏋️‍♂️ リフト増設（+1基）<br>投資200万 / 月10万</button>
+            </div>
+            
+        </div>
+        <div class="log-container">
                 <div style="font-weight: bold; margin-bottom: 5px; color: #f1c40f;">📋 経営・営業報告ログ</div>
                 <div class="log-window" id="logWindow">【経営スタート】初期キャッシュ1,500万円。毎年150万円の元金返済＋金利支払い義務があります。<br></div>
             </div>
@@ -259,7 +261,6 @@
                 <summary>📋 経営・営業報告ログを表示</summary>
                 <div class="log-window" id="logWindow">...</div>
             </details>
-        </div>
     </div>
     
 <script>
