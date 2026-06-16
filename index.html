@@ -927,11 +927,11 @@ function selectRandomEvent() {
 function executeEvent(eventRoll) {
     if (eventRoll === 0) {
         // 現在の月 - 最後に発生した月 >= 12ヶ月なら発生可能
-        if (mechanics > 0 && month - lastEventMonth.audit >= 12)) {
+        if (mechanics > 0 && month - lastEventMonth.audit >= 12){
         // メカニックが欠員している状態にする
-        mechanics_missing = true; 
+            mechanics_missing = true; 
         // 【重要】発生した月を記録する
-        lastEventMonth.audit = month;
+            lastEventMonth.audit = month;
         addLog(`🚨 【実施】メカニックが今月は1名欠勤しました！`);
         } else {
         addLog(`🚨 現在整備スタッフは不在のため影響なし`);
