@@ -190,20 +190,6 @@
                 <div class="result-sub" id="r-repair-loss">-</div>
                 <div class="total-badge">📊 今期（当期）車検台数: <font id="t-repair-current">0</font> 台</div>
             </div>
-            <div class="adv-sector-box">
-                <div style="text-align: center; border-right: 1px dashed #ff9800; padding-right: 10px;">
-                <span style="font-weight: bold; color: #2c3e50; font-size: 14px;">🚗 車両販売広告</span><br>
-                <span style="font-size: 11px; color: #666;">コスト: 1回 30万円 / 効果: 来店客数＋4〜8組</span>
-                <button class="adv-btn-car" onclick="triggerAdvertising('car')">🚀 広告を追加発注する (-30万)</button>
-                <div class="adv-counter" id="v-adv-car-status">今月の発注数: 0回 (効果: +0組)</div>
-                </div>
-                <div style="text-align: center; padding-left: 10px;">
-                 <span style="font-weight: bold; color: #27ae60; font-size: 14px;">🔧 車検整備広告</span><br>
-                <span style="font-size: 11px; color: #c0392b; font-weight:bold;">コスト: 1回 30万円 / 実入庫率は案内数の約50%</span>
-                <button class="adv-btn-repair" onclick="triggerAdvertising('repair')">🚀 DMを追加発送する (-30万)</button>
-                <div class="adv-counter" id="v-adv-repair-status" style="color:#27ae60; border-color:#27ae60;">今月の発注数: 0回 (反響予測: +0台)</div>
-                </div>
-            </div>
             <div class="game-zone">
                 <div class="zone-title">🚗 車両販売部門 (営業マン: <span id="c-salesmen">0</span>名) <span id="badge-adv-car" class="adv-active-badge">🚀 広告発注済</span></div>
             </div>
@@ -246,6 +232,20 @@
                 <div class="event-desc" id="eventDesc">イベント内容がここに表示されます。</div>
             </div>
             <button class="btn-next" onclick="nextMonth()">🎲 今月の営業を実行して次の月へ進む ➔</button>
+            <div class="adv-sector-box">
+                <div style="text-align: center; border-right: 1px dashed #ff9800; padding-right: 10px;">
+                <span style="font-weight: bold; color: #2c3e50; font-size: 14px;">🚗 車両販売広告</span><br>
+                <span style="font-size: 11px; color: #666;">コスト: 1回 30万円 / 効果: 来店客数＋4〜8組</span>
+                <button class="adv-btn-car" onclick="triggerAdvertising('car')">🚀 広告を追加発注する (-30万)</button>
+                <div class="adv-counter" id="v-adv-car-status">今月の発注数: 0回 (効果: +0組)</div>
+                </div>
+                <div style="text-align: center; padding-left: 10px;">
+                 <span style="font-weight: bold; color: #27ae60; font-size: 14px;">🔧 車検整備広告</span><br>
+                <span style="font-size: 11px; color: #c0392b; font-weight:bold;">コスト: 1回 30万円 / 実入庫率は案内数の約50%</span>
+                <button class="adv-btn-repair" onclick="triggerAdvertising('repair')">🚀 DMを追加発送する (-30万)</button>
+                <div class="adv-counter" id="v-adv-repair-status" style="color:#27ae60; border-color:#27ae60;">今月の発注数: 0回 (反響予測: +0台)</div>
+                </div>
+            </div>
             <div class="log-container">
                 <div style="font-weight: bold; margin-bottom: 5px; color: #f1c40f;">📋 経営・営業報告ログ</div>
                 <div class="log-window" id="logWindow">【経営スタート】初期キャッシュ1,500万円。毎年150万円の元金返済＋金利支払い義務があります。<br></div>
