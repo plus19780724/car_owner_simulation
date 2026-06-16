@@ -1257,6 +1257,8 @@ function applyEvent(eventRoll) {
     if (cooldown_audit > 0) cooldown_audit--;
     
     if (cooldown_fleet > 0) {
+        console.log("デバッグ: 特需効果が適用中。残り：" + cooldown_fleet + "ヶ月");
+        // ここで入庫台数計算...
         cooldown_fleet--;
         if (cooldown_fleet === 0) {
         // カウンターが尽きたらイベント8を終了
