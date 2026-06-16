@@ -104,6 +104,7 @@
 
         /* セクション配置 */
         .action-box {background: #ffffff;border: 2px solid #34495e;border-radius: 10px;padding: 15px;margin-top: 15px;}
+        .action-btn-container {display: flex;flex-direction: column;gap: 10px;margin-top: 15px;}
         .game-zone { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
         .zone-box { background: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; }
         .zone-title { font-weight: bold; margin-bottom: 10px; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
@@ -195,7 +196,6 @@
                     <div class="total-badge">📊 今期（当期）車検台数: <font id="t-repair-current">0</font> 台</div>
                 </div>
             </div>
-             /*ここから修正
             <div class="game-zone">
                 <div class="zone-box">
                     <div class="zone-title">🚗 車両販売部門 (営業マン: <span id="c-salesmen">0</span>名) <span id="badge-adv-car" class="adv-active-badge">🚀 広告発注済</span></div>
@@ -220,40 +220,46 @@
                 </div>
             </div>
         </div>
-            
+         
         <div class="right-panel">
             <div class="event-board" id="eventBoard">
                 <div class="event-title" id="eventTitle">⚠️ 今月の突発イベント</div>
                 <div class="event-desc" id="eventDesc">イベント内容がここに表示されます。</div>
             </div>
             <button class="btn-next" onclick="nextMonth()">🎲 今月の営業を実行して次の月へ進む ➔</button>
+            
             <div class="action-box">
-            <div class="adv-sector-box">
-                <div style="text-align: center; border-right: 1px dashed #ff9800; padding-right: 10px;">
-                <span style="font-weight: bold; color: #2c3e50; font-size: 14px;">🚗 車両販売広告</span><br>
-                <span style="font-size: 11px; color: #666;">コスト: 1回 30万円 / 効果: 来店客数＋4〜8組</span>
-                <button class="adv-btn-car" onclick="triggerAdvertising('car')">🚀 広告を追加発注する (-30万)</button>
-                <div class="adv-counter" id="v-adv-car-status">今月の発注数: 0回 (効果: +0組)</div>
+                <div class="adv-sector-box">
+                    <div style="text-align: center; border-right: 1px dashed #ff9800; padding-right: 10px;">
+                    <span style="font-weight: bold; color: #2c3e50; font-size: 14px;">🚗 車両販売広告</span><br>
+                    <span style="font-size: 11px; color: #666;">コスト: 1回 30万円 / 効果: 来店客数＋4〜8組</span>
+                    <button class="adv-btn-car" onclick="triggerAdvertising('car')">🚀 広告を追加発注する (-30万)</button>
+                    <div class="adv-counter" id="v-adv-car-status">今月の発注数: 0回 (効果: +0組)</div>
+                    </div>
+                    <div style="text-align: center; padding-left: 10px;">
+                     <span style="font-weight: bold; color: #27ae60; font-size: 14px;">🔧 車検整備広告</span><br>
+                    <span style="font-size: 11px; color: #c0392b; font-weight:bold;">コスト: 1回 30万円 / 実入庫率は案内数の約50%</span>
+                    <button class="adv-btn-repair" onclick="triggerAdvertising('repair')">🚀 DMを追加発送する (-30万)</button>
+                    <div class="adv-counter" id="v-adv-repair-status" style="color:#27ae60; border-color:#27ae60;">今月の発注数: 0回 (反響予測: +0台)</div>
+                    </div>
                 </div>
-                <div style="text-align: center; padding-left: 10px;">
-                 <span style="font-weight: bold; color: #27ae60; font-size: 14px;">🔧 車検整備広告</span><br>
-                <span style="font-size: 11px; color: #c0392b; font-weight:bold;">コスト: 1回 30万円 / 実入庫率は案内数の約50%</span>
-                <button class="adv-btn-repair" onclick="triggerAdvertising('repair')">🚀 DMを追加発送する (-30万)</button>
-                <div class="adv-counter" id="v-adv-repair-status" style="color:#27ae60; border-color:#27ae60;">今月の発注数: 0回 (反響予測: +0台)</div>
+                 /*ここから修正  
+                <div class="action-btn-container">
+                    <div class="btn-grid">
+                        <button class="btn-buy" onclick="buyCar()">🛠 車を仕入れる<br>(-100万円)</button>
+                        <button class="btn-sell" onclick="fireSale()">🚨 最古の在庫を損切<br>(いつでも可)</button>
+                        <button class="btn-hire" onclick="hireStaff('salesman')">👨‍💼 営業マンを採用<br>(人件費:月30万)</button>
+                        <button class="btn-upgrade" id="btn-showroom-upgrade" onclick="upgradeShowroom()">🏢 展示場を拡張<br>費用300万/上限50台</button>
+                    </div>
                 </div>
-            </div>
-            <div class="btn-grid">
-                <button class="btn-buy" onclick="buyCar()">🛠 車を仕入れる<br>(-100万円)</button>
-                <button class="btn-sell" onclick="fireSale()">🚨 最古の在庫を損切<br>(いつでも可)</button>
-                <button class="btn-hire" onclick="hireStaff('salesman')">👨‍💼 営業マンを採用<br>(人件費:月30万)</button>
-                <button class="btn-upgrade" id="btn-showroom-upgrade" onclick="upgradeShowroom()">🏢 展示場を拡張<br>費用300万/上限50台</button>
-            </div>
-            <div class="btn-grid">
-                <button class="btn-hire" style="background:#2980b9;" onclick="hireStaff('mechanic')">🔧 メカニック採用<br>(人件費:月30万)</button>
-                <button class="btn-hire" style="background:#27ae60;" onclick="hireStaff('clerk')">👩‍💻 事務員を採用<br>(人件費:月30万)</button>
-                <button class="btn-assistant" id="btn-hire-assistant" onclick="hireStaff('assistant')">🛡️ 補助事務員採用<br>(人件費:月30万)</button>
-                <button class="btn-upgrade" style="background:#d35400;" id="btn-lift-upgrade" onclick="upgradeLift()">🏋️‍♂️ リフト増設（+1基）<br>投資200万 / 月10万</button>
-            </div>
+                <div class="action-btn-container">
+                    <div class="btn-grid">
+                        <button class="btn-hire" style="background:#2980b9;" onclick="hireStaff('mechanic')">🔧 メカニック採用<br>(人件費:月30万)</button>
+                        <button class="btn-hire" style="background:#27ae60;" onclick="hireStaff('clerk')">👩‍💻 事務員を採用<br>(人件費:月30万)</button>
+                        <button class="btn-assistant" id="btn-hire-assistant" onclick="hireStaff('assistant')">🛡️ 補助事務員採用<br>(人件費:月30万)</button>
+                        <button class="btn-upgrade" style="background:#d35400;" id="btn-lift-upgrade" onclick="upgradeLift()">🏋️‍♂️ リフト増設（+1基）<br>投資200万 / 月10万</button>
+                    </div>
+                </div>
             </div>
             
         </div>
