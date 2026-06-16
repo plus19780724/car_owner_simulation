@@ -66,7 +66,7 @@
         .status-value { font-size: 20px; font-weight: bold; color: #f1c40f; margin-top: 5px; }
         
         /* 財務損益ボード */
-        .finance-board { display: grid; grid-template-row: repeat(5, 1fr); gap: 10px; background: #34495e; color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 11px; }
+        .finance-board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; background: #34495e; color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 11px; }
         .finance-item { text-align: center; border-right: 1px dashed #7f8c8d; }
         .finance-item:last-child { border-right: none; }
         .finance-val-plus { font-size: 15px; font-weight: bold; color: #2ecc71; margin-top: 3px; }
@@ -183,15 +183,17 @@
             </div>
             <div class="result-board">
                 <div class="result-panel car">
-                <div class="result-title">🚗 直近の車両販売実績</div>
-                <div class="result-main" id="r-car-sales">0 <span style="font-size:13px;">台成約</span> <span style="color:#7f8c8d;">/ 来店:</span> <span id="r-car-demands">0</span> <span style="font-size:13px;">組</span></div>
-                <div class="result-sub" id="r-car-loss">-</div>
-                <div class="total-badge">📊 今期（当期）販売台数: <font id="t-car-current">0</font> 台</div>
-             <div class="result-panel repair">
-                <div class="result-title">🔧 直近の車検整備実績</div>
-                <div class="result-main" id="r-repair-done">0 <span style="font-size:13px;">台完了</span> <span style="color:#7f8c8d;">/ 実際の入庫:</span> <span id="r-repair-demands">0</span> <span style="font-size:13px;">台</span></div>
-                <div class="result-sub" id="r-repair-loss">-</div>
-                <div class="total-badge">📊 今期（当期）車検台数: <font id="t-repair-current">0</font> 台</div>
+                    <div class="result-title">🚗 直近の車両販売実績</div>
+                    <div class="result-main" id="r-car-sales">0 <span style="font-size:13px;">台成約</span> <span style="color:#7f8c8d;">/ 来店:</span> <span id="r-car-demands">0</span> <span style="font-size:13px;">組</span></div>
+                    <div class="result-sub" id="r-car-loss">-</div>
+                    <div class="total-badge">📊 今期（当期）販売台数: <font id="t-car-current">0</font> 台</div>
+                </div>
+                <div class="result-panel repair">
+                    <div class="result-title">🔧 直近の車検整備実績</div>
+                    <div class="result-main" id="r-repair-done">0 <span style="font-size:13px;">台完了</span> <span style="color:#7f8c8d;">/ 実際の入庫:</span> <span id="r-repair-demands">0</span> <span style="font-size:13px;">台</span></div>
+                    <div class="result-sub" id="r-repair-loss">-</div>
+                    <div class="total-badge">📊 今期（当期）車検台数: <font id="t-repair-current">0</font> 台</div>
+                </div>
             </div>
             <div class="game-zone">
                 <div class="zone-title">🚗 車両販売部門 (営業マン: <span id="c-salesmen">0</span>名) <span id="badge-adv-car" class="adv-active-badge">🚀 広告発注済</span></div>
