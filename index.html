@@ -926,6 +926,8 @@ function selectRandomEvent() {
 // --- 追加：イベント実行専用の関数 ---
 function executeEvent(eventRoll) {
     if (eventRoll === 0) {
+        // --- ここでデバッグ開始 ---
+        console.log(`デバッグ: 監査イベント抽選。現在月=${month}, 前回発生=${lastEventMonth.audit}, 差分=${month - lastEventMonth.audit}`);
         // 現在の月 - 最後に発生した月 >= 12ヶ月なら発生可能
         if (mechanics > 0 && month - lastEventMonth.audit >= 12){
         // メカニックが欠員している状態にする
