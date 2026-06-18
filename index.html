@@ -1427,6 +1427,13 @@ function getRetailPrice() {
     lastMonthRepairDone = repairDemands;
     lastMonthRepairLossMsg = repairLossMessage;
 
+        // 一般整備部門の収益計算。車検利益を計算した後にこの処理を入れる
+    let maintenanceRatio = 0.20 + (Math.random() * 0.05);// 20% 〜 25% の範囲にするために、0.20 + (0.05 * 0.0〜1.0) を作る
+    let generalMaintenanceProfit = Math.floor(repairProfit * maintenanceRatio);// 一般整備利益 = 車検利益 * 比率
+    funds += generalMaintenanceProfit;
+    m_revenue += generalMaintenanceProfit;
+    console.log(`一般整備利益: ${generalMaintenanceProfit}円 (比率: ${(maintenanceRatio * 100).toFixed(1)}%)`);
+       
         // 3. クールダウン・カウント処理
     if (cooldown_rival > 0) cooldown_rival--;
     
@@ -1506,6 +1513,7 @@ console.log("TotalStaff:", totalStaff);
     `・状況: ${carLossMessage}\n\n` +
     `【車検整備】\n・入庫要求: ${lastMonthRepairDemands} 台 ➔ 完了: ${repairDemands} 台\n` +
     `・台当り粗利: ${repairDemands > 0 ? monthlyUnitProfit.toLocaleString() : "0"}円\n` + // 0台なら0と表示
+    `・一般整備: ${repairDemands > 0 ? generalMaintenanceProfit.toLocaleString() : "0"}円\n` + // 0台なら0と表示    
     `・状況: ${repairLossMessage}\n\n` +
     `【顧客ストック】\n・今月の自然流出: -${naturalLostLoyals} 名\n\n` +
     `【月間収支】\n` +
