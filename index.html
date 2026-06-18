@@ -158,7 +158,7 @@
 <body>
 <div class="container"> <div class="header-section">
         <h1>自動車販売・修理工場 経営シミュレーション</h1>
-        <div class="subtitle">〜 Ver 11.3 版 〜</div>
+        <div class="subtitle">〜 Ver 11.4 版 〜</div>
         <div class="control-panel">
                 <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
                 <button class="btn-ctrl btn-reset" onclick="resetGame()">🔄 経営リセット</button>
@@ -1394,11 +1394,17 @@ function getRetailPrice() {
         baseRepairDemands = Math.floor(Math.random() * (baseMax - baseMin + 1)) + baseMin;
     }
     if (advRepairCount > 0) {
-        let rawInquiries = 0;
-        for(let r=0; r<advRepairCount; r++) {
-            rawInquiries += Math.floor(Math.random() * (30 - 15 + 1)) + 15;
-        }
-        advRepairDemands = Math.floor(rawInquiries * 0.5);
+        //let rawInquiries = 0;
+        //for(let r=0; r<advRepairCount; r++) {
+        //    rawInquiries += Math.floor(Math.random() * (30 - 15 + 1)) + 15;
+        //}
+        //advRepairDemands = Math.floor(rawInquiries * 0.5);
+        let efficiency = Math.pow(advRepairCount, 0.5);// 1. 広告の反響効率（平方根を使用することで、回数に対する伸びを鈍化させる）
+        let customerBoostMultiplier = 1 + (loyalCustomers * 0.005); // 2. 既存客による口コミブースト（管理顧客数が多いほど、車検広告の信頼度が上がる）0.5%ずつ倍率UP
+        let baseInquiryValue = 27;// 3. 基礎値の決定（1回あたりの期待値設定）
+        let totalInquiries = Math.floor(efficiency * customerBoostMultiplier * baseInquiryValue);// 4. 最終的な集客数（効率 × 倍率 × 基礎値）
+        advRepairDemands = Math.floor(totalInquiries * 0.5);// 5. 整備部門への流入（0.5の係数はそのまま活かします）
+        addLog(`🔧 【整備広告】${advRepairCount}回の広告投入で、見込み客を ${advRepairDemands} 組獲得しました！`);
     }
     let repairDemands = baseRepairDemands + advRepairDemands;
     if (currentEvent === "big_fleet") { repairDemands += 20; }
