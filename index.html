@@ -730,7 +730,7 @@
 
         if (advRepairCount > 0) {
             let efficiency = Math.pow(advRepairCount, 0.5);
-            let customerBoost = 1 + (loyalCustomers * 0.0005);
+            let customerBoost = 1 + (loyalCustomers * 0.002);
             let baseInquiryValue = 20; 
     
             // 表示と計算用に使う値をローカル変数で用意
@@ -1410,7 +1410,7 @@ function getRetailPrice() {
         //}
         //advRepairDemands = Math.floor(rawInquiries * 0.5);
         let efficiency = Math.pow(advRepairCount, 0.5);// 1. 広告の反響効率（平方根を使用することで、回数に対する伸びを鈍化させる）
-        let customerBoostMultiplier = 1 + (loyalCustomers * 0.0005); // 2. 既存客による口コミブースト（管理顧客数が多いほど、車検広告の信頼度が上がる）0.5%ずつ倍率UP
+        let customerBoostMultiplier = 1 + (loyalCustomers * 0.002); // 2. 既存客による口コミブースト（管理顧客数が多いほど、車検広告の信頼度が上がる）0.5%ずつ倍率UP
         let baseInquiryValue = 20;// 3. 基礎値の決定（1回あたりの期待値設定）
         let totalInquiries = Math.floor(efficiency * customerBoostMultiplier * baseInquiryValue);// 4. 最終的な集客数（効率 × 倍率 × 基礎値）
         advRepairDemands = Math.floor(totalInquiries * 0.5);// 5. 整備部門への流入（0.5の係数はそのまま活かします）
