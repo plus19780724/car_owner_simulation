@@ -729,11 +729,20 @@
         }
 
         if (advRepairCount > 0) {
+            let efficiency = Math.pow(advRepairCount, 0.5);
+            let customerBoost = 1 + (loyalCustomers * 0.005);
+            let baseInquiryValue = 27; 
+    
+            // 表示と計算用に使う値をローカル変数で用意
+            let totalInquiries = Math.floor(efficiency * customerBoost * baseInquiryValue);
+            let expectedInflow = Math.floor(totalInquiries * 0.5);
             document.getElementById("badge-adv-repair").style.display = "inline-block";
-            document.getElementById("v-adv-repair-status").innerHTML = `今月の発注数: <font color="#e67e22">${advRepairCount}回</font> (反響予測: +${advRepairCount*15}〜${advRepairCount*30}台 ➔ <font color="#27ae60">実入庫は50%</font>)`;
+            document.getElementById("v-adv-repair-status").innerHTML = `今月の発注数: <font color="#e67e22">${advRepairCount}回</font> (反響予測: +${totalInquiries}台 ➔ <font color="#27ae60">実入庫は50%</font>)`;
+            advRepairDemands = expectedInflow;
         } else {
             document.getElementById("badge-adv-repair").style.display = "none";
             document.getElementById("v-adv-repair-status").innerHTML = `今月の発注数: 0回 (反響期待値: +0台)`;
+            advRepairDemands = 0;
         }
 
         v_stock_list.sort((a, b) => b - a);
