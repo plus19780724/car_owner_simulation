@@ -158,7 +158,7 @@
 <body>
 <div class="container"> <div class="header-section">
         <h1>自動車販売・修理工場 経営シミュレーション</h1>
-        <div class="subtitle">〜 Ver 11.1 版 〜</div>
+        <div class="subtitle">〜 Ver 11.2 版 〜</div>
         <div class="control-panel">
                 <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
                 <button class="btn-ctrl btn-reset" onclick="resetGame()">🔄 経営リセット</button>
@@ -1134,7 +1134,7 @@ function applyEvent(eventRoll) {
                 eventTitle.style.color = "#cc0000";
             eventTitle.innerText = "⚠️ 突発トラブル：格安ライバル店の電撃オープン";
                 // 全て半角のバッククォートで囲み、余計な記号を削除しました
-            eventDesc.innerText = `近隣に、安さを売りにした大型フランチャイズ店が出店！（経営打撃：流出による既存顧客維持の穴埋めで -${penalty.toLocaleString()}円 発生！）`;
+            eventDesc.innerText = `近隣に、安さを売りにした大型フランチャイズ店が出店！（経営打撃：流出による既存顧客維持の穴埋めで 100万円の費用が発生！）`;
             } 
             else if (eventRoll === 4) {
                 eventBoard.style.background = "#fff0f0"; // 赤（トラブル）
@@ -1191,7 +1191,7 @@ function applyEvent(eventRoll) {
                 eventBoard.style.borderColor = "#cc0000";
                 eventTitle.style.color = "#cc0000";
             eventTitle.innerText = "🚨 重大トラブル：車検整備の作業内容に大クレーム発生";
-            eventDesc.innerText = `「対応への不手際により大クレームに発展！」（信頼失墜により顧客 ${lostLoyals} 名が流出、対応費用として -${penalty.toLocaleString()}円 発生！）`;
+            eventDesc.innerText = `「対応への不手際により大クレームに発展！」（信頼失墜により顧客 ${lostLoyals} 名が流出、対応費用として 100万円の費用が発生！）`;
             }
             else if (eventRoll === 8) {
                 if (currentLiftsCount > 0) {
@@ -1199,7 +1199,7 @@ function applyEvent(eventRoll) {
                 eventBoard.style.borderColor = "#27ae60";
                 eventTitle.style.color = "#27ae60";
             eventTitle.innerText = "🚀 チャンス到来：大口の法人フリート契約獲得";
-            eventDesc.innerText = "「地元の運送会社から、一括での車検入庫オーダーを勝ち取りました！」\n（3か月間、車検の入庫要求台数が【＋20台】一気にブーストされました）";
+            eventDesc.innerText = "「地元の企業から、一括での車検入庫オーダーを勝ち取りました！」\n（3か月間、車検の入庫要求台数が【＋20台】一気にブーストされました）";
                 } else {
                 // 今回は「ラッキーな回避（何も起きない）」として処理
                 eventBoard.style.background = "#fff0f0"; // 赤（トラブル）
