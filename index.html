@@ -899,7 +899,8 @@
     let totalStaff = salesmen + mechanics + clerks + assistants;
     return rent + (v_lift_ages.length * 100000) + (totalStaff * salaryPerStaff);
 }
- 
+
+// --- イベント発生条件・関数 ---
 function selectRandomEvent() {
     // 40%の確率で「イベントなし」
     if (Math.random() < 0.4) return null;
@@ -913,7 +914,7 @@ function selectRandomEvent() {
 
         // イベントごとのクールダウン判定
         // 他のイベントも同様に追加
-        if (eventRoll === 0 && !(mechanics > 0 && month - lastEventMonth.audit >= 12))continue;
+        if (eventRoll === 0 && !(mechanics > 0 && month - lastEventMonth.audit >= 12))continue;//0番はメカニック不在で前回から12か月以内ならダメ
         if (eventRoll === 1 && cooldown_parts > 1) continue; // 1番はクールダウン中ならダメ
         if (eventRoll === 8 && cooldown_fleet > 0) continue; // 8番はクールダウン中ならダメ
         
@@ -929,8 +930,6 @@ function executeEvent(eventRoll) {
     if (eventRoll === 0) {
         // --- ここでデバッグ開始 ---
         console.log(`デバッグ: 監査イベント抽選。現在月=${month}, 前回発生=${lastEventMonth.audit}, 差分=${month - lastEventMonth.audit}`);
-        // 現在の月 - 最後に発生した月 >= 12ヶ月なら発生可能
-        if (mechanics > 0 && month - lastEventMonth.audit >= 12){
         // メカニックが欠員している状態にする
             mechanics_missing = true; 
         // 【重要】発生した月を記録する
