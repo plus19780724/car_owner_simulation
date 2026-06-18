@@ -912,15 +912,16 @@ function selectRandomEvent() {
         eventRoll = Math.floor(Math.random() * 12);
 
         // イベントごとのクールダウン判定
-        if (eventRoll === 8 && cooldown_fleet > 0) continue; // 8番はクールダウン中ならダメ
-        if (eventRoll === 1 && cooldown_parts > 1) continue; // 1番はクールダウン中ならダメ
         // 他のイベントも同様に追加
-
-        isAvailable = true;
-        break;
+        if (eventRoll === 0 && !(mechanics > 0 && month - lastEventMonth.audit >= 12))continue;
+        if (eventRoll === 1 && cooldown_parts > 1) continue; // 1番はクールダウン中ならダメ
+        if (eventRoll === 8 && cooldown_fleet > 0) continue; // 8番はクールダウン中ならダメ
+        
+        // 見つかった時点で即座にその番号を返す（ここで関数が終わる）
+        return eventRoll; 
     }
-
-    return isAvailable ? eventRoll : null;
+    // 10回試しても見つからなかったら null を返す
+    return null;
 }
 
 // --- 追加：イベント実行専用の関数 ---
