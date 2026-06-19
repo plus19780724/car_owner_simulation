@@ -650,7 +650,7 @@
     
         // --- 3. UI表示用のテキスト生成（★ここも変数名を合わせる） ---
         
-        let forecastText = `来店予測組数: ${f_car_min+totalBonus}〜${f_car_max+totalBonus}組/月(うちボーナス来店${totalBonus}組`;
+        let forecastText = `来店予測組数: ${f_car_min}〜${f_car_max}組/月(うちボーナス来店${}組`;
         if (stockRatio < 1.0) {
             forecastText += ` <font color="#e67e22">(展示率:${Math.round(stockRatio * 100)}%)</font>`;
         }
