@@ -649,7 +649,8 @@
         // もし以前のコードでbaseMinを使っていた場合は、ここに本来の数値を入れてください
     
         // --- 3. UI表示用のテキスト生成（★ここも変数名を合わせる） ---
-        let forecastText = `通常来店: ${f_car_min}〜${f_car_max}組/月`;
+        
+        let forecastText = `来店予測組数: ${f_car_min+totalBonus}〜${f_car_max+totalBonus}組/月(うちボーナス来店${totalBonus}組`;
         if (stockRatio < 1.0) {
             forecastText += ` <font color="#e67e22">(展示率:${Math.round(stockRatio * 100)}%)</font>`;
         }
@@ -1301,12 +1302,12 @@ function getRetailPrice() {
     if (loyalPenalty < 0) {
         addLog(`📦 <font color="#ff7675">【顧客不足ペナルティ】既存客不足による悪評クチコミで車両通常来店が **${loyalPenalty} 組** 減少！</font>`);
     }
-
+    //広告来店関数
     if (advCarCount > 0) {
-        let totalBoost = 0;
-        for(let a=0; a<advCarCount; a++) {
-            totalBoost += Math.floor(Math.random() * (8 - 4 + 1)) + 4;
-        }
+        // 平方根（Math.sqrt）で効率を制御し、在庫数（exhibitCars）でブーストする
+        let advEfficiency = Math.sqrt(advCarCount) ; 
+        let stockBoost = 1 + (v_stock_list.length * 0.05); // 在庫1台につき5%の集客力UP
+        let totalBoost = Math.floor(advEfficiency * stockBoost * 5); // 係数を変更で広告効果の変更をする。
         carDemands += totalBoost;
         addLog(`🚀 【広告効果】販売広告により、来店客が計 **＋${totalBoost} 組** ブースト！`);
     }
