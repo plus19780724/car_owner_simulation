@@ -312,7 +312,7 @@
     let mechanics_missing = false;
     let assistants_missing = false;
     const salaryPerStaff = 300000; 
-    const maxAssistantsLimit = 3;      
+    const maxAssistantsLimit = 10;      
 
     let loyalCustomers = 0; 
     let v_stock_list = []; 
@@ -714,7 +714,7 @@
 
         let astBtn = document.getElementById("btn-hire-assistant");
         if (assistants < maxAssistantsLimit) {
-            astBtn.innerHTML = `🛡️ 補助事務員採用<br>(月30万/販売・車検兼任) [${assistants}/${maxAssistantsLimit}]`;
+            astBtn.innerHTML = `🛡️ 補助事務員採用<br>(月30万/販売・車検兼任)`;
             astBtn.disabled = false;
         } else {
             astBtn.innerHTML = `🛡️ 補助事務員MAX<br>(オフィス定員に達しました)`;
