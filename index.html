@@ -158,7 +158,7 @@
 <body>
 <div class="container"> <div class="header-section">
         <h1>自動車販売・修理工場 経営シミュレーション</h1>
-        <div class="subtitle">〜 Ver 11.6 版 〜</div>
+        <div class="subtitle">〜 Ver 11.7 版 〜</div>
         <div class="control-panel">
                 <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
                 <button class="btn-ctrl btn-reset" onclick="resetGame()">🔄 経営リセット</button>
@@ -455,7 +455,7 @@
     // 過去実績（90台超えて初めて反響あり）+展示場の大きさによる追加ボーナスありの車両来店　
     function getCarSalesBonus() {
         if (totalCarSales === 0) return 0;
-        let rawBonus = Math.floor(totalCarSales / 15);
+        let rawBonus = Math.floor(Math.log10(totalCarSales + 1) * 20); //一番最後の数字が係数になっている。ゲームバランス調整
         let factor = 1.0;
         if (maxStock === 10) factor = 0.55; //10台展示で55％
         else if (maxStock === 20) factor = 0.80;　//20台展示で80％
