@@ -452,16 +452,16 @@
         return 0; //ペナルティを無効化
     }
 
-    // 過去実績による車両来店ボーナス
+    // 過去実績（90台超えて初めて反響あり）+展示場の大きさによる追加ボーナスありの車両来店　
     function getCarSalesBonus() {
         if (totalCarSales === 0) return 0;
         let rawBonus = Math.floor(totalCarSales / 15);
         let factor = 1.0;
-        if (maxStock === 10) factor = 0.55;
-        else if (maxStock === 20) factor = 0.80;
-        else if (maxStock === 30) factor = 1.05;
-        else if (maxStock === 40) factor = 1.20;
-        else factor = 1.35;
+        if (maxStock === 10) factor = 0.55; //10台展示で55％
+        else if (maxStock === 20) factor = 0.80;　//20台展示で80％
+        else if (maxStock === 30) factor = 1.05;　//30台展示で105％
+        else if (maxStock === 40) factor = 1.20;　//40台展示で120％
+        else factor = 1.35;　//50台展示で135％
 
         let calculated = Math.floor(rawBonus * factor);
         if (calculated > 6) {
@@ -626,10 +626,9 @@
         document.getElementById("c-factory-cap").innerText = factoryCapacity;
         document.getElementById("c-loyal-customers").innerText = loyalCustomers;
         
+        // --- updateDisplay内の来店数計算ブロック ---
         let salesBonus = getCarSalesBonus();
         let loyalPenalty = getCarSalesLoyalPenalty(); 
-         // --- updateDisplay内の来店数計算ブロック ---
-
         // --- 1. 車両販売の来店数計算 ---
         let stockRatio = maxStock > 0 ? (v_stock_list.length / maxStock) : 1;
         let salesBaseMin = 0;
@@ -650,7 +649,7 @@
     
         // --- 3. UI表示用のテキスト生成（★ここも変数名を合わせる） ---
         
-        let forecastText = `来店予測組数: ${f_car_min}〜${f_car_max}組/月(うちボーナス来店組`;
+        let forecastText = `来店予測組数: ${f_car_min}〜${f_car_max}組/月(うちボーナス来店${(salesBonus + loyalPenalty) * stockRatio}組`;
         if (stockRatio < 1.0) {
             forecastText += ` <font color="#e67e22">(展示率:${Math.round(stockRatio * 100)}%)</font>`;
         }
@@ -668,8 +667,8 @@
             document.getElementById("c-incoming-forecast").innerText = `通常入庫: 0台`;
             document.getElementById("c-incoming-forecast").style.color = "#7f8c8d";
         } else {
-            let assistBonusText = assistants > 0 ? ` ＋ 補助事務バフ: +${assistants * 4}台` : "";
-            document.getElementById("c-incoming-forecast").innerText = `通常入庫: ${baseMin}〜${baseMax}台/月 (うちストック増: +${stockBonus}台${assistBonusText})`;
+            let assistBonusText = assistants > 0 ? ` ＋ 補助事務バフ: +${assistants * stockBonus *0.5}台` : "";
+            document.getElementById("c-incoming-forecast").innerText = `通常入庫: ${baseMin}〜${baseMax}台/月 (リピーター効果: +${stockBonus}台${assistBonusText})`;
             document.getElementById("c-incoming-forecast").style.color = "#2c3e50";
         }
 
@@ -1081,7 +1080,7 @@ function executeEvent(eventRoll) {
       // --- 【重要】イベント実行の集中管理関数 ---
 function applyEvent(eventRoll) {
    
-   const eventBoard = document.getElementById("eventBoard");
+    const eventBoard = document.getElementById("eventBoard");
     const eventTitle = document.getElementById("eventTitle");
     const eventDesc = document.getElementById("eventDesc");
 
@@ -1405,11 +1404,6 @@ function getRetailPrice() {
         baseRepairDemands = Math.floor(Math.random() * (baseMax - baseMin + 1)) + baseMin;
     }
     if (advRepairCount > 0) {
-        //let rawInquiries = 0;
-        //for(let r=0; r<advRepairCount; r++) {
-        //    rawInquiries += Math.floor(Math.random() * (30 - 15 + 1)) + 15;
-        //}
-        //advRepairDemands = Math.floor(rawInquiries * 0.5);
         let efficiency = Math.pow(advRepairCount, 0.5);// 1. 広告の反響効率（平方根を使用することで、回数に対する伸びを鈍化させる）
         let customerBoostMultiplier = 1 + (loyalCustomers * 0.002); // 2. 既存客による口コミブースト（管理顧客数が多いほど、車検広告の信頼度が上がる）0.5%ずつ倍率UP
         let baseInquiryValue = 20;// 3. 基礎値の決定（1回あたりの期待値設定）
