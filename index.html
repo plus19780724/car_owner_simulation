@@ -158,7 +158,7 @@
 <body>
 <div class="container"> <div class="header-section">
         <h1>自動車販売・修理工場 経営シミュレーション</h1>
-        <div class="subtitle">〜 Ver 11.8 版 〜</div>
+        <div class="subtitle">〜 Ver 11.9 版 〜</div>
         <div class="control-panel">
                 <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
                 <button class="btn-ctrl btn-reset" onclick="resetGame()">🔄 経営リセット</button>
@@ -232,7 +232,7 @@
                 <div class="adv-sector-box">
                     <div style="text-align: center; border-right: 1px dashed #ff9800; padding-right: 10px;">
                     <span style="font-weight: bold; color: #2c3e50; font-size: 14px;">🚗 車両販売広告</span><br>
-                    <span style="font-size: 11px; color: #666;">コスト: 1回 30万円 / 効果: 来店客数＋4〜8組</span>
+                    <span style="font-size: 11px; color: #666;">コスト: 1回 30万円 / 効果: 展示場の大きさ+展示率に関係します</span>
                     <button class="adv-btn-car" onclick="triggerAdvertising('car')">🚀 広告を追加発注する (-30万)</button>
                     <div class="adv-counter" id="v-adv-car-status">今月の発注数: 0回 (効果: +0組)</div>
                     </div>
@@ -392,10 +392,11 @@
             `⚠️ 【車両販売】\n` +
             ` ・営業マンを採用しないと車を展示していても販売することは、できません。\n` +
             ` ・営業マンが1か月に対応できる接客数は22組が最大です。\n` +
+            ` ・補助事務員がいないと成約率が20％下がります。\n` +
             ` ・長期在庫になればなるほど販売成約率は、落ちていきます。\n` +
-            ` ・通常来店者数は車両の展示率によって変動します。販売実績が増えれば増えるほど通常来店者数も増えます。\n` +
+            ` ・通常来店者数は車両の展示率と販売実績によって増減します。。\n` +
             ` ・展示場は最大50台まで拡張することが可能です。\n` +
-            ` ・1回の広告費用は30万円です。来客数が+4～8組増えます。\n` +
+            ` ・1回の広告費用は30万円です。回数を重ねるごとに効果が落ちていきます。\n` +
             ` ・1台当りの売上価格はランダムで125万円前後です。\n` +
             ` ・来場者のうち約50％が商談対象になります。\n\n` 
             );
@@ -405,8 +406,8 @@
             ` ・リフトは3年ごとにメンテナンス費用が50万円かかります。\n` +
             ` ・車検整備はリフト1基に対して整備士、事務員それぞれが最低1名いないと作業できません。\n` +
             ` ・1台のリフトで作業できる台数は最大58台です。※イベントブーストは除く\n` +
-            ` ・1回のDM発送費用は30万円です。1回の反響は約30台ですが実入庫はランダムで約50％です。\n` +
-            ` ・広告を入れれば入れるほど反響割合は減っていきます。\n` +
+            ` ・1回のDM発送費用は30万円です。回数を重ねるごとに効果が落ちていきます。\n` +
+            ` ・広告からの実入庫は反響数の50％です。\n` +
             ` ・1台当りの粗利価格はランダムで33,000円前後です。\n`
         );
     }
@@ -713,7 +714,7 @@
 
         let astBtn = document.getElementById("btn-hire-assistant");
         if (assistants < maxAssistantsLimit) {
-            astBtn.innerHTML = `🛡️ 補助事務員採用<br>(月30万/リフト制限なし) [${assistants}/${maxAssistantsLimit}]`;
+            astBtn.innerHTML = `🛡️ 補助事務員採用<br>(月30万/販売・車検兼任) [${assistants}/${maxAssistantsLimit}]`;
             astBtn.disabled = false;
         } else {
             astBtn.innerHTML = `🛡️ 補助事務員MAX<br>(オフィス定員に達しました)`;
@@ -721,8 +722,11 @@
         }
 
         if (advCarCount > 0) {
+            let advEfficiency = Math.sqrt(advCarCount) ; 
+            let stockBoost = 1 + (v_stock_list.length * 0.05); // 在庫1台につき5%の集客力UP
+            let totalBoost = Math.floor(advEfficiency * stockBoost * 5); // 係数を変更で広告効果の変更をする。
             document.getElementById("badge-adv-car").style.display = "inline-block";
-            document.getElementById("v-adv-car-status").innerHTML = `今月の発注数: <font color="#e74c3c">${advCarCount}回</font> (確定増分: +${advCarCount*4}〜${advCarCount*8}組)`;
+            document.getElementById("v-adv-car-status").innerHTML = `今月の発注数: <font color="#e74c3c">${advCarCount}回</font> (確定増分: +${totalBoost}組)`;
         } else {
             document.getElementById("badge-adv-car").style.display = "none";
             document.getElementById("v-adv-car-status").innerHTML = `今月の発注数: 0回 (効果: +0組)`;
