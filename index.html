@@ -158,7 +158,7 @@
 <body>
 <div class="container"> <div class="header-section">
         <h1>自動車販売・修理工場 経営シミュレーション</h1>
-        <div class="subtitle">〜 Ver 11.7 版 〜</div>
+        <div class="subtitle">〜 Ver 11.8 版 〜</div>
         <div class="control-panel">
                 <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
                 <button class="btn-ctrl btn-reset" onclick="resetGame()">🔄 経営リセット</button>
@@ -855,7 +855,6 @@
             m_expense += buyPrice;
             currentMonthBuy += buyPrice;
             v_stock_list.push(0); 
-            addLog(`🟢 【仕入れ】100万円で中古車を1台仕入れました。`);
             updateDisplay();
         } else { alert("❌ 中古車仕入れ資金が足りません。"); }
     }
@@ -1351,20 +1350,35 @@ function getRetailPrice() {
                 let randomIndex = Math.floor(Math.random() * v_stock_list.length);
                 let targetCarAge = v_stock_list[randomIndex];
                 let finalClosingRate = 1.0;
-                if (targetCarAge >= 0 && targetCarAge <= 2) { finalClosingRate = 0.80; }
-                else if (targetCarAge >= 3 && targetCarAge <= 5) { finalClosingRate = 0.60; }
-                else if (targetCarAge >= 6 && targetCarAge <= 11) { finalClosingRate = 0.40; }
-                else if (targetCarAge >= 12) { finalClosingRate = 0.20; }
+                if (targetCarAge >= 0 && targetCarAge <= 2) { finalClosingRate = 0.80; }//展示2カ月まで成約率80％
+                else if (targetCarAge >= 3 && targetCarAge <= 5) { finalClosingRate = 0.60; }//展示5カ月まで成約率60％
+                else if (targetCarAge >= 6 && targetCarAge <= 11) { finalClosingRate = 0.40; }//展示11カ月まで成約率40％
+                else if (targetCarAge >= 12) { finalClosingRate = 0.20; }//展示12カ月以降成約率20％
                 // 覚醒中なら強制的に 1.0 にする
                 if (typeof isSalesBoosted !== 'undefined' && isSalesBoosted) {
                 finalClosingRate = 1.0;
                 }
+                
+                //車両販売の成約台数ごとに売上に加算して在庫を1台減らす
                 if (Math.random() < finalClosingRate) {
-                    v_stock_list.splice(randomIndex, 1);
-                    funds += retailPrice;
-                    m_revenue += retailPrice;
-                    actualSales++;
-                    loyalCustomers += 1;
+                    let assistantRefuseCount = 0;
+                    let canCompleteSale = true; // 成約を完了できるかどうかのフラグ
+                    // 【新ルール】事務員がいない場合、20%の確率で「書類不備キャンセル」が発生
+                    if (!assistant && Math.random() < 0.20) {
+                        canCompleteSale = false;
+                    }
+                    if (canCompleteSale) {
+                        v_stock_list.splice(randomIndex, 1);
+                        funds += retailPrice;
+                        m_revenue += retailPrice;
+                        actualSales++;
+                        loyalCustomers += 1;
+                    } else {
+                    // キャンセル処理：在庫は減らさず、売上も発生させない
+                    // 必要に応じてログを出しても良いでしょう
+                    addLog(`⚠️【事務手続き】事務員不在のため、書類不備で ${actualSales + 1} 台目の成約がキャンセルされました！`);
+                        assistantRefuseCount++; // 失注カウントとして扱う（または専用のカウントを用意）
+                    }
                 } else {
                     ageRefusedCount++;
                 }
