@@ -1364,7 +1364,7 @@ function getRetailPrice() {
                     let assistantRefuseCount = 0;
                     let canCompleteSale = true; // 成約を完了できるかどうかのフラグ
                     // 【新ルール】事務員がいない場合、20%の確率で「書類不備キャンセル」が発生
-                    if (!assistant && Math.random() < 0.20) {
+                    if (!assistants && Math.random() < 0.20) {
                         canCompleteSale = false;
                     }
                     if (canCompleteSale) {
