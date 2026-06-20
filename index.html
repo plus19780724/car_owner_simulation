@@ -232,9 +232,9 @@
                 <div class="adv-sector-box">
                     <div style="text-align: center; border-right: 1px dashed #ff9800; padding-right: 10px;">
                     <span style="font-weight: bold; color: #2c3e50; font-size: 14px;">🚗 車両販売広告</span><br>
-                    <span style="font-size: 11px; color: #666;">コスト: 1回 30万円 / 効果: 展示場の大きさ+展示率に関係します</span>
+                    <span style="font-size: 11px; color: #666;">コスト: 1回 30万円 / 効果: 展示スペース+展示率に関係します</span>
                     <button class="adv-btn-car" onclick="triggerAdvertising('car')">🚀 広告を追加発注する (-30万)</button>
-                    <div class="adv-counter" id="v-adv-car-status">今月の発注数: 0回 (効果: +0組)</div>
+                    <div class="adv-counter" id="v-adv-car-status">今月の発注数: 0回 (反響期待値: +0組)</div>
                     </div>
                     <div style="text-align: center; padding-left: 10px;">
                      <span style="font-weight: bold; color: #27ae60; font-size: 14px;">🔧 車検整備広告</span><br>
@@ -729,7 +729,7 @@
             document.getElementById("v-adv-car-status").innerHTML = `今月の発注数: <font color="#e74c3c">${advCarCount}回</font> (確定増分: +${totalBoost}組)`;
         } else {
             document.getElementById("badge-adv-car").style.display = "none";
-            document.getElementById("v-adv-car-status").innerHTML = `今月の発注数: 0回 (効果: +0組)`;
+            document.getElementById("v-adv-car-status").innerHTML = `今月の発注数: 0回 (反響期待値: +0組)`;
         }
 
         if (advRepairCount > 0) {
