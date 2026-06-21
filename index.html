@@ -1342,6 +1342,7 @@ function applyEvent(eventRoll) {
         console.log("【デバッグ】商談数計算 - 覚醒フラグ: " + (typeof isSalesBoosted !== 'undefined' ? isSalesBoosted : "未定義"));
         console.log("【デバッグ】商談数計算 - 使用する商談発生率: " + interestRate);
         let baseInterestedBuyers = 0;
+        let assistantRefuseCount = 0;
         for (let i = 0; i < carDemands; i++) {
             if (Math.random() < 0.50) { baseInterestedBuyers++; }
         }
@@ -1365,7 +1366,6 @@ function applyEvent(eventRoll) {
                 
                 //車両販売の成約台数ごとに売上に加算して在庫を1台減らす
                 if (Math.random() < finalClosingRate) {
-                    let assistantRefuseCount = 0;
                     let canCompleteSale = true; // 成約を完了できるかどうかのフラグ
                     // 【新ルール】事務員がいない場合、30%の確率で「書類不備キャンセル」が発生
                     if (assistants < salesmen && Math.random() < 0.30) {
@@ -1378,14 +1378,14 @@ function applyEvent(eventRoll) {
                         actualSales++;
                         loyalCustomers += 1;
                     } else {
-                    // キャンセル処理：在庫は減らさず、売上も発生させない
-                    // 必要に応じてログを出しても良いでしょう
-                    addLog(`⚠️【事務手続き】事務員不在のため、書類不備で ${actualSales + 1} 台目の成約がキャンセルされました！`);
-                        assistantRefuseCount++; // 失注カウントとして扱う（または専用のカウントを用意）
+                        assistantRefuseCount++; // 失注カウントとして扱う（または専用のカウントを用意）                    
                     }
                 } else {
                     ageRefusedCount++;
                 }
+            }
+            if (assistantRefuseCount > 0) {
+                addLog(`⚠️【事務手続き】事務員不在のため、書類不備で合計 ${assistantRefuseCount} 台の成約がキャンセルされました！`);
             }
         }
         if (actualSales > 0) {
@@ -1529,6 +1529,7 @@ console.log("TotalStaff:", totalStaff);
     let monthlyNet = m_revenue - m_expense;
     let alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n` +
     `【車両販売】\n・来店数: ${lastMonthCarDemands} 組 ➔ 成約: ${actualSales} 台\n` +
+    `・事務員不在のため、書類不備で ${assistantRefuseCount} 台の成約がキャンセルされました！\n` +
     `・台当り売上: ${actualSales > 0 ? retailPrice.toLocaleString() : "0"}円\n` + // 0台なら0と表示
     `・状況: ${carLossMessage}\n\n` +
     `【車検整備】\n・入庫要求: ${lastMonthRepairDemands} 台 ➔ 完了: ${repairDemands} 台\n` +
