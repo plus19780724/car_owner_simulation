@@ -1367,8 +1367,8 @@ function applyEvent(eventRoll) {
                 if (Math.random() < finalClosingRate) {
                     let assistantRefuseCount = 0;
                     let canCompleteSale = true; // 成約を完了できるかどうかのフラグ
-                    // 【新ルール】事務員がいない場合、20%の確率で「書類不備キャンセル」が発生
-                    if (!assistants < salesmen && Math.random() < 0.20) {
+                    // 【新ルール】事務員がいない場合、30%の確率で「書類不備キャンセル」が発生
+                    if (!assistants < salesmen && Math.random() < 0.30) {
                         canCompleteSale = false;
                     }
                     if (canCompleteSale) {
