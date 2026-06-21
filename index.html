@@ -1052,6 +1052,7 @@ function executeEvent(eventRoll) {
         }
     } else if (eventRoll === 9) {
         let socialBonus = Math.max(1, Math.floor(loyalCustomers * 0.1));// 1. その場で顧客数に基づいたボーナスを計算
+            currentEvent = "sns_buzz"; // 【追加】これで判定用変数に値をセット
             lastEventMonth.event9 = month;// 【重要】発生した月を記録する
             addLog(`✨ 【実施】SNS拡散により来店数がアップ！`);
     } else if (eventRoll === 10) {
@@ -1656,7 +1657,7 @@ console.log("TotalStaff:", totalStaff);
         advRepairCount = 0;
         mechanics_missing = false;
         assistants_missing = false;
-    
+        currentEvent = null;
     month++;
     
     
