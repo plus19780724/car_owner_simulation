@@ -1314,13 +1314,13 @@ function getRetailPrice() {
         carDemands += totalBoost;
         addLog(`🚀 【広告効果】販売広告により、来店客が計 **＋${totalBoost} 組** ブースト！`);
     }
-     //イベントＳＮＳバズの来客計算
-    if (currentEvent === "sns_buzz"){
+    carDemands = Math.max(0, carDemands);
+    
+    if (currentEvent === "sns_buzz"){//イベントＳＮＳバズの来客計算
         let socialBonus = Math.max(1, Math.floor(loyalCustomers * 0.1));// 1. その場で顧客数に基づいたボーナスを計算
             carDemands += socialBonus;// 2. 直接 carDemands に加算
-    }
-     //イベント天候悪化の来客計算
-    if (currentEvent === "bad_weather") {carDemands = Math.floor(carDemands / 2);
+    }else if (currentEvent === "bad_weather") { //イベント天候悪化の来客計算
+            carDemands = Math.floor(carDemands / 2);
     }
     lastMonthCarDemands = carDemands;
 
@@ -1475,7 +1475,6 @@ function getRetailPrice() {
         cooldown_parts--;
             if (cooldown_parts === 0 && currentEvent === "parts_delay") { currentEvent = null; }
         }
-    
        
     if (cooldown_audit > 0) cooldown_audit--;
     
