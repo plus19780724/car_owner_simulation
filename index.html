@@ -1615,17 +1615,21 @@ console.log("TotalStaff:", totalStaff);
 
     // --- 10. 来月のイベント予約（整理版） ---
     // ここでは「次回のイベントを抽選して予約する」ことだけに集中します
-    let nextMonthEvent = selectRandomEvent();
+    if(month > 1){
+        let nextMonthEvent = selectRandomEvent();
     
-    if (nextMonthEvent !== null) {
-        pendingEvent = nextMonthEvent; // 番号を保持するだけにする
-        applyEvent(nextMonthEvent);    // ボードを表示するだけにする（ここでは実行しない）
-        console.log("📝 次月の予約が完了しました:", pendingEvent);
-    } else {
-        pendingEvent = null;
-        console.log("📝 来月はイベントなし");
+        if (nextMonthEvent !== null) {
+            pendingEvent = nextMonthEvent; // 番号を保持するだけにする
+            applyEvent(nextMonthEvent);    // ボードを表示するだけにする（ここでは実行しない）
+            console.log("📝 次月の予約が完了しました:", pendingEvent);
+        } else {
+            pendingEvent = null;
+            console.log("📝 来月はイベントなし");
+        }else
+            pendingEvent = null;
+            console.log("📝 1か月目：イベント予約スキップ");
+        }
     }
-   
          // 2. 【記録】前月の総支出実績を確定
     // 変動費(m_expense) ＋ 今月の固定費(monthlyFixed) を代入
         lastMonthExpenseDisplay = m_expense + monthlyFixed; 
