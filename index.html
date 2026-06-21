@@ -158,7 +158,7 @@
 <body>
 <div class="container"> <div class="header-section">
         <h1>自動車販売・修理工場 経営シミュレーション</h1>
-        <div class="subtitle">〜 Ver 12.5版 〜</div>
+        <div class="subtitle">〜 Ver 12.6版 〜</div>
         <div class="control-panel">
                 <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
                 <button class="btn-ctrl btn-reset" onclick="resetGame()">🔄 経営リセット</button>
@@ -1368,8 +1368,8 @@ function applyEvent(eventRoll) {
                 //車両販売の成約台数ごとに売上に加算して在庫を1台減らす
                 if (Math.random() < finalClosingRate) {
                     let canCompleteSale = true; // 成約を完了できるかどうかのフラグ
-                    // 【新ルール】事務員がいない場合、30%の確率で「書類不備キャンセル」が発生
-                    if (assistants < salesmen && Math.random() < 0.30) {
+                    // 【新ルール】事務員がいない場合、20%の確率で「書類不備キャンセル」が発生
+                    if (assistants < salesmen && Math.random() < 0.20) {
                         canCompleteSale = false;
                     }
                     if (canCompleteSale) {
