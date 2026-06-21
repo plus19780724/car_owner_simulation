@@ -114,6 +114,8 @@
         button:not(.btn-next):not(.adv-btn-car):not(.adv-btn-repair):not(.btn-ctrl) { padding: 10px; font-size: 13px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; transition: all 0.2s; }
         button:not(.btn-next):not(.adv-btn-car):not(.adv-btn-repair):not(.btn-ctrl):hover { opacity: 0.9; }
         .btn-buy { background: #2980b9; }
+        .btn-buy5{ background: #1c5980; }
+        .btn-buy10 { background: #143d59; }
         .btn-sell { background: #d35400; }
         .btn-hire { background: #8e44ad; }
         .btn-upgrade { background: #2c3e50; }
@@ -251,8 +253,8 @@
                             <button class="btn-assistant" id="btn-hire-assistant" onclick="hireStaff('assistant')">🛡️ 補助事務員採用<br>(人件費:月30万)</button>
                             <button class="btn-buy" onclick="buyCar(1)">🛠 車を仕入れる<br>(-100万円)</button>
                             <button class="btn-sell" onclick="fireSale()">🚨 最古の在庫を損切<br>(いつでも可)</button> 
-                            <button onclick="buyCars(5)">5台まとめ買い (-500万)</button>
-                            <button onclick="buyCars(10)">10台まとめ買い (-1000万)</button>
+                            <button class="btn-buy5" onclick="buyCar(5)">車を5台仕入れる (-500万)</button>
+                            <button class="btn-buy10" onclick="buyCar(10)">車を10台仕入れる (-1000万)</button>
                         </div>
                     </div>
             
@@ -870,7 +872,6 @@
             v_stock_list.push(0);
         }
         updateDisplay();
-        alert(`✅ ${count}台仕入れました！`);
         } else {
         alert("❌ 中古車仕入れ資金が足りません。");
         }
