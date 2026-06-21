@@ -1294,12 +1294,14 @@ function getRetailPrice() {
     let retailPrice = getRetailPrice(); // これで毎回ランダムな価格が生成される！
     let salesBonus = getCarSalesBonus();
     let loyalPenalty = getCarSalesLoyalPenalty();
-    carDemands = Math.floor(Math.random() * (3 - 0 + 1)) + 0 + salesBonus;
-    if (maxStock === 20) carDemands = Math.floor(Math.random() * (6 - 1 + 1)) + 1 + salesBonus;
-    if (maxStock === 30) carDemands = Math.floor(Math.random() * (10 - 2 + 1)) + 2 + salesBonus;
-    if (maxStock === 40) carDemands = Math.floor(Math.random() * (13 - 3 + 1)) + 3 + salesBonus;
-    if (maxStock === 50) carDemands = Math.floor(Math.random() * (16 - 4 + 1)) + 4 + salesBonus;
-    carDemands = Math.max(0, carDemands + loyalPenalty);
+    let baseDemands = Math.floor(Math.random() * (3 - 0 + 1))　+　0;
+    
+    if (maxStock === 20) baseDemands = Math.floor(Math.random() * (6 - 1 + 1)) + 1;
+    if (maxStock === 30) baseDemands = Math.floor(Math.random() * (10 - 2 + 1)) + 2;
+    if (maxStock === 40) baseDemands = Math.floor(Math.random() * (13 - 3 + 1)) + 3;
+    if (maxStock === 50) baseDemands = Math.floor(Math.random() * (16 - 4 + 1)) + 4;
+    carDemands = baseDemands + salesBonus + loyalPenalty;
+    carDemands = Math.max(0, carDemands);
 
     if (loyalPenalty < 0) {
         addLog(`📦 <font color="#ff7675">【顧客不足ペナルティ】既存客不足による悪評クチコミで車両通常来店が **${loyalPenalty} 組** 減少！</font>`);
