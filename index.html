@@ -991,7 +991,7 @@ function executeEvent(eventRoll) {
             funds -= 1000000;
             m_expense += 1000000;
             lastEventMonth.event3 = month;// 【重要】発生した月を記録する
-            addLog(`🚨 【競合店開店！】顧客が ${lostLoyals} 名流出しました。顧客回復のため広告費用100万円が発生しました。`);
+            addLog(`🚨 【競合店開店！】顧客が流出しました。顧客回復のため広告費用100万円が発生しました。`);
     } else if (eventRoll === 4) {
             currentEvent = "bad_weather"; // 【重要】この合図を出す
             count_weather_this_year++;
@@ -1014,7 +1014,7 @@ function executeEvent(eventRoll) {
             funds -= 1000000;
             m_expense += 1000000;
             lastEventMonth.event6 = month;// 【重要】発生した月を記録する
-            addLog(`🚨 【契約トラブル】顧客が ${lostLoyals} 名流出しました。グレード違いにより違約金100万円が発生しました。`);
+            addLog(`🚨 【契約トラブル】顧客が流出しました。グレード違いにより違約金100万円が発生しました。`);
         
             updateDisplay(); 
         } else {
@@ -1026,7 +1026,7 @@ function executeEvent(eventRoll) {
             funds -= 1000000;
             m_expense += 1000000;
             lastEventMonth.event7 = month;// 【重要】発生した月を記録する
-            addLog(`🚨 【作業クレーム】顧客が ${lostLoyals} 名流出しました。信頼回復のために100万円の費用が発生しました。)`);
+            addLog(`🚨 【作業クレーム】顧客が流出しました。信頼回復のために100万円の費用が発生しました。)`);
     } else if (eventRoll === 8) {
         if (currentLiftsCount > 0) {
             // リフトがあり、整備事業が動いている場合のみ発生
@@ -1191,7 +1191,7 @@ function applyEvent(eventRoll) {
                 eventBoard.style.borderColor = "#cc0000";
                 eventTitle.style.color = "#cc0000";
             eventTitle.innerText = "🚨 重大トラブル：車検整備の作業内容に大クレーム発生";
-            eventDesc.innerText = `「対応への不手際により大クレームに発展！」（信頼失墜により顧客 ${lostLoyals} 名が流出、対応費用として 100万円の費用が発生！）`;
+            eventDesc.innerText = `「対応への不手際により大クレームに発展！」（信頼失墜により顧客が流出、対応費用として 100万円の費用が発生！）`;
             }
             else if (eventRoll === 8) {
                 if (currentLiftsCount > 0) {
