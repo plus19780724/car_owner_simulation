@@ -961,10 +961,9 @@ function executeEvent(eventRoll) {
         if(mechanics > 0) {
             mechanics_missing = true; // メカニックが欠員している状態にする
             lastEventMonth.event0 = month;// 【重要】発生した月を記録する
-            addLog(`🚨 【実施】メカニックが今月は1名欠勤しました！`);
+            addLog(`🚨 【スタッフトラブル】メカニックが今月は1名欠勤しました！`);
         } else {
             lastEventMonth.event0 = month;// 【重要】発生した月を記録する
-            addLog(`🚨 現在整備スタッフは不在のため影響なし`);
         }
     } else if (eventRoll === 1) {
         if (currentLiftsCount > 0) {
@@ -972,10 +971,9 @@ function executeEvent(eventRoll) {
             cooldown_parts = 3;// 3か月持続の意味
             currentEvent = "parts_delay"; // 【重要】この合図を出す
             lastEventMonth.event1 = month;// 【重要】発生した月を記録する
-            addLog(`🚨 【実施】部品供給遅延：生産性が3か月低下します。`);
+            addLog(`🚨 【時事問題】部品供給遅延：生産性が3か月低下します。`);
         } else {
             lastEventMonth.event1 = month;// 【重要】発生した月を記録する
-            addLog(`✨ 【実施】現在整備事業を行っていないため、部品供給の影響はありません。`);
         }
     } else if (eventRoll === 2) {
             // リフトがある場合のみ発生させる
@@ -983,10 +981,9 @@ function executeEvent(eventRoll) {
             funds -= 300000;
             m_expense += 300000;
             lastEventMonth.event2 = month;// 【重要】発生した月を記録する
-            addLog(`🚨 【実施】突発修繕費30万円が発生しました。`);
+            addLog(`🚨 【設備トラブル】突発修繕費30万円が発生しました。`);
         } else {
             lastEventMonth.event2 = month;// 【重要】発生した月を記録する
-            addLog(`🚨 設備トラブルの予兆がありましたが、稼働中の設備がないため影響はありませんでした。`);
         }
     } else if (eventRoll === 3) {
         let lostLoyals = Math.floor(loyalCustomers * 0.20);
@@ -994,16 +991,15 @@ function executeEvent(eventRoll) {
             funds -= 1000000;
             m_expense += 1000000;
             lastEventMonth.event3 = month;// 【重要】発生した月を記録する
-            addLog(`🚨 【実施】競合店開店！顧客が ${lostLoyals} 名流出しました。顧客回復のため広告費用100万円が発生しました。`);
+            addLog(`🚨 【競合店開店！】顧客が ${lostLoyals} 名流出しました。顧客回復のため広告費用100万円が発生しました。`);
     } else if (eventRoll === 4) {
             currentEvent = "bad_weather"; // 【重要】この合図を出す
             count_weather_this_year++;
             lastEventMonth.event4 = month;// 【重要】発生した月を記録する
-            addLog(`🚨 【実施】悪天候のため来店数が減少しました。`);
+            addLog(`🚨 【環境問題】悪天候のため来店数が減少しました。`);
     } else if (eventRoll === 5) {
         if (mechanics === 0) {
             lastEventMonth.event5 = month;// 【重要】発生した月を記録する
-            addLog(`✨ 【実施】現在整備事業を行っていないため、監査の対象外でした。`);
         } else if (assistants > 0) {
             lastEventMonth.event5 = month;// 【重要】発生した月を記録する
             addLog(`🛡️ 【実施】事務員とメカニックの連携により、監査を無事に回避しました！`);
@@ -1014,22 +1010,15 @@ function executeEvent(eventRoll) {
         }
     }else if (eventRoll === 6) {
         if (lastMonthCarSales > 0) {
-            // 先月の実績を遡って修正
-            lastMonthCarSales -= 1; 
-        
-            let cancelAmount = retailPrice; 
-            m_revenue -= cancelAmount;
-            funds -= cancelAmount;
-            v_stock_list.push(2);
-
+            let lostLoyals = Math.floor(loyalCustomers * 0.20);// 顧客の20%が流出（固定）
+            funds -= 1000000;
+            m_expense += 1000000;
             lastEventMonth.event6 = month;// 【重要】発生した月を記録する
-            addLog(`🚨 【契約破棄】先月の契約が1件取り消されました。`);
-            addLog(`📉 修正：成約数 -1台 | 売上: -${cancelAmount.toLocaleString()}円`);
+            addLog(`🚨 【契約トラブル】顧客が ${lostLoyals} 名流出しました。グレード違いにより違約金100万円が発生しました。`);
         
             updateDisplay(); 
         } else {
             lastEventMonth.event6 = month;// 【重要】発生した月を記録する
-            addLog(`✨ 【発注ミス】報告がありましたが、先月は成約がなかったため影響なし！`);
         }
     }else if (eventRoll === 7) {
         let lostLoyals = Math.floor(loyalCustomers * 0.20);// 顧客の20%が流出（固定）
@@ -1037,18 +1026,17 @@ function executeEvent(eventRoll) {
             funds -= 1000000;
             m_expense += 1000000;
             lastEventMonth.event7 = month;// 【重要】発生した月を記録する
-            addLog(`🚨 【実施】クレームにより顧客が ${lostLoyals} 名流出しました。信頼回復のために100万円の費用が発生しました。)`);
+            addLog(`🚨 【作業クレーム】顧客が ${lostLoyals} 名流出しました。信頼回復のために100万円の費用が発生しました。)`);
     } else if (eventRoll === 8) {
         if (currentLiftsCount > 0) {
             // リフトがあり、整備事業が動いている場合のみ発生
             cooldown_fleet = 3;// 3か月間持続させる
             currentEvent = "big_fleet"; // 【追加】これで判定用変数に値をセット
             lastEventMonth.event8 = month;// 【重要】発生した月を記録する
-            addLog(`✨ 【実施】大口特需により入庫台数が3か月増加！`);
+            addLog(`✨ 【実施】大口特需により車検入庫台数が3か月増加！`);
         } else {
             // リフトが0なら、パーツの需要自体がないので平穏
             lastEventMonth.event8 = month;// 【重要】発生した月を記録する
-            addLog(`✨ 【実施】現在整備事業を行っていないため、大口特需をお断りしました。`);
         }
     } else if (eventRoll === 9) {
         let socialBonus = Math.max(1, Math.floor(loyalCustomers * 0.1));// 1. その場で顧客数に基づいたボーナスを計算
@@ -1063,7 +1051,6 @@ function executeEvent(eventRoll) {
             addLog(`✨ 【実施】極上中古車を仕入れました！在庫: ${v_stock_list.length} 台`);
         } else {
             lastEventMonth.event10 = month;// 【重要】発生した月を記録する
-            addLog(`⚠️ 【残念】展示場が満車のため、極上中古車の仕入れを見送りました。`);
         }
     } else if (eventRoll === 11) {
             currentEvent = "lift_bonus";
@@ -1187,7 +1174,7 @@ function applyEvent(eventRoll) {
                 eventBoard.style.borderColor = "#cc0000";
                 eventTitle.style.color = "#cc0000";
             eventTitle.innerText = "🚨 重大トラブル：営業マンの発注・書類ミス";
-            eventDesc.innerText = "「商談成約車のオプション発注、または書類手続きに重大なミスが発覚しキャンセルに…」\n（今月成約した車両のうち、強制的に【マイナス1台】失注となりました。仕入在庫は手元に戻ります）";
+            eventDesc.innerText = "「商談成約車のグレード間違いに加え書類手続きに重大なミスが発覚…」\n（違約金として100万円の支払いが必要となります。）";
                 } else {
                 // 成約が0の時の平和なメッセージ
                 eventBoard.style.background = "#f0f8ff"; // 青系（平穏）
@@ -1287,11 +1274,15 @@ function applyEvent(eventRoll) {
     addLog(`<br><span style='color:#2ecc71;'>━━━━━━━━━ 【第 ${month} ヶ月目 営業結果】 ━━━━━━━━━</span>`);
 
     // 5. 車両販売部門の営業処理
-function getRetailPrice() {
-    let profit = 250000 + (Math.floor(Math.random() * 100001) - 50000);
-    return buyPrice + profit;
-}
+    
+       // 車両販売単価の決定
+    function getRetailPrice() {
+        let profit = 250000 + (Math.floor(Math.random() * 100001) - 50000);
+        return buyPrice + profit;
+    }
     let retailPrice = getRetailPrice(); // これで毎回ランダムな価格が生成される！
+    
+       // 通常来客数の計算処理
     let salesBonus = getCarSalesBonus();
     let loyalPenalty = getCarSalesLoyalPenalty();
     let baseDemands = Math.floor(Math.random() * (3 - 0 + 1))　+　0;
@@ -1302,11 +1293,11 @@ function getRetailPrice() {
     if (maxStock === 50) baseDemands = Math.floor(Math.random() * (16 - 4 + 1)) + 4;
     carDemands = baseDemands + salesBonus + loyalPenalty;
     carDemands = Math.max(0, carDemands);
-
     if (loyalPenalty < 0) {
         addLog(`📦 <font color="#ff7675">【顧客不足ペナルティ】既存客不足による悪評クチコミで車両通常来店が **${loyalPenalty} 組** 減少！</font>`);
     }
-    //広告来店関数
+    
+       //広告来店関数
     if (advCarCount > 0) {
         // 平方根（Math.sqrt）で効率を制御し、在庫数（exhibitCars）でブーストする
         let advEfficiency = Math.sqrt(advCarCount) ; 
@@ -1316,7 +1307,8 @@ function getRetailPrice() {
         addLog(`🚀 【広告効果】販売広告により、来店客が計 **＋${totalBoost} 組** ブースト！`);
     }
     carDemands = Math.max(0, carDemands);
-    
+        
+       //イベントの増減来店計算
     if (currentEvent === "sns_buzz"){//イベントＳＮＳバズの来客計算
         let socialBonus = Math.max(1, Math.floor(loyalCustomers * 0.1));// 1. その場で顧客数に基づいたボーナスを計算
             carDemands += socialBonus;// 2. 直接 carDemands に加算
@@ -1325,6 +1317,7 @@ function getRetailPrice() {
     }
     lastMonthCarDemands = carDemands;
 
+       //来店接客対応計算
     let salesCap = salesmen * maxClearancePerSalesman;
     let carLossMessage = "機会損失なし";
     let actualSales = 0;
@@ -1340,6 +1333,7 @@ function getRetailPrice() {
         carLossMessage = `👤 商談上限超過で ${missed}組 離脱`;
     }
 
+        //成約数の関数計算
     if (carDemands > 0) {
         // 【重要】ここでイベント効果を計算する
         let interestRate = (typeof isSalesBoosted !== 'undefined' && isSalesBoosted) ? 1.0 : 0.50;
@@ -1393,14 +1387,6 @@ function getRetailPrice() {
                     ageRefusedCount++;
                 }
             }
-        }
-        if (currentEvent === "sales_order_error" && actualSales > 0) {
-            actualSales -= 1;
-            funds -= retailPrice;
-            m_revenue -= retailPrice;
-            loyalCustomers = Math.max(0, loyalCustomers - 1);
-            v_stock_list.push(0);
-            carLossMessage = "⚠️ 発注ミスにより1台キャンセル(車は在庫へ戻りました)";
         }
         if (actualSales > 0) {
             addLog(`🚗 中古車が **${actualSales} 台** 成約！(単価: ${retailPrice.toLocaleString()}円 /売上: +${(actualSales * retailPrice).toLocaleString()}円)`);
