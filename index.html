@@ -1529,8 +1529,12 @@ console.log("TotalStaff:", totalStaff);
     // 8. レポート作成
     let monthlyNet = m_revenue - m_expense;
     let alertReport = `📅 【第 ${month} ヶ月目 営業成果報告】\n━━━━━━━━━━━━━━━━━━━━\n` +
-    `【車両販売】\n・来店数: ${lastMonthCarDemands} 組 ➔ 成約: ${actualSales} 台\n` +
-    `・事務員不在のため、書類不備で ${assistantRefuseCount} 台の成約がキャンセルされました！\n` +
+    `【車両販売】\n・来店数: ${lastMonthCarDemands} 組 ➔ 成約: ${actualSales} 台\n` ;
+    // 【重要】キャンセルがあった場合のみレポートに追加
+    if (assistantRefuseCount > 0) {
+        alertReport +=`・事務員不在のため、書類不備で ${assistantRefuseCount} 台の成約がキャンセルされました！\n`;
+    }
+    alertReport +=
     `・台当り売上: ${actualSales > 0 ? retailPrice.toLocaleString() : "0"}円\n` + // 0台なら0と表示
     `・状況: ${carLossMessage}\n\n` +
     `【車検整備】\n・入庫要求: ${lastMonthRepairDemands} 台 ➔ 完了: ${repairDemands} 台\n` +
