@@ -1243,6 +1243,8 @@ function applyEvent(eventRoll) {
         }
 
    function nextMonth() {
+       // ここで先に宣言しておく（これが最も重要です）
+       let assistantRefuseCount = 0;
        console.log("デバッグ：nextMonth開始時点のm_expense（変動費）は:", m_expense);
         // 1. 【計算】固定費を算出（変数名を monthlyFixed に統一）
         let totalStaff = salesmen + mechanics + clerks + assistants;
@@ -1342,7 +1344,6 @@ function applyEvent(eventRoll) {
         console.log("【デバッグ】商談数計算 - 覚醒フラグ: " + (typeof isSalesBoosted !== 'undefined' ? isSalesBoosted : "未定義"));
         console.log("【デバッグ】商談数計算 - 使用する商談発生率: " + interestRate);
         let baseInterestedBuyers = 0;
-        let assistantRefuseCount = 0;
         for (let i = 0; i < carDemands; i++) {
             if (Math.random() < 0.50) { baseInterestedBuyers++; }
         }
