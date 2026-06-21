@@ -1268,8 +1268,18 @@ function applyEvent(eventRoll) {
 
     // 4. 【処理】ボード処理など
         const eventBoard = document.getElementById("eventBoard");
+        const eventTitle = document.getElementById("eventTitle");
+        const eventDesc = document.getElementById("eventDesc");
+        
         if (eventBoard) {
-            eventBoard.style.display = "none";
+            eventBoard.style.display = "block";
+            if (pendingEvent === null) {
+                eventBoard.style.background = "#f9f9f9";
+                eventBoard.style.borderColor = "#ddd";
+                eventTitle.style.color = "#cc0000";
+                eventTitle.innerText = "⚠️ 今月の突発イベント";
+                eventDesc.innerText = "イベント内容がここに表示されます。";
+            }
         }
 
     
