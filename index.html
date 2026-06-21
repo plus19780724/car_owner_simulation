@@ -249,8 +249,10 @@
                         <div class="btn-grid">
                             <button class="btn-hire" onclick="hireStaff('salesman')">👨‍💼 営業マンを採用<br>(人件費:月30万)</button>
                             <button class="btn-assistant" id="btn-hire-assistant" onclick="hireStaff('assistant')">🛡️ 補助事務員採用<br>(人件費:月30万)</button>
-                            <button class="btn-buy" onclick="buyCar()">🛠 車を仕入れる<br>(-100万円)</button>
-                            <button class="btn-sell" onclick="fireSale()">🚨 最古の在庫を損切<br>(いつでも可)</button>                            
+                            <button class="btn-buy" onclick="buyCar(1)">🛠 車を仕入れる<br>(-100万円)</button>
+                            <button class="btn-sell" onclick="fireSale()">🚨 最古の在庫を損切<br>(いつでも可)</button> 
+                            <button onclick="buyCars(5)">5台まとめ買い (-500万)</button>
+                            <button onclick="buyCars(10)">10台まとめ買い (-1000万)</button>
                         </div>
                     </div>
             
@@ -852,16 +854,27 @@
         updateDisplay();
     }
 
-    function buyCar() {
-        if (v_stock_list.length >= maxStock) { alert("❌ 展示場が満車です！"); return; }
-        if (funds >= buyPrice) {
+    function buyCar(count = 1) {
+        let availableSpace = maxStock - v_stock_list.length;
+        if (availableSpace < count) {
+        alert(`❌ 展示場が足りません！あと ${availableSpace} 台しか置けません。`);
+        return;
+        }
+        let totalCost = buyPrice * count;
+        if (funds >= totalCost) {
+        // 3. 購入処理（ループで繰り返す）
+        for (let i = 0; i < count; i++) {
             funds -= buyPrice;
             m_expense += buyPrice;
             currentMonthBuy += buyPrice;
-            v_stock_list.push(0); 
-            updateDisplay();
-        } else { alert("❌ 中古車仕入れ資金が足りません。"); }
-    }
+            v_stock_list.push(0);
+        }
+        updateDisplay();
+        alert(`✅ ${count}台仕入れました！`);
+        } else {
+        alert("❌ 中古車仕入れ資金が足りません。");
+        }
+     }
 
     function fireSale() {
         if (v_stock_list.length === 0) { alert("❌ 在庫がありません。"); return; }
