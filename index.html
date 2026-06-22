@@ -1265,10 +1265,8 @@ function applyEvent(eventRoll) {
             let staffValue = (salesmen + assistants + mechanics) * 1000000;
         // 5. 自社管理顧客価値 (リピーター数 × 価値)
             let customerValue = loyalCustomers * 50000;
-        // 6. 借入金残高: 既存の借入金変数を使用
-            let debt = currentDebt; 
 
-            return cash + inventoryValue + equipmentValue + staffValue + customerValue - debt;
+            return cash + inventoryValue + equipmentValue + staffValue + customerValue;
     }
     
    function nextMonth() {
