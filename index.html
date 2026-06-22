@@ -158,7 +158,7 @@
 <body>
 <div class="container"> <div class="header-section">
         <h1>自動車販売・修理工場 経営シミュレーション</h1>
-        <div class="subtitle">〜 Ver 12.7版 〜</div>
+        <div class="subtitle">〜 Ver 12.8版 〜</div>
         <div class="control-panel">
                 <button class="btn-ctrl btn-start" onclick="showGameInstructions()">🎮 ゲーム説明</button>
                 <button class="btn-ctrl btn-reset" onclick="resetGame()">🔄 経営リセット</button>
@@ -1710,6 +1710,8 @@ function checkGameOver() {
         mechanics_missing = false;
         assistants_missing = false;
         currentEvent = null;
+        // ★ここに追加：ゲーム終了判定を実行！
+        checkGameOver();
     month++;
     
     
