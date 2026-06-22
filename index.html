@@ -1253,7 +1253,24 @@ function applyEvent(eventRoll) {
             eventDesc.innerText = "「スタッフの動きが神がかり、無駄な動きがゼロに！」\n（【覚醒】営業マンの接客力が極まり、今月の商談発生率が100%に！）\n（今月のみ、稼働している各リフトの車検処理キャパシティが【一律＋20台】上昇します）";
             }
         }
+//5年後の企業価値を決めるルール関数
+    function calculateCompanyValue() {
+        // 1. 現金: そのまま
+            let cash = funds;
+        // 2. 展示車在庫評価額 (在庫の平均単価 × 台数)
+            let inventoryValue = v_stock_list.length * 500000; // 仮の単価
+        // 3. 設備評価額 (リフトの数 × 設備費用)
+            let equipmentValue = (liftCount || 0) * 2000000;
+        // 4. 社員価値 (営業マン・事務員・メカニック数 × 一定の価値)
+            let staffValue = (salesmen + assistants + mechanics) * 1000000;
+        // 5. 自社管理顧客価値 (リピーター数 × 価値)
+            let customerValue = loyalCustomers * 50000;
+        // 6. 借入金残高: 既存の借入金変数を使用
+            let debt = currentDebt; 
 
+            return cash + inventoryValue + equipmentValue + staffValue + customerValue - debt;
+    }
+    
    function nextMonth() {
        // ここで先に宣言しておく（これが最も重要です）
        let assistantRefuseCount = 0;
@@ -1664,6 +1681,24 @@ console.log("TotalStaff:", totalStaff);
     lastMonthExpenseDisplay = m_expense;
     lastMonthRevenueDisplay = m_revenue;
 
+        //5年経過の祭典・終了関数
+function checkGameOver() {
+    if (month >= 60) {
+        let finalScore = calculateCompanyValue(); // 先ほどの計算関数
+        
+        let resultMsg = `【5年経営終了】\n\n`;
+        resultMsg += `最終企業価値：${finalScore.toLocaleString()}円\n`;
+        resultMsg += `----------------------------\n`;
+        resultMsg += `現金：${funds.toLocaleString()}円\n`;
+        resultMsg += `管理顧客：${loyalCustomers}人\n`;
+        
+        addLog(`🏆 5年間の経営が終了しました。最終企業価値：${finalScore.toLocaleString()}円`); // ログにも結果を出す
+        
+        // ここで終了画面への遷移や、ボタンを無効化する処理を入れる
+        alert(resultMsg);
+        disableGame(); // 操作を止める関数（またはフラグ管理）
+    }
+}
        // 5. 【リセット】次月のために「今月の変動費」だけをリセット
     // ※ currentMonthFixed (表示用) は 0 にしてはいけないので、ここから外します
         m_revenue = 0;
