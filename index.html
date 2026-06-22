@@ -337,7 +337,8 @@
     let lastMonthRevenueDisplay = 0;
     let lastMonthExpenseDisplay = 0;
     
-    let totalCarSales = 0;      
+    let totalCarSales = 0; 
+    let totalRepairDone = 0;
     let currentYearCarSales = 0; 
     let currentYearRepairDone = 0; 
 
@@ -1483,6 +1484,7 @@ function applyEvent(eventRoll) {
     if (repairDemands > 0) {
         addLog(`🔧 車検整備を **${repairDemands} 台** 完了。 (単価: ${monthlyUnitProfit.toLocaleString()}円 /粗利: +${repairProfit.toLocaleString()}円)`);
         currentYearRepairDone += repairDemands;
+        totalRepairDone += repairDemands
         let newLoyals = Math.floor(repairDemands * 0.3);
         loyalCustomers += newLoyals;
     }
@@ -1700,7 +1702,13 @@ function checkGameOver() {
         resultMsg += `最終企業価値：${finalScore.toLocaleString()}円\n`;
         resultMsg += `----------------------------\n`;
         resultMsg += `現金：${funds.toLocaleString()}円\n`;
-        resultMsg += `管理顧客：${loyalCustomers}人\n`;
+        resultMsg += `展示車在庫評価額：${v_stock_list.length}円\n`;
+        resultMsg += `総社員数：${salesmen + assistants + mechanics + clerks}人\n`;
+        resultMsg += `自社管理顧客：${loyalCustomers}人\n`;
+        resultMsg += `設備投資リフト：${currentLiftsCount}台\n`;
+        resultMsg += `設備投資展示場サイズ：${maxStock}台\n`;      
+        resultMsg += `総車両販売台数：${totalCarSales}台\n`;      
+        resultMsg += `総車検実施台数：${totalRepairDone}台\n`;      
         
         addLog(`🏆 5年間の経営が終了しました。最終企業価値：${finalScore.toLocaleString()}円`); // ログにも結果を出す
         
