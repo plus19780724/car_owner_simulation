@@ -1680,6 +1680,18 @@ console.log("TotalStaff:", totalStaff);
     lastMonthRevenueDisplay = m_revenue;
 
         //5年経過の祭典・終了関数
+function disableGame() {
+    console.log("🎮 ゲーム終了処理を実行します");
+    
+    // ページ内のすべてのボタンを取得して無効化する
+    let buttons = document.querySelectorAll("button");
+    buttons.forEach(btn => {
+        btn.disabled = true;
+    });
+
+    // 必要であれば「ゲーム終了」のメッセージを画面上にも出す
+    addLog("🏁 5年間の経営が終了しました。これにて営業終了です！");
+}
 function checkGameOver() {
     if (month >= 2) {
         let finalScore = calculateCompanyValue(); // 先ほどの計算関数
