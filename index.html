@@ -1683,16 +1683,10 @@ console.log("TotalStaff:", totalStaff);
 
         //5年経過の祭典・終了関数
 function disableGame() {
-    console.log("🎮 ゲーム終了処理を実行します");
-    
-    // ページ内のすべてのボタンを取得して無効化する
-    let buttons = document.querySelectorAll("button");
-    buttons.forEach(btn => {
-        btn.disabled = true;
-    });
-
+    console.log("🎮 ゲーム終了処理を実行します")
     // 必要であれば「ゲーム終了」のメッセージを画面上にも出す
-    addLog("🏁 5年間の経営が終了しました。これにて営業終了です！");
+    addLog("🏆 5年間の経営目標を達成しました！");
+    addLog("🏁 これからも自由に経営を続けてください！");
 }
 function checkGameOver() {
     if (month >= 2) {
