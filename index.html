@@ -1259,7 +1259,7 @@ function applyEvent(eventRoll) {
         // 1. 現金: そのまま
             let cash = funds;
         // 2. 展示車在庫評価額 (在庫の平均単価 × 台数)
-            let inventoryValue = v_stock_list.length * 500000; // 仮の単価
+            let inventoryValue = v_stock_list.length * 900000; // 仮の単価
         // 3. 設備評価額 (リフトの数 × 設備費用)
             let equipmentValue = (v_lift_ages && v_lift_ages.length ? v_lift_ages.length : 0) * 2000000;
         // 4. 社員価値 (営業マン・事務員・メカニック数 × 一定の価値)
@@ -1689,7 +1689,7 @@ function disableGame() {
     addLog("🏁 これからも自由に経営を続けてください！");
 }
 function checkGameOver() {
-    if (month >= 2) {
+    if (month >= 60) {
         let finalScore = calculateCompanyValue(); // 先ほどの計算関数
         
         let resultMsg = `【5年経営終了】\n\n`;
